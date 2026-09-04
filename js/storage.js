@@ -381,15 +381,15 @@ const Storage = {
 
   // AUTH SESSION
   isLoggedIn() {
-    const session = localStorage.getItem(this.KEYS.AUTH_SESSION);
+    const session = sessionStorage.getItem(this.KEYS.AUTH_SESSION);
     return session === 'authenticated';
   },
 
   setLoggedIn(bool) {
     if (bool) {
-      localStorage.setItem(this.KEYS.AUTH_SESSION, 'authenticated');
+      sessionStorage.setItem(this.KEYS.AUTH_SESSION, 'authenticated');
     } else {
-      localStorage.removeItem(this.KEYS.AUTH_SESSION);
+      sessionStorage.removeItem(this.KEYS.AUTH_SESSION);
     }
   },
 
@@ -487,7 +487,7 @@ const Storage = {
     localStorage.removeItem(this.KEYS.TRANSACTIONS);
     localStorage.removeItem(this.KEYS.CHECKS);
     localStorage.removeItem(this.KEYS.AGENDA);
-    localStorage.removeItem(this.KEYS.AUTH_SESSION);
+    sessionStorage.removeItem(this.KEYS.AUTH_SESSION);
   },
 
   // Export full JSON backup
