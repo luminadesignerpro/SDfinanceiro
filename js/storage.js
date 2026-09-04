@@ -3,6 +3,9 @@
  * (Suporte completo a Usuários, Contas Fixas/Consumo, Sessão e Biometria)
  */
 
+// Sessão em memória — sempre reseta ao abrir/recarregar o app (inclusive PWA mobile)
+let _authSession = false;
+
 const Storage = {
   KEYS: {
     ACCOUNTS: 'sdfinanceiro_accounts_v1',
@@ -379,18 +382,13 @@ const Storage = {
     return this.getActiveUser();
   },
 
-  // AUTH SESSION
+  // AUTH SESSION — variável em memória, reseta toda vez que o app é aberto
   isLoggedIn() {
-    const session = sessionStorage.getItem(this.KEYS.AUTH_SESSION);
-    return session === 'authenticated';
+    return _authSession === true;
   },
 
   setLoggedIn(bool) {
-    if (bool) {
-      sessionStorage.setItem(this.KEYS.AUTH_SESSION, 'authenticated');
-    } else {
-      sessionStorage.removeItem(this.KEYS.AUTH_SESSION);
-    }
+    _authSession = bool === true;
   },
 
   // ACCOUNTS
@@ -487,7 +485,7 @@ const Storage = {
     localStorage.removeItem(this.KEYS.TRANSACTIONS);
     localStorage.removeItem(this.KEYS.CHECKS);
     localStorage.removeItem(this.KEYS.AGENDA);
-    sessionStorage.removeItem(this.KEYS.AUTH_SESSION);
+    _authSession = false;
   },
 
   // Export full JSON backup
