@@ -158,10 +158,10 @@ h1, h2, h3, h4, h5, h6 {
 .sidebar-logo-img {
   width: 46px;
   height: 46px;
-  border-radius: 50%;
+  border-radius: 12px;
   object-fit: cover;
-  border: 2px solid #c9a84c;
-  box-shadow: 0 0 10px rgba(201, 168, 76, 0.5), 0 4px 14px rgba(0, 0, 0, 0.4);
+  border: 1.5px solid #c9a84c;
+  box-shadow: 0 0 12px rgba(201, 168, 76, 0.4), 0 4px 14px rgba(0, 0, 0, 0.4);
   transition: all 0.25s ease;
   flex-shrink: 0;
 }
@@ -2042,18 +2042,18 @@ body.auth-locked .app-layout {
   40%, 60% { transform: translate3d(4px, 0, 0); }
 }
 
-/* Luxury Circular Gold Badge com Logo Oficial */
+/* Luxury Squircle Gold Badge com Novo Ícone Oficial */
 .auth-brand-badge {
   margin-bottom: 14px;
 }
 
 .auth-badge-outer-ring {
-  width: 95px;
-  height: 95px;
-  border-radius: 50%;
+  width: 102px;
+  height: 102px;
+  border-radius: 26px;
   padding: 3px;
   background: linear-gradient(135deg, #d4af37, #fff2be, #aa7c11, #d4af37);
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.45);
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2062,9 +2062,8 @@ body.auth-locked .app-layout {
 .auth-badge-inner {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
+  border-radius: 23px;
   background: #0d121d;
-  border: 2px solid rgba(212, 175, 55, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2075,7 +2074,7 @@ body.auth-locked .app-layout {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 23px;
   display: block;
 }
 
@@ -2719,9 +2718,15 @@ body.auth-locked .app-layout {
   }
 
   .auth-badge-outer-ring {
-    width: 78px;
-    height: 78px;
+    width: 84px;
+    height: 84px;
+    border-radius: 20px;
     padding: 2.5px;
+  }
+
+  .auth-badge-inner,
+  .auth-brand-logo-img {
+    border-radius: 17px;
   }
 
   .auth-titles {
