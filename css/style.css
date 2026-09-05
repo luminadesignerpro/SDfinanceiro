@@ -1947,42 +1947,61 @@ select optgroup {
    LUXURY AUTH / LOGIN LOCKSCREEN (IMAGE REPLICA - DARK & GOLD)
    ========================================================================== */
 
+/* Isolation: completely hide app layout while locked so nothing leaks on mobile */
+body.auth-locked {
+  overflow: hidden !important;
+  height: 100% !important;
+  max-height: 100vh !important;
+  max-height: 100dvh !important;
+}
+
+body.auth-locked .app-layout {
+  display: none !important;
+  visibility: hidden !important;
+}
+
 .auth-lockscreen-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
   background: #060911;
   background-image: 
-    radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.18) 0%, transparent 60%),
-    radial-gradient(circle at 10% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 15%, rgba(212, 175, 55, 0.16) 0%, transparent 60%),
+    radial-gradient(circle at 10% 85%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 90% 90%, rgba(245, 158, 11, 0.08) 0%, transparent 40%);
-  z-index: 99999;
+  z-index: 999999;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Evita corte no topo quando altura é limitada */
   justify-content: center;
-  padding: 20px;
+  padding: 24px 16px;
   overflow-y: auto;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
 .auth-lockscreen-overlay.unlocked {
   opacity: 0;
-  transform: scale(1.05);
+  transform: scale(1.04);
   pointer-events: none;
 }
 
 .auth-card {
+  margin: auto; /* Centraliza verticalmente quando cabe, mas preserva o topo para scroll */
   width: 100%;
-  max-width: 420px;
-  background: rgba(14, 18, 27, 0.88);
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  border-radius: 28px;
-  padding: 40px 32px;
+  max-width: 410px;
+  background: rgba(14, 18, 27, 0.94);
+  border: 1.5px solid rgba(212, 175, 55, 0.4);
+  border-radius: 26px;
+  padding: 32px 28px;
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.8),
-    0 0 40px rgba(212, 175, 55, 0.15),
+    0 25px 50px -12px rgba(0, 0, 0, 0.9),
+    0 0 35px rgba(212, 175, 55, 0.2),
     inset 0 1px 1px rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -1991,6 +2010,7 @@ select optgroup {
   align-items: center;
   text-align: center;
   position: relative;
+  box-sizing: border-box;
 }
 
 .auth-card.shake {
@@ -2004,18 +2024,18 @@ select optgroup {
   40%, 60% { transform: translate3d(4px, 0, 0); }
 }
 
-/* Luxury Circular Gold Badge */
+/* Luxury Circular Gold Badge com Logo Oficial */
 .auth-brand-badge {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .auth-badge-outer-ring {
-  width: 110px;
-  height: 110px;
+  width: 95px;
+  height: 95px;
   border-radius: 50%;
-  padding: 4px;
+  padding: 3px;
   background: linear-gradient(135deg, #d4af37, #fff2be, #aa7c11, #d4af37);
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2026,33 +2046,19 @@ select optgroup {
   height: 100%;
   border-radius: 50%;
   background: #0d121d;
-  border: 2px solid rgba(212, 175, 55, 0.6);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-}
-
-.auth-badge-logo {
-  color: #d4af37;
+  border: 2px solid rgba(212, 175, 55, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
-.auth-badge-logo i, .auth-badge-logo svg {
-  width: 34px;
-  height: 34px;
-}
-
-.auth-badge-label {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: #d4af37;
-  margin-top: 4px;
+.auth-brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
 }
 
 /* Titles */
@@ -2583,7 +2589,91 @@ select optgroup {
     display: none;
   }
   .auth-card {
-    padding: 30px 20px;
+    padding: 26px 20px;
   }
 }
+
+@media (max-width: 480px) {
+  .auth-lockscreen-overlay {
+    padding: 16px 12px;
+  }
+
+  .auth-card {
+    padding: 22px 18px 18px;
+    border-radius: 22px;
+    max-width: 100%;
+  }
+
+  .auth-brand-badge {
+    margin-bottom: 10px;
+  }
+
+  .auth-badge-outer-ring {
+    width: 78px;
+    height: 78px;
+    padding: 2.5px;
+  }
+
+  .auth-titles {
+    margin-bottom: 12px;
+  }
+
+  .auth-main-title {
+    font-size: 1.4rem;
+    letter-spacing: 1.5px;
+  }
+
+  .auth-sub-title {
+    font-size: 0.65rem;
+    letter-spacing: 1.8px;
+  }
+
+  .auth-divider {
+    margin: 8px auto 6px;
+  }
+
+  .auth-prompt {
+    font-size: 0.85rem;
+  }
+
+  .auth-form {
+    gap: 10px;
+  }
+
+  .auth-form-group {
+    gap: 4px;
+  }
+
+  .auth-form-group label {
+    font-size: 0.7rem;
+  }
+
+  .auth-input-wrapper input {
+    padding: 10px 14px 10px 38px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+  }
+
+  .btn-auth-gold {
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    border-radius: 12px;
+  }
+
+  .btn-auth-biometrics {
+    padding: 9px 14px;
+    font-size: 0.82rem;
+    border-radius: 12px;
+  }
+
+  .auth-footer {
+    margin-top: 14px;
+    font-size: 0.72rem;
+  }
+
+  .auth-footer-hint {
+    font-size: 0.7rem;
+  }
+}
+
 

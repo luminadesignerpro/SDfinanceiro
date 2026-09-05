@@ -1,6 +1,6 @@
 /**
  * SDFINANCEIRO — Authentication & Biometrics Security Module
- * Tela de Login Luxo Ouro/Dark, Reconhecimento Biométrico e Recuperação de Credenciais
+ * Tela de Login Luxo Ouro/Dark, Validação Real de Senha e Biometria Segura de Hardware
  */
 
 const Auth = {
@@ -15,6 +15,7 @@ const Auth = {
     const logoutBtn = document.getElementById('btn-sidebar-logout');
     const lockBtn = document.getElementById('btn-lock-system');
     const forgotBtn = document.getElementById('btn-forgot-credentials');
+    const bioCancelBtn = document.getElementById('btn-bio-cancel-modal');
 
     // Login Form Submit
     if (loginForm) {
@@ -28,6 +29,13 @@ const Auth = {
     if (biometricsBtn) {
       biometricsBtn.addEventListener('click', () => {
         this.triggerBiometrics();
+      });
+    }
+
+    // Biometrics modal close
+    if (bioCancelBtn) {
+      bioCancelBtn.addEventListener('click', () => {
+        this.closeBiometricsModal();
       });
     }
 
@@ -67,22 +75,39 @@ const Auth = {
     if (!screen) return;
 
     if (Storage.isLoggedIn()) {
+      document.body.classList.remove('auth-locked');
       screen.classList.add('unlocked');
       setTimeout(() => {
         screen.style.display = 'none';
-      }, 400);
+      }, 350);
     } else {
+      document.body.classList.add('auth-locked');
       screen.style.display = 'flex';
       screen.classList.remove('unlocked');
     }
   },
 
   handleStandardLogin() {
-    const userInput = document.getElementById('auth-input-user')?.value.trim();
-    const passInput = document.getElementById('auth-input-pass')?.value;
+    const userInput = document.getElementById('auth-input-user')?.value.trim() || '';
+    const passInput = document.getElementById('auth-input-pass')?.value || '';
     const errorMsg = document.getElementById('auth-error-msg');
 
     if (errorMsg) errorMsg.textContent = '';
+
+    // Senha é obrigatória! Nunca passar com senha em branco
+    if (!userInput) {
+      if (errorMsg) errorMsg.textContent = 'Por favor, digite seu usuário.';
+      document.getElementById('auth-input-user')?.focus();
+      this.shakeCard();
+      return;
+    }
+
+    if (!passInput) {
+      if (errorMsg) errorMsg.textContent = 'Por favor, digite sua senha de acesso.';
+      document.getElementById('auth-input-pass')?.focus();
+      this.shakeCard();
+      return;
+    }
 
     const users = Storage.getUsers();
     // Allow matching username or matching email or default admin
@@ -94,7 +119,7 @@ const Auth = {
 
     if (matched) {
       const userPass = matched.password || '123';
-      if (passInput === userPass || passInput === 'admin123' || (userInput.toLowerCase() === 'admin' && passInput === '123')) {
+      if (passInput === userPass || (userInput.toLowerCase() === 'admin' && (passInput === '123' || passInput === 'admin123'))) {
         Storage.setActiveUser(matched.id);
         this.grantAccess(matched.name);
         return;
@@ -102,18 +127,20 @@ const Auth = {
     }
 
     // Fallback default admin check
-    if (userInput.toLowerCase() === 'admin' && (passInput === '123' || passInput === 'admin123' || passInput === 'admin' || passInput === '')) {
+    if (userInput.toLowerCase() === 'admin' && (passInput === '123' || passInput === 'admin123')) {
       const active = Storage.getActiveUser();
       this.grantAccess(active ? active.name : 'Administrador');
-    } else {
-      if (errorMsg) {
-        errorMsg.innerHTML = `
-          <span>Usuário ou senha incorretos.</span><br>
-          <a href="javascript:void(0)" onclick="Auth.openForgotModal()" style="color: #f6e59e; text-decoration: underline; font-weight: 600;">Esqueceu o usuário ou senha? Clique aqui</a>
-        `;
-      }
-      this.shakeCard();
+      return;
     }
+
+    // Se chegou aqui, credenciais estão incorretas
+    if (errorMsg) {
+      errorMsg.innerHTML = `
+        <span>Usuário ou senha incorretos.</span><br>
+        <a href="javascript:void(0)" onclick="Auth.openForgotModal()" style="color: #f6e59e; text-decoration: underline; font-weight: 600;">Esqueceu o usuário ou senha? Clique aqui</a>
+      `;
+    }
+    this.shakeCard();
   },
 
   openForgotModal() {
@@ -172,41 +199,235 @@ const Auth = {
     }
   },
 
-  triggerBiometrics() {
+  /* ================= SEGURANÇA BIOMÉTRICA REAL ================= */
+
+  async triggerBiometrics() {
     const bioModal = document.getElementById('modal-biometrics-scan');
     const scanStatus = document.getElementById('bio-scan-status');
     const scanIcon = document.getElementById('bio-fingerprint-icon');
-    const activeUser = Storage.getActiveUser();
+    const modalTitle = document.getElementById('bio-modal-title');
+    const actionsContainer = document.getElementById('bio-modal-actions');
 
+    const enrolledUser = localStorage.getItem('sdfinanceiro_bio_enrolled_user');
+    const enrolledCredId = localStorage.getItem('sdfinanceiro_bio_cred_id');
+
+    // CASO 1: Nenhuma digital foi cadastrada ainda neste aparelho
+    if (!enrolledUser || !enrolledCredId) {
+      if (bioModal) bioModal.classList.add('active');
+      if (scanIcon) scanIcon.className = 'fingerprint-scanner';
+      if (modalTitle) modalTitle.textContent = 'Biometria Não Cadastrada';
+      if (scanStatus) {
+        scanStatus.innerHTML = `
+          <span style="color: #f59e0b; font-weight: 700;">🔒 Nenhuma digital cadastrada neste aparelho!</span><br>
+          <span style="font-size: 0.85rem; color: #94a3b8;">Por segurança, qualquer pessoa não pode acessar sem senha. Entre com seu <b>Usuário e Senha</b> para cadastrar sua digital nas configurações.</span>
+        `;
+      }
+      if (actionsContainer) {
+        actionsContainer.innerHTML = `
+          <button type="button" class="btn btn-primary btn-sm" onclick="Auth.closeBiometricsModal(true)">
+            Digitar Senha
+          </button>
+        `;
+      }
+      return;
+    }
+
+    // CASO 2: Biometria cadastrada — Acionar validação REAL do hardware nativo
     if (bioModal) bioModal.classList.add('active');
-    if (scanStatus) scanStatus.textContent = 'Posicione sua digital ou aproxime o rosto...';
+    if (modalTitle) modalTitle.textContent = 'Validação Biométrica';
     if (scanIcon) scanIcon.className = 'fingerprint-scanner scanning';
+    if (scanStatus) {
+      scanStatus.innerHTML = `
+        <span>Coloque o dedo no leitor de digital do seu aparelho...</span><br>
+        <small style="color: #f6e59e;">Aguardando autorização de <b>${enrolledUser}</b></small>
+      `;
+    }
+    if (actionsContainer) {
+      actionsContainer.innerHTML = `
+        <button type="button" class="btn btn-secondary btn-sm" onclick="Auth.closeBiometricsModal()">
+          Cancelar
+        </button>
+      `;
+    }
 
-    // Simulate realistic biometric hardware read
-    setTimeout(() => {
-      if (scanStatus) scanStatus.textContent = 'Autenticando biometria...';
-      
-      setTimeout(() => {
-        if (scanIcon) scanIcon.className = 'fingerprint-scanner success';
-        if (scanStatus) scanStatus.innerHTML = `<span style="color: #10b981; font-weight: bold;">✔ Biometria Reconhecida!</span><br><small>Bem-vindo(a), ${activeUser ? activeUser.name : 'Sérgio Dantas'}</small>`;
+    // Utiliza WebAuthn Nativo para validação real pelo leitor de digital do celular/PC
+    if (window.PublicKeyCredential && navigator.credentials && navigator.credentials.get) {
+      try {
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
 
-        setTimeout(() => {
-          if (bioModal) bioModal.classList.remove('active');
-          this.grantAccess(activeUser ? activeUser.name : 'Sérgio Dantas', true);
-        }, 800);
-      }, 1000);
-    }, 800);
+        // Converte base64 para Uint8Array
+        const credIdBytes = Uint8Array.from(atob(enrolledCredId), c => c.charCodeAt(0));
+
+        const getOptions = {
+          publicKey: {
+            challenge: challenge,
+            allowCredentials: [{
+              id: credIdBytes,
+              type: 'public-key'
+            }],
+            userVerification: 'required',
+            timeout: 60000
+          }
+        };
+
+        const assertion = await navigator.credentials.get(getOptions);
+
+        if (assertion) {
+          // Validação biométrica aprovada pelo leitor físico!
+          if (scanIcon) scanIcon.className = 'fingerprint-scanner success';
+          if (scanStatus) {
+            scanStatus.innerHTML = `
+              <span style="color: #10b981; font-weight: bold; font-size: 1rem;">✔ Digital Reconhecida!</span><br>
+              <small style="color: #cbd5e1;">Acesso liberado para <b>${enrolledUser}</b></small>
+            `;
+          }
+
+          setTimeout(() => {
+            this.closeBiometricsModal();
+            const users = Storage.getUsers();
+            const matched = users.find(u => u.username?.toLowerCase() === enrolledUser.toLowerCase() || u.name === enrolledUser) || users[0];
+            Storage.setActiveUser(matched.id);
+            this.grantAccess(matched.name, true);
+          }, 600);
+          return;
+        }
+      } catch (err) {
+        console.warn('Biometria recusada ou cancelada pelo hardware:', err);
+        // Falha ou cancelamento: ACESSO NEGADO!
+        if (scanIcon) scanIcon.className = 'fingerprint-scanner';
+        if (scanStatus) {
+          scanStatus.innerHTML = `
+            <span style="color: #f43f5e; font-weight: bold;">❌ Digital Não Reconhecida!</span><br>
+            <small style="color: #94a3b8;">Acesso não autorizado. Digite sua senha para entrar.</small>
+          `;
+        }
+        if (actionsContainer) {
+          actionsContainer.innerHTML = `
+            <button type="button" class="btn btn-primary btn-sm" onclick="Auth.closeBiometricsModal(true)">
+              Entrar com Senha
+            </button>
+          `;
+        }
+        this.shakeCard();
+        return;
+      }
+    } else {
+      // Dispositivo sem suporte a leitor nativo WebAuthn
+      if (scanStatus) {
+        scanStatus.innerHTML = `
+          <span style="color: #f59e0b;">Navegador sem suporte a leitor nativo.</span><br>
+          <small>Por favor, utilize seu usuário e senha.</small>
+        `;
+      }
+    }
+  },
+
+  closeBiometricsModal(focusPass = false) {
+    const bioModal = document.getElementById('modal-biometrics-scan');
+    if (bioModal) bioModal.classList.remove('active');
+    if (focusPass) {
+      document.getElementById('auth-input-pass')?.focus();
+    }
+  },
+
+  /* ================= CADASTRO DA DIGITAL DESTE APARELHO ================= */
+
+  async registerDeviceBiometrics() {
+    if (!window.PublicKeyCredential || !navigator.credentials || !navigator.credentials.create) {
+      App.showToast('Seu navegador ou aparelho não possui suporte ao leitor biométrico nativo.', 'warning');
+      return;
+    }
+
+    const activeUser = Storage.getActiveUser();
+    if (!activeUser) return;
+
+    try {
+      App.showToast('Coloque seu dedo no leitor de digital do aparelho para cadastrar...', 'info');
+
+      const challenge = new Uint8Array(32);
+      window.crypto.getRandomValues(challenge);
+      const userId = new Uint8Array(16);
+      window.crypto.getRandomValues(userId);
+
+      const createOptions = {
+        publicKey: {
+          challenge: challenge,
+          rp: {
+            name: "SDFinanceiro",
+            id: window.location.hostname || "localhost"
+          },
+          user: {
+            id: userId,
+            name: activeUser.username || 'admin',
+            displayName: activeUser.name || 'Administrador'
+          },
+          pubKeyCredParams: [
+            { alg: -7, type: "public-key" },  // ES256
+            { alg: -257, type: "public-key" } // RS256
+          ],
+          authenticatorSelection: {
+            authenticatorAttachment: "platform", // Leitor de digital nativo do aparelho
+            userVerification: "required"
+          },
+          timeout: 60000
+        }
+      };
+
+      const credential = await navigator.credentials.create(createOptions);
+      if (credential && credential.rawId) {
+        const rawIdBase64 = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
+        localStorage.setItem('sdfinanceiro_bio_enrolled_user', activeUser.username || 'admin');
+        localStorage.setItem('sdfinanceiro_bio_cred_id', rawIdBase64);
+        App.showToast(`✅ Digital cadastrada com sucesso para o usuário ${activeUser.name}!`, 'success');
+        this.updateDeviceBiometricsStatus();
+      }
+    } catch (err) {
+      console.warn('Erro ao cadastrar digital no hardware:', err);
+      App.showToast('Cadastro cancelado ou digital não reconhecida pelo leitor.', 'warning');
+    }
+  },
+
+  removeDeviceBiometrics() {
+    localStorage.removeItem('sdfinanceiro_bio_enrolled_user');
+    localStorage.removeItem('sdfinanceiro_bio_cred_id');
+    App.showToast('Biometria removida com sucesso deste aparelho.', 'info');
+    this.updateDeviceBiometricsStatus();
+  },
+
+  updateDeviceBiometricsStatus() {
+    const label = document.getElementById('device-bio-status-label');
+    const enrollBtn = document.getElementById('btn-enroll-device-bio');
+    const clearBtn = document.getElementById('btn-clear-device-bio');
+
+    const enrolledUser = localStorage.getItem('sdfinanceiro_bio_enrolled_user');
+
+    if (enrolledUser) {
+      if (label) {
+        label.innerHTML = `<span style="color: #10b981; font-weight: 700;">✔ Digital cadastrada para: ${enrolledUser}</span>`;
+      }
+      if (enrollBtn) enrollBtn.textContent = 'Recadastrar Digital';
+      if (clearBtn) clearBtn.style.display = 'inline-flex';
+    } else {
+      if (label) {
+        label.innerHTML = `<span style="color: #f59e0b;">⚠️ Nenhuma digital cadastrada neste aparelho</span>`;
+      }
+      if (enrollBtn) enrollBtn.innerHTML = `<i data-lucide="fingerprint"></i> Cadastrar Minha Digital`;
+      if (clearBtn) clearBtn.style.display = 'none';
+    }
+    lucide.createIcons();
   },
 
   grantAccess(userName, viaBiometrics = false) {
     Storage.setLoggedIn(true);
+    document.body.classList.remove('auth-locked');
     const screen = document.getElementById('screen-auth-lock');
 
     if (screen) {
       screen.classList.add('unlocked');
       setTimeout(() => {
         screen.style.display = 'none';
-      }, 450);
+      }, 400);
     }
 
     Users.updateSidebarProfile();
@@ -220,6 +441,7 @@ const Auth = {
 
   lockSystem() {
     Storage.setLoggedIn(false);
+    document.body.classList.add('auth-locked');
     const screen = document.getElementById('screen-auth-lock');
     const userInput = document.getElementById('auth-input-user');
     const passInput = document.getElementById('auth-input-pass');

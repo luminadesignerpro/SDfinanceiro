@@ -61,6 +61,22 @@ const Users = {
         this.switchModalTab('list');
       });
     }
+
+    // Device biometrics buttons
+    const enrollBioBtn = document.getElementById('btn-enroll-device-bio');
+    const clearBioBtn = document.getElementById('btn-clear-device-bio');
+
+    if (enrollBioBtn) {
+      enrollBioBtn.addEventListener('click', () => {
+        Auth.registerDeviceBiometrics();
+      });
+    }
+
+    if (clearBioBtn) {
+      clearBioBtn.addEventListener('click', () => {
+        Auth.removeDeviceBiometrics();
+      });
+    }
   },
 
   openModal(tab = 'list') {
@@ -68,6 +84,7 @@ const Users = {
     if (!modal) return;
     this.switchModalTab(tab);
     this.render();
+    Auth.updateDeviceBiometricsStatus();
     modal.classList.add('active');
   },
 
