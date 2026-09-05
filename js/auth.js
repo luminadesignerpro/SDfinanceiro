@@ -211,6 +211,33 @@ const Auth = {
     const enrolledUser = localStorage.getItem('sdfinanceiro_bio_enrolled_user');
     const enrolledCredId = localStorage.getItem('sdfinanceiro_bio_cred_id');
 
+    // Verifica se a biometria foi desativada nas configurações
+    const users = Storage.getUsers();
+    const userObj = users.find(u => 
+      (u.username && u.username.toLowerCase() === enrolledUser?.toLowerCase()) ||
+      (u.name && u.name.toLowerCase() === enrolledUser?.toLowerCase())
+    );
+
+    if (userObj && userObj.biometricsEnabled === false) {
+      if (bioModal) bioModal.classList.add('active');
+      if (scanIcon) scanIcon.className = 'fingerprint-scanner';
+      if (modalTitle) modalTitle.textContent = 'Biometria Desativada';
+      if (scanStatus) {
+        scanStatus.innerHTML = `
+          <span style="color: #f43f5e; font-weight: 700;">🔒 Biometria desativada para este usuário!</span><br>
+          <span style="font-size: 0.85rem; color: #94a3b8;">O acesso por digital foi desmarcado nas configurações. Por favor, digite sua senha de acesso.</span>
+        `;
+      }
+      if (actionsContainer) {
+        actionsContainer.innerHTML = `
+          <button type="button" class="btn btn-primary btn-sm" onclick="Auth.closeBiometricsModal(true)">
+            Digitar Senha
+          </button>
+        `;
+      }
+      return;
+    }
+
     // CASO 1: Nenhuma digital foi cadastrada ainda neste aparelho
     if (!enrolledUser || !enrolledCredId) {
       if (bioModal) bioModal.classList.add('active');

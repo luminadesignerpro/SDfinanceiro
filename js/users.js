@@ -186,9 +186,18 @@ const Users = {
     }
 
     Storage.saveUsers(users);
+
+    if (!biometricsEnabled) {
+      const enrolled = localStorage.getItem('sdfinanceiro_bio_enrolled_user');
+      if (enrolled && (enrolled.toLowerCase() === username.toLowerCase() || enrolled.toLowerCase() === name.toLowerCase())) {
+        Auth.removeDeviceBiometrics();
+      }
+    }
+
     this.resetForm();
     this.updateSidebarProfile();
     this.switchModalTab('list');
+    Auth.updateDeviceBiometricsStatus();
   },
 
   editUser(userId) {

@@ -1713,16 +1713,23 @@ select optgroup {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.75);
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  padding: 20px;
+  z-index: 10000;
+  padding: 20px 16px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   animation: fadeIn 0.2s ease;
+  box-sizing: border-box;
 }
 
 .modal-overlay.active {
@@ -1734,12 +1741,23 @@ select optgroup {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   width: 100%;
-  max-width: 540px;
+  max-width: 560px;
   max-height: 90vh;
+  max-height: 90dvh;
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-lg);
   overflow: hidden;
+  margin: auto;
+  box-sizing: border-box;
+}
+
+.modal-card.modal-lg {
+  max-width: 680px;
+}
+
+.modal-card.modal-sm {
+  max-width: 420px;
 }
 
 .modal-header {
@@ -2590,6 +2608,98 @@ body.auth-locked .app-layout {
   }
   .auth-card {
     padding: 26px 20px;
+  }
+
+  /* Modais 100% Responsivos em Celular / Tablet */
+  .modal-overlay {
+    padding: 10px 8px;
+    align-items: flex-end;
+  }
+
+  .modal-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 92vh !important;
+    max-height: 92dvh !important;
+    border-radius: 18px 18px 0 0 !important;
+    margin: auto 0 0 0 !important;
+  }
+
+  .modal-header {
+    padding: 14px 16px;
+  }
+
+  .modal-body {
+    padding: 14px 14px;
+    gap: 12px;
+  }
+
+  .modal-footer {
+    padding: 12px 14px;
+  }
+
+  /* Todas as linhas de 2 colunas viram 1 coluna para não quebrar no celular */
+  .form-row.grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .type-selector-row {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Abas do modal de usuários viram empilhadas no celular */
+  .users-modal-tabs {
+    flex-direction: column !important;
+    padding: 0 14px 10px !important;
+    gap: 6px !important;
+  }
+
+  .modal-subtab {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 9px 12px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .user-card-item {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .user-card-left {
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .user-card-actions {
+    width: 100% !important;
+    justify-content: flex-end !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+    padding-top: 8px !important;
+    gap: 6px !important;
+  }
+
+  .device-bio-box {
+    padding: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .device-bio-box > div {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .device-bio-box button {
+    width: 100% !important;
+    justify-content: center !important;
   }
 }
 

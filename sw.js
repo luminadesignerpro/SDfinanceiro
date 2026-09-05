@@ -1,57 +1,88 @@
-const CACHE_NAME = 'sdfinanceiro-v1';
-const ASSETS_TO_CACHE = [
+/**
+ * SDFINANCEIRO — Service Worker (PWA)
+ * Estratégia: Network-First com Fallback para Cache Offline
+ * Garante que qualquer atualização publicada no Vercel seja carregada IMEDIATAMENTE pelos aparelhos
+ */
+
+const CACHE_NAME = 'sdfinanceiro-v3.0';
+
+const STATIC_ASSETS = [
   '/',
   '/index.html',
+  '/manifest.json',
   '/css/style.css',
   '/assets/logo.jpg',
   '/assets/icon-192.png',
   '/assets/icon-512.png',
-  'https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap',
-  'https://unpkg.com/lucide@latest',
-  'https://cdn.jsdelivr.net/npm/chart.js'
+  '/js/storage.js',
+  '/js/auth.js',
+  '/js/users.js',
+  '/js/accounts.js',
+  '/js/bills.js',
+  '/js/transactions.js',
+  '/js/checks.js',
+  '/js/agenda.js',
+  '/js/charts.js',
+  '/js/app.js'
 ];
 
-// Install: cache assets
+// Instalação: ativa imediatamente sem esperar
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE.filter(url => !url.startsWith('http')));
-    })
+      return cache.addAll(STATIC_ASSETS);
+    }).catch(err => console.warn('Cache inicial parcial:', err))
   );
-  self.skipWaiting();
 });
 
-// Activate: remove old caches
+// Ativação: LIMPA TODOS os caches antigos (v1, v2, etc.) imediatamente
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) =>
-      Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name))
-      )
-    )
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            console.log('[SW] Apagando cache antigo:', key);
+            return caches.delete(key);
+          }
+        })
+      );
+    }).then(() => {
+      return self.clients.claim();
+    })
   );
-  self.clients.claim();
 });
 
-// Fetch: serve from cache, fallback to network
+// Fetch: NETWORK-FIRST (sempre busca a versão mais recente na internet)
+// Só utiliza cache se o usuário estiver completamente offline
 self.addEventListener('fetch', (event) => {
+  // Ignora requisições não-GET
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      return cached || fetch(event.request).then((response) => {
-        // Cache successful GET requests
-        if (event.request.method === 'GET' && response.status === 200) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+    fetch(event.request)
+      .then((networkResponse) => {
+        // Se a resposta for válida, atualiza o cache em segundo plano
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+          const responseClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
         }
-        return response;
-      }).catch(() => {
-        // If offline and no cache, return index.html for navigation requests
-        if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
-        }
-      });
-    })
+        return networkResponse;
+      })
+      .catch(() => {
+        // Offline: busca no cache local
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          // Para navegação de páginas offline, entrega index.html
+          if (event.request.mode === 'navigate') {
+            return caches.match('/index.html');
+          }
+        });
+      })
   );
 });
