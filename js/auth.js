@@ -157,14 +157,14 @@ const Auth = {
               ${u.avatar || 'US'}
             </div>
             <div>
-              <div style="font-weight: 700; color: var(--text-primary); font-size: 0.9rem;">${u.name} (${u.role})</div>
+              <div style="font-weight: 700; color: var(--text-primary); font-size: 0.9rem;">${App.escapeHTML(u.name)} (${App.escapeHTML(u.role)})</div>
               <div style="font-size: 0.8rem; color: var(--text-secondary);">
-                Login: <b style="color: #f6e59e;">${u.username || 'admin'}</b> | Senha: <b style="color: #fff;">${u.password || '123'}</b>
+                Login: <b style="color: #f6e59e;">${App.escapeHTML(u.username || 'admin')}</b> | Senha: <b style="color: #94a3b8; letter-spacing: 2px;">••••••••</b>
               </div>
             </div>
           </div>
-          <button class="btn btn-secondary btn-sm" onclick="Auth.fillCredentials('${u.username || 'admin'}', '${u.password || '123'}')">
-            Usar Este Login
+          <button class="btn btn-secondary btn-sm" onclick="Auth.fillCredentials('${App.escapeHTML(u.username || 'admin')}')">
+            Selecionar Usuário
           </button>
         </div>
       `).join('');
@@ -174,17 +174,20 @@ const Auth = {
     lucide.createIcons();
   },
 
-  fillCredentials(username, password) {
+  fillCredentials(username) {
     const userInput = document.getElementById('auth-input-user');
     const passInput = document.getElementById('auth-input-pass');
     const errorMsg = document.getElementById('auth-error-msg');
 
     if (userInput) userInput.value = username;
-    if (passInput) passInput.value = password;
+    if (passInput) {
+      passInput.value = '';
+      passInput.focus();
+    }
     if (errorMsg) errorMsg.textContent = '';
 
     App.closeModals();
-    App.showToast(`Credenciais preenchidas: ${username}`, 'info');
+    App.showToast(`Usuário selecionado: ${username}. Digite sua senha para entrar.`, 'info');
   },
 
   resetMasterCredentials() {

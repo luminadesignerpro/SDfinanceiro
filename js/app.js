@@ -53,6 +53,17 @@ const App = {
     }
   },
 
+  // Sanitização anti-XSS de inputs do usuário
+  escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  },
+
   init() {
     this.bindNavigation();
     this.bindModals();
@@ -493,6 +504,21 @@ const App = {
       importInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
+
+        // Segurança: validação rigorosa de extensão e tamanho máximo (5MB)
+        if (!file.name.toLowerCase().endsWith('.json')) {
+          this.showToast('Segurança: Apenas arquivos com formato .json são permitidos.', 'error');
+          importInput.value = '';
+          return;
+        }
+
+        const MAX_BYTES = 5 * 1024 * 1024; // 5MB
+        if (file.size > MAX_BYTES) {
+          this.showToast('Segurança: O arquivo excede o limite máximo permitido de 5MB.', 'error');
+          importInput.value = '';
+          return;
+        }
+
         const reader = new FileReader();
         reader.onload = (event) => {
           const success = Storage.importJSON(event.target.result);
@@ -501,8 +527,13 @@ const App = {
             this.closeModals();
             this.refreshAll();
           } else {
-            this.showToast('Arquivo de backup inválido.', 'error');
+            this.showToast('Arquivo de backup inválido ou com formato corrompido.', 'error');
           }
+          importInput.value = '';
+        };
+        reader.onerror = () => {
+          this.showToast('Erro de leitura no arquivo enviado.', 'error');
+          importInput.value = '';
         };
         reader.readAsText(file);
       });
