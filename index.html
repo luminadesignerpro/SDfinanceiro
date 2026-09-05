@@ -15,9 +15,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="SDFinanceiro">
   <meta name="description" content="Sistema completo de gestão financeira com agenda, fluxo de caixa, contas a pagar e receber.">
-  <link rel="apple-touch-icon" href="assets/icon-192.png?v=4.0">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png?v=4.0">
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png?v=4.0">
+  <link rel="apple-touch-icon" href="assets/icon-192.png?v=5.0">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png?v=5.0">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png?v=5.0">
 
   <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,14 +29,14 @@
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Main Stylesheet (v4.0 cache buster) -->
-  <link rel="stylesheet" href="css/style.css?v=4.0">
+  <!-- Main Stylesheet (v5.0 cache buster) -->
+  <link rel="stylesheet" href="css/style.css?v=5.0">
 
   <!-- Service Worker Registration with Automatic Update -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=4.0')
+        navigator.serviceWorker.register('/sw.js?v=5.0')
           .then(reg => {
             console.log('SDFinanceiro SW registrado:', reg.scope);
             reg.update();
@@ -55,7 +55,7 @@
       <div class="auth-brand-badge">
         <div class="auth-badge-outer-ring">
           <div class="auth-badge-inner">
-            <img src="assets/logo.jpg" alt="SD Financeiro Logo" class="auth-brand-logo-img">
+            <img src="assets/logo.jpg?v=5.0" alt="SD Financeiro Logo" class="auth-brand-logo-img">
           </div>
         </div>
       </div>
@@ -186,7 +186,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="brand-logo">
-          <img src="assets/logo.jpg" alt="SD Financeiro Logo" class="sidebar-logo-img">
+          <img src="assets/logo.jpg?v=5.0" alt="SD Financeiro Logo" class="sidebar-logo-img">
           <div class="brand-text">
             <h2><span class="brand-sd">SD</span> <span>Financeiro</span></h2>
             <span class="badge-pro">PRO</span>
