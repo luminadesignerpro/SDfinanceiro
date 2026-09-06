@@ -84,6 +84,7 @@ const App = {
     Charts.init();
 
     this.refreshAll();
+    this.syncQuickNavBadges();
     lucide.createIcons();
   },
 
@@ -166,6 +167,27 @@ const App = {
       });
     });
 
+    // Quick navigation tabs (Estilo Imagem 3 / SD Soluções / Vidros)
+    const quickTabs = document.querySelectorAll('.tabs-quick-nav .tab-btn[data-tab]');
+    quickTabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        this.switchTab(tab);
+      });
+    });
+
+    const quickUsersBtn = document.getElementById('btn-quick-nav-users');
+    if (quickUsersBtn) {
+      quickUsersBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (typeof Users !== 'undefined' && Users.openModal) {
+          Users.openModal('list');
+        }
+      });
+    }
+
+    this.setupBadgesObserver();
+
     // Sidebar settings button
     const sidebarSettingsBtn = document.getElementById('btn-sidebar-settings');
     if (sidebarSettingsBtn) {
@@ -193,10 +215,46 @@ const App = {
     }
   },
 
+  syncQuickNavBadges() {
+    const pairs = [
+      ['badge-accounts-count', 'tab-quick-accounts-count'],
+      ['badge-bills-count', 'tab-quick-bills-count'],
+      ['badge-pending-checks', 'tab-quick-checks-count'],
+      ['badge-agenda-today', 'tab-quick-agenda-count']
+    ];
+    pairs.forEach(([sourceId, targetId]) => {
+      const src = document.getElementById(sourceId);
+      const tgt = document.getElementById(targetId);
+      if (src && tgt) {
+        tgt.textContent = src.textContent;
+        if (src.classList.contains('alert')) {
+          tgt.classList.add('alert');
+        }
+        if (src.classList.contains('blue')) {
+          tgt.classList.add('blue');
+        }
+      }
+    });
+  },
+
+  setupBadgesObserver() {
+    this.syncQuickNavBadges();
+    const sourceIds = ['badge-accounts-count', 'badge-bills-count', 'badge-pending-checks', 'badge-agenda-today'];
+    sourceIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.MutationObserver) {
+        const observer = new MutationObserver(() => {
+          this.syncQuickNavBadges();
+        });
+        observer.observe(el, { childList: true, characterData: true, subtree: true });
+      }
+    });
+  },
+
   switchTab(tabId) {
     this.currentTab = tabId;
 
-    // Update nav buttons
+    // Update sidebar nav buttons
     document.querySelectorAll('.sidebar-nav .nav-item[data-tab]').forEach(item => {
       if (item.dataset.tab === tabId) {
         item.classList.add('active');
@@ -204,6 +262,16 @@ const App = {
         item.classList.remove('active');
       }
     });
+
+    // Update quick navigation tabs
+    document.querySelectorAll('.tabs-quick-nav .tab-btn[data-tab]').forEach(item => {
+      if (item.dataset.tab === tabId) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+    this.syncQuickNavBadges();
 
     // Update views
     document.querySelectorAll('.tab-view').forEach(view => {

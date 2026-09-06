@@ -29,14 +29,14 @@
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Main Stylesheet (v5.0 cache buster) -->
-  <link rel="stylesheet" href="css/style.css?v=5.0">
+  <!-- Main Stylesheet (v5.1 cache buster) -->
+  <link rel="stylesheet" href="css/style.css?v=5.1">
 
   <!-- Service Worker Registration with Automatic Update -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=5.0')
+        navigator.serviceWorker.register('/sw.js?v=5.1')
           .then(reg => {
             console.log('SDFinanceiro SW registrado:', reg.scope);
             reg.update();
@@ -362,6 +362,46 @@
       <!-- Dynamic Views Container -->
       <div class="content-body">
         
+        <!-- ================= QUICK NAVIGATION TABS (ESTILO SD SOLUÇÕES / VIDROS) ================= -->
+        <nav class="tabs-quick-nav" id="main-quick-tabs-nav" aria-label="Navegação rápida">
+          <button type="button" class="tab-btn active" data-tab="dashboard">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Dashboard Geral</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="accounts">
+            <i data-lucide="credit-card"></i>
+            <span>Cartões & Contas</span>
+            <span class="tab-badge" id="tab-quick-accounts-count">0</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="bills">
+            <i data-lucide="receipt"></i>
+            <span>Contas Fixas & Consumo</span>
+            <span class="tab-badge alert" id="tab-quick-bills-count">0</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="transactions">
+            <i data-lucide="arrow-left-right"></i>
+            <span>Lançamentos</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="checks">
+            <i data-lucide="scroll-text"></i>
+            <span>Gestão de Cheques</span>
+            <span class="tab-badge alert" id="tab-quick-checks-count">0</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="agenda">
+            <i data-lucide="calendar-clock"></i>
+            <span>Agenda & Lembretes</span>
+            <span class="tab-badge blue" id="tab-quick-agenda-count">0</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="reports">
+            <i data-lucide="pie-chart"></i>
+            <span>Relatórios & Gráficos</span>
+          </button>
+          <button type="button" class="tab-btn" id="btn-quick-nav-users">
+            <i data-lucide="users"></i>
+            <span>Gestão & Usuários</span>
+          </button>
+        </nav>
+
         <!-- ================= TAB: DASHBOARD ================= -->
         <section class="tab-view active" id="view-dashboard">
           <!-- KPI Summary Cards Row -->
@@ -1677,16 +1717,16 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- Application Logic Scripts (v4.0 cache buster) -->
-  <script src="js/storage.js?v=4.0"></script>
-  <script src="js/users.js?v=4.0"></script>
-  <script src="js/auth.js?v=4.0"></script>
-  <script src="js/accounts.js?v=4.0"></script>
-  <script src="js/bills.js?v=4.0"></script>
-  <script src="js/transactions.js?v=4.0"></script>
-  <script src="js/checks.js?v=4.0"></script>
-  <script src="js/agenda.js?v=4.0"></script>
-  <script src="js/charts.js?v=4.0"></script>
-  <script src="js/app.js?v=4.0"></script>
+  <!-- Application Logic Scripts (v5.1 cache buster) -->
+  <script src="js/storage.js?v=5.1"></script>
+  <script src="js/users.js?v=5.1"></script>
+  <script src="js/auth.js?v=5.1"></script>
+  <script src="js/accounts.js?v=5.1"></script>
+  <script src="js/bills.js?v=5.1"></script>
+  <script src="js/transactions.js?v=5.1"></script>
+  <script src="js/checks.js?v=5.1"></script>
+  <script src="js/agenda.js?v=5.1"></script>
+  <script src="js/charts.js?v=5.1"></script>
+  <script src="js/app.js?v=5.1"></script>
 </body>
 </html>

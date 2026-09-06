@@ -522,6 +522,123 @@ select optgroup {
   flex: 1;
 }
 
+/* ==========================================================================
+   QUICK NAVIGATION TABS (ESTILO SD SOLUÇÕES / VIDROS / IMAGEM 3)
+   ========================================================================== */
+.tabs-quick-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: var(--bg-card-solid);
+  padding: 6px 8px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  margin-bottom: 22px;
+  align-items: center;
+}
+
+.tab-btn {
+  flex: 1 1 calc(25% - 6px);
+  min-width: 135px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.tab-btn i {
+  width: 16px;
+  height: 16px;
+  color: var(--cyan);
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.tab-btn:hover i {
+  color: var(--gold-primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.22), rgba(201, 168, 76, 0.10));
+  color: var(--text-gold);
+  border: 1px solid rgba(201, 168, 76, 0.45);
+  box-shadow: 0 2px 14px rgba(201, 168, 76, 0.15);
+}
+
+.tab-btn.active i {
+  color: var(--gold-primary);
+}
+
+.tab-btn .tab-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  line-height: 1;
+}
+
+.tab-btn .tab-badge.alert {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.tab-btn .tab-badge.blue {
+  background: rgba(14, 165, 233, 0.2);
+  color: #38bdf8;
+  border: 1px solid rgba(14, 165, 233, 0.4);
+}
+
+@media (max-width: 900px) {
+  .tab-btn {
+    flex: 1 1 calc(33.333% - 6px);
+  }
+}
+
+@media (max-width: 768px) {
+  .tabs-quick-nav {
+    padding: 5px;
+    gap: 5px;
+    margin-bottom: 16px;
+  }
+
+  .tab-btn {
+    flex: 1 1 calc(50% - 5px);
+    min-width: 120px;
+    padding: 9px 8px;
+    font-size: 0.77rem;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 380px) {
+  .tab-btn {
+    flex: 1 1 100%;
+    justify-content: flex-start;
+    padding: 9px 12px;
+  }
+}
+
 .tab-view {
   display: none;
   animation: fadeIn 0.3s ease;
