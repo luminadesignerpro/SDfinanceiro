@@ -4,7 +4,7 @@
  */
 
 const App = {
-  currentTab: 'dashboard',
+  currentTab: 'home',
   currentLang: 'pt-BR',
   currentPeriod: 'current_month',
 
@@ -85,6 +85,8 @@ const App = {
 
     this.refreshAll();
     this.syncQuickNavBadges();
+    this.syncHomeBadges();
+    this.switchTab('home');
     lucide.createIcons();
   },
 
@@ -158,6 +160,7 @@ const App = {
   },
 
   bindNavigation() {
+    // Sidebar Navigation
     const navItems = document.querySelectorAll('.sidebar-nav .nav-item[data-tab]');
     navItems.forEach(item => {
       item.addEventListener('click', () => {
@@ -167,22 +170,32 @@ const App = {
       });
     });
 
-    // Quick navigation tabs (Estilo Imagem 3 / SD Soluções / Vidros)
-    const quickTabs = document.querySelectorAll('.tabs-quick-nav .tab-btn[data-tab]');
-    quickTabs.forEach(btn => {
+    // Home Menu Navigation (Exclusivo da Primeira Imagem)
+    const homeItems = document.querySelectorAll('.home-menu-card .home-menu-item[data-tab]');
+    homeItems.forEach(btn => {
       btn.addEventListener('click', () => {
         const tab = btn.dataset.tab;
+        homeItems.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
         this.switchTab(tab);
       });
     });
 
-    const quickUsersBtn = document.getElementById('btn-quick-nav-users');
-    if (quickUsersBtn) {
-      quickUsersBtn.addEventListener('click', (e) => {
+    const homeUsersBtn = document.getElementById('btn-home-users');
+    if (homeUsersBtn) {
+      homeUsersBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (typeof Users !== 'undefined' && Users.openModal) {
           Users.openModal('list');
         }
+      });
+    }
+
+    // Botão Voltar ao Menu Principal
+    const backToHomeBtn = document.getElementById('btn-back-to-home');
+    if (backToHomeBtn) {
+      backToHomeBtn.addEventListener('click', () => {
+        this.switchTab('home');
       });
     }
 
@@ -215,36 +228,34 @@ const App = {
     }
   },
 
-  syncQuickNavBadges() {
+  syncHomeBadges() {
     const pairs = [
-      ['badge-accounts-count', 'tab-quick-accounts-count'],
-      ['badge-bills-count', 'tab-quick-bills-count'],
-      ['badge-pending-checks', 'tab-quick-checks-count'],
-      ['badge-agenda-today', 'tab-quick-agenda-count']
+      ['badge-accounts-count', 'home-badge-accounts'],
+      ['badge-bills-count', 'home-badge-bills'],
+      ['badge-pending-checks', 'home-badge-checks'],
+      ['badge-agenda-today', 'home-badge-agenda']
     ];
     pairs.forEach(([sourceId, targetId]) => {
       const src = document.getElementById(sourceId);
       const tgt = document.getElementById(targetId);
       if (src && tgt) {
         tgt.textContent = src.textContent;
-        if (src.classList.contains('alert')) {
-          tgt.classList.add('alert');
-        }
-        if (src.classList.contains('blue')) {
-          tgt.classList.add('blue');
-        }
       }
     });
   },
 
+  syncQuickNavBadges() {
+    this.syncHomeBadges();
+  },
+
   setupBadgesObserver() {
-    this.syncQuickNavBadges();
+    this.syncHomeBadges();
     const sourceIds = ['badge-accounts-count', 'badge-bills-count', 'badge-pending-checks', 'badge-agenda-today'];
     sourceIds.forEach(id => {
       const el = document.getElementById(id);
       if (el && window.MutationObserver) {
         const observer = new MutationObserver(() => {
-          this.syncQuickNavBadges();
+          this.syncHomeBadges();
         });
         observer.observe(el, { childList: true, characterData: true, subtree: true });
       }
@@ -254,6 +265,48 @@ const App = {
   switchTab(tabId) {
     this.currentTab = tabId;
 
+    if (tabId === 'home') {
+      // Ativa o modo exclusivo da Primeira Imagem
+      document.body.classList.add('home-menu-active');
+
+      const backBtn = document.getElementById('btn-back-to-home');
+      if (backBtn) backBtn.style.display = 'none';
+
+      // Mostra a view home e esconde as outras
+      document.querySelectorAll('.tab-view').forEach(view => {
+        if (view.id === 'view-home') {
+          view.classList.add('active');
+        } else {
+          view.classList.remove('active');
+        }
+      });
+
+      // Marca Dashboard Geral como selecionado por padrão se nenhum outro estiver ativo
+      const activeHomeItem = document.querySelector('.home-menu-card .home-menu-item.active');
+      if (!activeHomeItem) {
+        const firstItem = document.querySelector('.home-menu-card .home-menu-item[data-tab="dashboard"]');
+        if (firstItem) firstItem.classList.add('active');
+      }
+
+      this.syncHomeBadges();
+      return;
+    }
+
+    // Quando em qualquer módulo (Dashboard, Relatórios, etc.), sai do modo menu exclusivo
+    document.body.classList.remove('home-menu-active');
+
+    const backBtn = document.getElementById('btn-back-to-home');
+    if (backBtn) backBtn.style.display = 'inline-flex';
+
+    // Sincroniza botão ativo no Home Menu
+    document.querySelectorAll('.home-menu-card .home-menu-item[data-tab]').forEach(item => {
+      if (item.dataset.tab === tabId) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+
     // Update sidebar nav buttons
     document.querySelectorAll('.sidebar-nav .nav-item[data-tab]').forEach(item => {
       if (item.dataset.tab === tabId) {
@@ -262,16 +315,6 @@ const App = {
         item.classList.remove('active');
       }
     });
-
-    // Update quick navigation tabs
-    document.querySelectorAll('.tabs-quick-nav .tab-btn[data-tab]').forEach(item => {
-      if (item.dataset.tab === tabId) {
-        item.classList.add('active');
-      } else {
-        item.classList.remove('active');
-      }
-    });
-    this.syncQuickNavBadges();
 
     // Update views
     document.querySelectorAll('.tab-view').forEach(view => {

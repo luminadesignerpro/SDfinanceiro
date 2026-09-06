@@ -29,14 +29,14 @@
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Main Stylesheet (v5.1 cache buster) -->
-  <link rel="stylesheet" href="css/style.css?v=5.1">
+  <!-- Main Stylesheet (v5.2 cache buster) -->
+  <link rel="stylesheet" href="css/style.css?v=5.2">
 
   <!-- Service Worker Registration with Automatic Update -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=5.1')
+        navigator.serviceWorker.register('/sw.js?v=5.2')
           .then(reg => {
             console.log('SDFinanceiro SW registrado:', reg.scope);
             reg.update();
@@ -46,7 +46,7 @@
     }
   </script>
 </head>
-<body class="dark auth-locked">
+<body class="dark auth-locked home-menu-active">
 
   <!-- ================= LUXURY AUTH / LOGIN LOCKSCREEN (IMAGE REPLICA) ================= -->
   <div class="auth-lockscreen-overlay" id="screen-auth-lock">
@@ -199,7 +199,11 @@
 
       <nav class="sidebar-nav">
         <div class="nav-section-title" data-i18n="nav_section_main">PRINCIPAL</div>
-        <button class="nav-item active" data-tab="dashboard">
+        <button class="nav-item active" data-tab="home" id="btn-sidebar-home">
+          <i data-lucide="layout-grid"></i>
+          <span>Menu Principal</span>
+        </button>
+        <button class="nav-item" data-tab="dashboard">
           <i data-lucide="layout-dashboard"></i>
           <span data-i18n="nav_dashboard">Dashboard Geral</span>
         </button>
@@ -274,6 +278,10 @@
       <!-- Top Navigation / Header -->
       <header class="top-header">
         <div class="header-left">
+          <button class="btn btn-secondary btn-sm btn-back-menu" id="btn-back-to-home" title="Voltar ao Menu Principal">
+            <i data-lucide="chevron-left"></i>
+            <span>Menu</span>
+          </button>
           <button class="btn-icon mobile-only" id="btn-toggle-sidebar" aria-label="Abrir menu">
             <i data-lucide="menu"></i>
           </button>
@@ -362,48 +370,59 @@
       <!-- Dynamic Views Container -->
       <div class="content-body">
         
-        <!-- ================= QUICK NAVIGATION TABS (ESTILO SD SOLUÇÕES / VIDROS) ================= -->
-        <nav class="tabs-quick-nav" id="main-quick-tabs-nav" aria-label="Navegação rápida">
-          <button type="button" class="tab-btn active" data-tab="dashboard">
-            <i data-lucide="layout-dashboard"></i>
-            <span>Dashboard Geral</span>
-          </button>
-          <button type="button" class="tab-btn" data-tab="accounts">
-            <i data-lucide="credit-card"></i>
-            <span>Cartões & Contas</span>
-            <span class="tab-badge" id="tab-quick-accounts-count">0</span>
-          </button>
-          <button type="button" class="tab-btn" data-tab="bills">
-            <i data-lucide="receipt"></i>
-            <span>Contas Fixas & Consumo</span>
-            <span class="tab-badge alert" id="tab-quick-bills-count">0</span>
-          </button>
-          <button type="button" class="tab-btn" data-tab="transactions">
-            <i data-lucide="arrow-left-right"></i>
-            <span>Lançamentos</span>
-          </button>
-          <button type="button" class="tab-btn" data-tab="checks">
-            <i data-lucide="scroll-text"></i>
-            <span>Gestão de Cheques</span>
-            <span class="tab-badge alert" id="tab-quick-checks-count">0</span>
-          </button>
-          <button type="button" class="tab-btn" data-tab="agenda">
-            <i data-lucide="calendar-clock"></i>
-            <span>Agenda & Lembretes</span>
-            <span class="tab-badge blue" id="tab-quick-agenda-count">0</span>
-          </button>
-          <button type="button" class="tab-btn" data-tab="reports">
-            <i data-lucide="pie-chart"></i>
-            <span>Relatórios & Gráficos</span>
-          </button>
-          <button type="button" class="tab-btn" id="btn-quick-nav-users">
-            <i data-lucide="users"></i>
-            <span>Gestão & Usuários</span>
-          </button>
-        </nav>
+        <!-- ================= TAB VIEW: HOME MENU PRINCIPAL (EXATAMENTE A PRIMEIRA IMAGEM) ================= -->
+        <section class="tab-view active" id="view-home">
+          <div class="home-menu-layout">
+            <div class="home-menu-card" id="main-home-menu-card">
+              <button type="button" class="home-menu-item active" data-tab="dashboard">
+                <i data-lucide="layout-grid"></i>
+                <span>Dashboard Geral</span>
+              </button>
+
+              <button type="button" class="home-menu-item" data-tab="accounts">
+                <i data-lucide="credit-card"></i>
+                <span>Cartões & Contas</span>
+                <span class="home-badge badge-gray" id="home-badge-accounts">0</span>
+              </button>
+
+              <button type="button" class="home-menu-item" data-tab="bills">
+                <i data-lucide="receipt"></i>
+                <span>Contas Fixas & Consumo</span>
+                <span class="home-badge badge-amber" id="home-badge-bills">4</span>
+              </button>
+
+              <button type="button" class="home-menu-item" data-tab="transactions">
+                <i data-lucide="arrow-left-right"></i>
+                <span>Lançamentos</span>
+              </button>
+
+              <button type="button" class="home-menu-item" data-tab="checks">
+                <i data-lucide="scroll-text"></i>
+                <span>Gestão de Cheques</span>
+                <span class="home-badge badge-amber" id="home-badge-checks">3</span>
+              </button>
+
+              <button type="button" class="home-menu-item" data-tab="agenda">
+                <i data-lucide="calendar-clock"></i>
+                <span>Agenda & Lembretes</span>
+                <span class="home-badge badge-blue" id="home-badge-agenda">0</span>
+              </button>
+
+              <button type="button" class="home-menu-item" data-tab="reports">
+                <i data-lucide="pie-chart"></i>
+                <span>Relatórios & Gráficos</span>
+              </button>
+
+              <button type="button" class="home-menu-item" id="btn-home-users">
+                <i data-lucide="users"></i>
+                <span>Gestão & Usuários</span>
+              </button>
+            </div>
+          </div>
+        </section>
 
         <!-- ================= TAB: DASHBOARD ================= -->
-        <section class="tab-view active" id="view-dashboard">
+        <section class="tab-view" id="view-dashboard">
           <!-- KPI Summary Cards Row -->
           <div class="kpi-grid">
             <!-- Card 1: Saldo Disponível -->
@@ -1717,16 +1736,16 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- Application Logic Scripts (v5.1 cache buster) -->
-  <script src="js/storage.js?v=5.1"></script>
-  <script src="js/users.js?v=5.1"></script>
-  <script src="js/auth.js?v=5.1"></script>
-  <script src="js/accounts.js?v=5.1"></script>
-  <script src="js/bills.js?v=5.1"></script>
-  <script src="js/transactions.js?v=5.1"></script>
-  <script src="js/checks.js?v=5.1"></script>
-  <script src="js/agenda.js?v=5.1"></script>
-  <script src="js/charts.js?v=5.1"></script>
-  <script src="js/app.js?v=5.1"></script>
+  <!-- Application Logic Scripts (v5.2 cache buster) -->
+  <script src="js/storage.js?v=5.2"></script>
+  <script src="js/users.js?v=5.2"></script>
+  <script src="js/auth.js?v=5.2"></script>
+  <script src="js/accounts.js?v=5.2"></script>
+  <script src="js/bills.js?v=5.2"></script>
+  <script src="js/transactions.js?v=5.2"></script>
+  <script src="js/checks.js?v=5.2"></script>
+  <script src="js/agenda.js?v=5.2"></script>
+  <script src="js/charts.js?v=5.2"></script>
+  <script src="js/app.js?v=5.2"></script>
 </body>
 </html>

@@ -523,120 +523,171 @@ select optgroup {
 }
 
 /* ==========================================================================
-   QUICK NAVIGATION TABS (ESTILO SD SOLUÇÕES / VIDROS / IMAGEM 3)
+   EXCLUSIVA VISUALIZAÇÃO: HOME MENU PRINCIPAL (ESTILO PRIMEIRA IMAGEM)
    ========================================================================== */
-.tabs-quick-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  background: var(--bg-card-solid);
-  padding: 6px 8px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  margin-bottom: 22px;
-  align-items: center;
+body.home-menu-active .top-header {
+  display: none !important;
 }
 
-.tab-btn {
-  flex: 1 1 calc(25% - 6px);
-  min-width: 135px;
+body.home-menu-active .sidebar {
+  display: none !important;
+}
+
+body.home-menu-active .main-content {
+  margin-left: 0 !important;
+  width: 100% !important;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 11px 12px;
-  border-radius: 10px;
-  border: 1px solid transparent;
+  background: var(--bg-main);
+}
+
+body.home-menu-active .content-body {
+  padding: 16px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   background: transparent;
-  color: var(--text-secondary);
+}
+
+#view-home {
+  width: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#view-home.active {
+  display: flex !important;
+}
+
+.home-menu-layout {
+  width: 100%;
+  max-width: 390px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  animation: fadeIn 0.3s ease;
+}
+
+.home-menu-card {
+  width: 100%;
+  background: linear-gradient(180deg, #0d1424 0%, #090e1c 100%);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home-menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;
+  border-radius: 14px;
+  border: 1.5px solid transparent;
+  background: transparent;
+  color: #94a3b8;
   font-family: inherit;
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
+  text-align: left;
   user-select: none;
 }
 
-.tab-btn i {
-  width: 16px;
-  height: 16px;
-  color: var(--cyan);
-  transition: color 0.2s;
+.home-menu-item i {
+  width: 22px;
+  height: 22px;
+  color: #38bdf8;
+  transition: color 0.2s, transform 0.2s;
   flex-shrink: 0;
 }
 
-.tab-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
+.home-menu-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #f8fafc;
 }
 
-.tab-btn:hover i {
+.home-menu-item:hover i {
   color: var(--gold-primary);
+  transform: scale(1.05);
 }
 
-.tab-btn.active {
-  background: linear-gradient(135deg, rgba(201, 168, 76, 0.22), rgba(201, 168, 76, 0.10));
-  color: var(--text-gold);
-  border: 1px solid rgba(201, 168, 76, 0.45);
-  box-shadow: 0 2px 14px rgba(201, 168, 76, 0.15);
+.home-menu-item.active {
+  background: rgba(245, 179, 0, 0.08);
+  color: #fef08a;
+  border: 1.5px solid rgba(245, 179, 0, 0.85);
+  box-shadow: 0 0 18px rgba(245, 179, 0, 0.15);
 }
 
-.tab-btn.active i {
-  color: var(--gold-primary);
+.home-menu-item.active i {
+  color: #f5b300;
 }
 
-.tab-btn .tab-badge {
-  font-size: 0.68rem;
+.home-badge {
+  margin-left: auto;
+  font-size: 0.75rem;
   font-weight: 800;
-  padding: 2px 7px;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-secondary);
+  padding: 3px 9px;
+  border-radius: 999px;
   line-height: 1;
 }
 
-.tab-btn .tab-badge.alert {
+.home-badge.badge-gray {
+  background: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.home-badge.badge-amber {
   background: rgba(245, 158, 11, 0.2);
   color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.4);
+  border: 1px solid rgba(245, 158, 11, 0.45);
 }
 
-.tab-btn .tab-badge.blue {
+.home-badge.badge-blue {
   background: rgba(14, 165, 233, 0.2);
   color: #38bdf8;
-  border: 1px solid rgba(14, 165, 233, 0.4);
+  border: 1px solid rgba(14, 165, 233, 0.45);
 }
 
-@media (max-width: 900px) {
-  .tab-btn {
-    flex: 1 1 calc(33.333% - 6px);
-  }
+/* Botão de Retorno ao Menu nos Módulos */
+.btn-back-menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  border: 1px solid rgba(201, 168, 76, 0.45);
+  background: rgba(201, 168, 76, 0.12);
+  color: var(--text-gold);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 8px;
 }
 
-@media (max-width: 768px) {
-  .tabs-quick-nav {
-    padding: 5px;
-    gap: 5px;
-    margin-bottom: 16px;
-  }
-
-  .tab-btn {
-    flex: 1 1 calc(50% - 5px);
-    min-width: 120px;
-    padding: 9px 8px;
-    font-size: 0.77rem;
-    gap: 6px;
-  }
+.btn-back-menu:hover {
+  background: rgba(201, 168, 76, 0.22);
+  transform: translateX(-2px);
 }
 
-@media (max-width: 380px) {
-  .tab-btn {
-    flex: 1 1 100%;
-    justify-content: flex-start;
-    padding: 9px 12px;
-  }
+.btn-back-menu i {
+  width: 16px;
+  height: 16px;
 }
 
 .tab-view {
