@@ -3,8 +3,8 @@
  * (Suporte completo a Usuários, Contas Fixas/Consumo, Sessão e Biometria)
  */
 
-// Sessão em memória — sempre reseta ao abrir/recarregar o app (inclusive PWA mobile)
-let _authSession = false;
+// Sessão padrão aberta — abre direto no menu principal (Primeira Imagem) ao iniciar o app
+let _authSession = true;
 
 const Storage = {
   KEYS: {

@@ -29,14 +29,14 @@
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Main Stylesheet (v5.2 cache buster) -->
-  <link rel="stylesheet" href="css/style.css?v=5.2">
+  <!-- Main Stylesheet (v5.3 cache buster) -->
+  <link rel="stylesheet" href="css/style.css?v=5.3">
 
   <!-- Service Worker Registration with Automatic Update -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=5.2')
+        navigator.serviceWorker.register('/sw.js?v=5.3')
           .then(reg => {
             console.log('SDFinanceiro SW registrado:', reg.scope);
             reg.update();
@@ -46,10 +46,10 @@
     }
   </script>
 </head>
-<body class="dark auth-locked home-menu-active">
+<body class="dark home-menu-active">
 
   <!-- ================= LUXURY AUTH / LOGIN LOCKSCREEN (IMAGE REPLICA) ================= -->
-  <div class="auth-lockscreen-overlay" id="screen-auth-lock">
+  <div class="auth-lockscreen-overlay" id="screen-auth-lock" style="display: none;">
     <div class="auth-card">
       <!-- Luxury Gold Circular Badge with Official Brand Logo -->
       <div class="auth-brand-badge">
@@ -1736,16 +1736,16 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- Application Logic Scripts (v5.2 cache buster) -->
-  <script src="js/storage.js?v=5.2"></script>
-  <script src="js/users.js?v=5.2"></script>
-  <script src="js/auth.js?v=5.2"></script>
-  <script src="js/accounts.js?v=5.2"></script>
-  <script src="js/bills.js?v=5.2"></script>
-  <script src="js/transactions.js?v=5.2"></script>
-  <script src="js/checks.js?v=5.2"></script>
-  <script src="js/agenda.js?v=5.2"></script>
-  <script src="js/charts.js?v=5.2"></script>
-  <script src="js/app.js?v=5.2"></script>
+  <!-- Application Logic Scripts (v5.3 cache buster) -->
+  <script src="js/storage.js?v=5.3"></script>
+  <script src="js/users.js?v=5.3"></script>
+  <script src="js/auth.js?v=5.3"></script>
+  <script src="js/accounts.js?v=5.3"></script>
+  <script src="js/bills.js?v=5.3"></script>
+  <script src="js/transactions.js?v=5.3"></script>
+  <script src="js/checks.js?v=5.3"></script>
+  <script src="js/agenda.js?v=5.3"></script>
+  <script src="js/charts.js?v=5.3"></script>
+  <script src="js/app.js?v=5.3"></script>
 </body>
 </html>
