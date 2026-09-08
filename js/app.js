@@ -218,16 +218,26 @@ const App = {
     const toggleBtn = document.getElementById('btn-toggle-sidebar');
     const closeBtn = document.getElementById('btn-close-sidebar');
     const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
 
     if (toggleBtn) {
       toggleBtn.addEventListener('click', () => {
         sidebar?.classList.add('open');
+        backdrop?.classList.add('active');
       });
     }
 
     if (closeBtn) {
       closeBtn.addEventListener('click', () => {
         sidebar?.classList.remove('open');
+        backdrop?.classList.remove('active');
+      });
+    }
+
+    if (backdrop) {
+      backdrop.addEventListener('click', () => {
+        sidebar?.classList.remove('open');
+        backdrop?.classList.remove('active');
       });
     }
   },
@@ -269,6 +279,9 @@ const App = {
   switchTab(tabId) {
     if (tabId === 'home') tabId = 'comparativo';
     this.currentTab = tabId;
+
+    document.getElementById('sidebar')?.classList.remove('open');
+    document.getElementById('sidebar-backdrop')?.classList.remove('active');
 
     document.body.classList.remove('home-menu-active');
 

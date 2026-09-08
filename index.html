@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDFinanceiro — Gestão Financeira Inteligente & Agenda</title>
 
-  <!-- PWA Manifest (v4.0 cache buster) -->
-  <link rel="manifest" href="manifest.json?v=4.0">
+  <!-- PWA Manifest (v6.0 cache buster) -->
+  <link rel="manifest" href="manifest.json?v=6.0">
 
   <!-- PWA Theme & Icons -->
   <meta name="theme-color" content="#c9a84c">
@@ -15,9 +15,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="SDFinanceiro">
   <meta name="description" content="Sistema completo de gestão financeira com agenda, fluxo de caixa, contas a pagar e receber.">
-  <link rel="apple-touch-icon" href="assets/icon-192.png?v=5.0">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png?v=5.0">
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png?v=5.0">
+  <link rel="apple-touch-icon" href="assets/icon-192.png?v=6.0">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png?v=6.0">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png?v=6.0">
 
   <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,14 +29,14 @@
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Main Stylesheet (v5.6 cache buster) -->
-  <link rel="stylesheet" href="css/style.css?v=5.6">
+  <!-- Main Stylesheet (v6.0 cache buster) -->
+  <link rel="stylesheet" href="css/style.css?v=6.0">
 
   <!-- Service Worker Registration with Automatic Update -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=5.6')
+        navigator.serviceWorker.register('/sw.js?v=6.0')
           .then(reg => {
             console.log('SDFinanceiro SW registrado:', reg.scope);
             reg.update();
@@ -272,6 +272,8 @@
         </div>
       </div>
     </aside>
+    <!-- Mobile Sidebar Backdrop -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
     <!-- Main Content Area -->
     <main class="main-content">
@@ -338,75 +340,6 @@
               <button type="button" class="account-dropdown-item" data-account="cash"><i data-lucide="coins"></i> Dinheiro / Caixa</button>
             </div>
           </div>
-        </div>
-
-        <!-- Linha 3: Barra de Chips / Tags com Linha Dourada Embaixo (Exatamente a Imagem 2) -->
-        <div class="chips-container">
-          <div class="chips-scroll-bar" id="top-quick-chips">
-            <div class="chip-store active" data-chip="flg"><i data-lucide="building-2"></i> <span>FLG</span> <span class="chip-close">×</span></div>
-            <div class="chip-store active" data-chip="gmad"><i data-lucide="building-2"></i> <span>GMAD</span> <span class="chip-close">×</span></div>
-            <div class="chip-store active" data-chip="itaipu"><i data-lucide="building-2"></i> <span>ITAIPU</span> <span class="chip-close">×</span></div>
-            <div class="chip-store active" data-chip="riobranco"><i data-lucide="building-2"></i> <span>RIO BRANCO</span> <span class="chip-close">×</span></div>
-          </div>
-          <!-- Linha Dourada de Destaque -->
-          <div class="gold-divider-line"></div>
-        </div>
-
-        <!-- Linha 4: 3 Mini-Cards de KPI em Grade de 3 Colunas (Exatamente a Imagem 2) -->
-        <div class="mini-kpi-grid">
-          <div class="mini-kpi-card card-teal" title="Produtos">
-            <div class="mini-kpi-icon"><i data-lucide="shopping-bag"></i></div>
-            <div class="mini-kpi-content">
-              <span class="mini-kpi-title">PROD...</span>
-              <span class="mini-kpi-val" id="mini-kpi-prod-count">2</span>
-            </div>
-          </div>
-
-          <div class="mini-kpi-card card-amber" title="Economia Estimada">
-            <div class="mini-kpi-icon"><i data-lucide="trending-down"></i></div>
-            <div class="mini-kpi-content">
-              <span class="mini-kpi-title">ECON...</span>
-              <span class="mini-kpi-val text-emerald" id="mini-kpi-savings">R$ 5...</span>
-            </div>
-          </div>
-
-          <div class="mini-kpi-card card-blue" title="Mais Barato">
-            <div class="mini-kpi-icon"><i data-lucide="award"></i></div>
-            <div class="mini-kpi-content">
-              <span class="mini-kpi-title">MAIS ...</span>
-              <span class="mini-kpi-val text-gold" id="mini-kpi-best-supplier">ITAI...</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Linha 5: Barra de Busca em Pílula (Exatamente a Imagem 2) -->
-        <div class="search-pro-wrap">
-          <div class="search-input-pill">
-            <i data-lucide="search" class="search-icon"></i>
-            <input type="text" id="input-global-pro-search" placeholder="Buscar produto, marca ou categoria...">
-            <button type="button" class="btn-clear-search-pro" id="btn-clear-pro-search" style="display: none;">
-              <i data-lucide="x"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Linha 6: Abas de Categoria em Pílula com Indicador Dourado (Exatamente a Imagem 2) -->
-        <div class="category-pills-wrapper">
-          <div class="category-pills-bar" id="pro-category-pills">
-            <button type="button" class="cat-pill active" data-tab="comparativo" data-cat="Todos">Todos</button>
-            <button type="button" class="cat-pill" data-tab="comparativo" data-cat="MDF/MDP">MDF/MDP</button>
-            <button type="button" class="cat-pill" data-tab="comparativo" data-cat="Ferragens">Ferragens</button>
-            <button type="button" class="cat-pill" data-tab="comparativo" data-cat="Vidros">Vidros</button>
-            <button type="button" class="cat-pill" data-tab="dashboard" data-cat="Dashboard">Dashboard</button>
-            <button type="button" class="cat-pill" data-tab="accounts" data-cat="Contas">Cartões & Contas</button>
-            <button type="button" class="cat-pill" data-tab="bills" data-cat="Fixas">Contas Fixas</button>
-            <button type="button" class="cat-pill" data-tab="transactions" data-cat="Lançamentos">Lançamentos</button>
-            <button type="button" class="cat-pill" data-tab="checks" data-cat="Cheques">Cheques</button>
-            <button type="button" class="cat-pill" data-tab="agenda" data-cat="Agenda">Agenda</button>
-            <button type="button" class="cat-pill" data-tab="reports" data-cat="Relatórios">Relatórios</button>
-          </div>
-          <!-- Linha indicadora ativa da aba -->
-          <div class="cat-pill-active-line"></div>
         </div>
       </header>
 
@@ -485,8 +418,77 @@
           </div>
         </div>
 
-        <!-- ================= TAB: COMPARATIVO (PRIMEIRA TELA ATIVA - RÉPLICA EXATA DA SEGUNDA IMAGEM) ================= -->
+        <!-- ================= TAB: COMPARATIVO (RÉPLICA EXATA DA IMAGEM 2) ================= -->
         <section class="tab-view active" id="view-comparativo">
+          <!-- Linha 3: Barra de Chips / Tags com Linha Dourada Embaixo (Exatamente a Imagem 2) -->
+          <div class="chips-container">
+            <div class="chips-scroll-bar" id="top-quick-chips">
+              <div class="chip-store active" data-chip="flg"><i data-lucide="building-2"></i> <span>FLG</span> <span class="chip-close">×</span></div>
+              <div class="chip-store active" data-chip="gmad"><i data-lucide="building-2"></i> <span>GMAD</span> <span class="chip-close">×</span></div>
+              <div class="chip-store active" data-chip="itaipu"><i data-lucide="building-2"></i> <span>ITAIPU</span> <span class="chip-close">×</span></div>
+              <div class="chip-store active" data-chip="riobranco"><i data-lucide="building-2"></i> <span>RIO BRANCO</span> <span class="chip-close">×</span></div>
+            </div>
+            <!-- Linha Dourada de Destaque -->
+            <div class="gold-divider-line"></div>
+          </div>
+
+          <!-- Linha 4: 3 Mini-Cards de KPI em Grade de 3 Colunas (Exatamente a Imagem 2) -->
+          <div class="mini-kpi-grid">
+            <div class="mini-kpi-card card-teal" title="Produtos">
+              <div class="mini-kpi-icon"><i data-lucide="shopping-bag"></i></div>
+              <div class="mini-kpi-content">
+                <span class="mini-kpi-title">PROD...</span>
+                <span class="mini-kpi-val" id="mini-kpi-prod-count">2</span>
+              </div>
+            </div>
+
+            <div class="mini-kpi-card card-amber" title="Economia Estimada">
+              <div class="mini-kpi-icon"><i data-lucide="trending-down"></i></div>
+              <div class="mini-kpi-content">
+                <span class="mini-kpi-title">ECON...</span>
+                <span class="mini-kpi-val text-emerald" id="mini-kpi-savings">R$ 5...</span>
+              </div>
+            </div>
+
+            <div class="mini-kpi-card card-blue" title="Mais Barato">
+              <div class="mini-kpi-icon"><i data-lucide="award"></i></div>
+              <div class="mini-kpi-content">
+                <span class="mini-kpi-title">MAIS ...</span>
+                <span class="mini-kpi-val text-gold" id="mini-kpi-best-supplier">ITAI...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Linha 5: Barra de Busca em Pílula (Exatamente a Imagem 2) -->
+          <div class="search-pro-wrap">
+            <div class="search-input-pill">
+              <i data-lucide="search" class="search-icon"></i>
+              <input type="text" id="input-global-pro-search" placeholder="Buscar produto, marca ou categoria...">
+              <button type="button" class="btn-clear-search-pro" id="btn-clear-pro-search" style="display: none;">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Linha 6: Abas de Categoria em Pílula com Indicador Dourado (Exatamente a Imagem 2) -->
+          <div class="category-pills-wrapper">
+            <div class="category-pills-bar" id="pro-category-pills">
+              <button type="button" class="cat-pill active" data-tab="comparativo" data-cat="Todos">Todos</button>
+              <button type="button" class="cat-pill" data-tab="comparativo" data-cat="MDF/MDP">MDF/MDP</button>
+              <button type="button" class="cat-pill" data-tab="comparativo" data-cat="Ferragens">Ferragens</button>
+              <button type="button" class="cat-pill" data-tab="comparativo" data-cat="Vidros">Vidros</button>
+              <button type="button" class="cat-pill" data-tab="dashboard" data-cat="Dashboard">Dashboard</button>
+              <button type="button" class="cat-pill" data-tab="accounts" data-cat="Contas">Cartões & Contas</button>
+              <button type="button" class="cat-pill" data-tab="bills" data-cat="Fixas">Contas Fixas</button>
+              <button type="button" class="cat-pill" data-tab="transactions" data-cat="Lançamentos">Lançamentos</button>
+              <button type="button" class="cat-pill" data-tab="checks" data-cat="Cheques">Cheques</button>
+              <button type="button" class="cat-pill" data-tab="agenda" data-cat="Agenda">Agenda</button>
+              <button type="button" class="cat-pill" data-tab="reports" data-cat="Relatórios">Relatórios</button>
+            </div>
+            <!-- Linha indicadora ativa da aba -->
+            <div class="cat-pill-active-line"></div>
+          </div>
+
           <div class="comparativo-cards-container" id="comparativo-cards-list">
             <!-- Injetado dinamicamente via comparativo.js -->
           </div>
@@ -849,73 +851,82 @@
           </div>
         </section>
 
-        <!-- ================= TAB: GESTÃO DE CHEQUES ================= -->
+        <!-- ================= TAB: GESTÃO DE CHEQUES (ESTILO IMAGEM 2) ================= -->
         <section class="tab-view" id="view-checks">
-          <div class="section-toolbar">
-            <div class="toolbar-left">
-              <h2>Controle de Cheques</h2>
-              <p>Monitore cheques emitidos e recebidos, datas de compensação e status de liquidação.</p>
+          <div class="checks-header-pro">
+            <div class="checks-header-left">
+              <h2 class="checks-title-pro"><i data-lucide="scroll-text" style="color: #fbbf24; width: 22px; height: 22px;"></i> Gestão de Cheques</h2>
+              <p class="checks-sub-pro">Controle ágil de compensações, prazos de depósito e liquidação</p>
             </div>
-            <div class="toolbar-right">
-              <button class="btn btn-secondary" onclick="window.print()" title="Imprimir lista de cheques">
+            <div class="checks-header-actions">
+              <button type="button" class="btn-pill-action btn-pill-print" onclick="window.print()" title="Imprimir lista de cheques">
                 <i data-lucide="printer"></i>
-                Imprimir
+                <span>Imprimir</span>
               </button>
-              <button class="btn btn-primary" id="btn-add-check">
+              <button type="button" class="btn-pill-action btn-pill-gold-add" id="btn-add-check">
                 <i data-lucide="plus"></i>
-                Cadastrar Cheque
+                <span>+ Cadastrar Cheque</span>
               </button>
             </div>
           </div>
 
-          <!-- Check KPI cards -->
-          <div class="mini-kpis-grid">
-            <div class="mini-kpi-card">
-              <span class="mini-label">Emitidos Pendentes</span>
-              <h4 class="text-amber" id="check-kpi-issued-pending">R$ 0,00</h4>
-              <small id="check-kpi-issued-count">0 cheques a compensar</small>
+          <!-- 3 Mini-Cards de KPI de Cheques (Idêntico à Imagem 2) -->
+          <div class="mini-kpi-grid" style="margin-bottom: 14px;">
+            <div class="mini-kpi-card card-amber" title="Cheques Emitidos a Compensar">
+              <div class="mini-kpi-icon"><i data-lucide="arrow-up-right"></i></div>
+              <div class="mini-kpi-content">
+                <span class="mini-kpi-title">A COMPENSAR</span>
+                <span class="mini-kpi-val text-gold" id="check-kpi-issued-pending">R$ 0,00</span>
+              </div>
             </div>
-            <div class="mini-kpi-card">
-              <span class="mini-label">Recebidos Pendentes</span>
-              <h4 class="text-emerald" id="check-kpi-received-pending">R$ 0,00</h4>
-              <small id="check-kpi-received-count">0 cheques a depositar</small>
+
+            <div class="mini-kpi-card card-teal" title="Cheques Recebidos a Depositar">
+              <div class="mini-kpi-icon"><i data-lucide="arrow-down-left"></i></div>
+              <div class="mini-kpi-content">
+                <span class="mini-kpi-title">A RECEBER</span>
+                <span class="mini-kpi-val text-emerald" id="check-kpi-received-pending">R$ 0,00</span>
+              </div>
             </div>
-            <div class="mini-kpi-card">
-              <span class="mini-label">Total Compensado (Mês)</span>
-              <h4 class="text-blue" id="check-kpi-cleared-month">R$ 0,00</h4>
-              <small>Liquidados com sucesso</small>
+
+            <div class="mini-kpi-card card-blue" title="Total Compensado do Mês">
+              <div class="mini-kpi-icon"><i data-lucide="check-check"></i></div>
+              <div class="mini-kpi-content">
+                <span class="mini-kpi-title">COMPENSADOS</span>
+                <span class="mini-kpi-val" id="check-kpi-cleared-month">R$ 0,00</span>
+              </div>
             </div>
           </div>
 
-          <!-- Checks List & Filters -->
-          <div class="checks-manager-card">
-            <div class="checks-tabs-bar">
-              <button class="filter-tab active" data-status="all">Todos os Cheques</button>
-              <button class="filter-tab" data-status="pending">Pendentes</button>
-              <button class="filter-tab" data-status="cleared">Compensados</button>
-              <button class="filter-tab" data-status="bounced">Devolvidos / Cancelados</button>
+          <!-- Busca Rápida em Pílula (Idêntico à Imagem 2) -->
+          <div class="search-pro-wrap" style="margin-bottom: 12px;">
+            <div class="search-input-pill">
+              <i data-lucide="search" class="search-icon"></i>
+              <input type="text" id="input-search-checks" placeholder="Buscar por nº cheque, favorecido, emitente ou banco...">
+              <button type="button" class="btn-clear-search-pro" id="btn-clear-checks-search" style="display: none;">
+                <i data-lucide="x"></i>
+              </button>
             </div>
+          </div>
 
-            <div class="table-responsive">
-              <table class="modern-table">
-                <thead>
-                  <tr>
-                    <th>Nº Cheque</th>
-                    <th>Tipo</th>
-                    <th>Favorecido / Emitente</th>
-                    <th>Banco / Conta</th>
-                    <th>Emissão</th>
-                    <th>Bom Para (Compensação)</th>
-                    <th class="text-right">Valor</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center no-print">Ações</th>
-                  </tr>
-                </thead>
-                <tbody id="checks-table-body">
-                  <!-- Injected via JS -->
-                </tbody>
-              </table>
+          <!-- Abas de Status em Pílula (Idêntico à Imagem 2) -->
+          <div class="category-pills-wrapper" style="margin-bottom: 16px;">
+            <div class="category-pills-bar checks-tabs-bar">
+              <button type="button" class="cat-pill filter-tab active" data-status="all">Todos os Cheques</button>
+              <button type="button" class="cat-pill filter-tab" data-status="pending">Pendentes</button>
+              <button type="button" class="cat-pill filter-tab" data-status="cleared">Compensados</button>
+              <button type="button" class="cat-pill filter-tab" data-status="bounced">Devolvidos</button>
             </div>
+          </div>
+
+          <!-- Lista de Cheques em Cards Modernos (Estilo Imagem 2) -->
+          <div class="comparativo-cards-container" id="checks-cards-list">
+            <!-- Injetado dinamicamente via checks.js -->
+          </div>
+
+          <div style="display: none;">
+            <table class="modern-table">
+              <tbody id="checks-table-body"></tbody>
+            </table>
           </div>
         </section>
 
@@ -1870,17 +1881,17 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- Application Logic Scripts (v5.6 cache buster) -->
-  <script src="js/storage.js?v=5.6"></script>
-  <script src="js/users.js?v=5.6"></script>
-  <script src="js/auth.js?v=5.6"></script>
-  <script src="js/accounts.js?v=5.6"></script>
-  <script src="js/bills.js?v=5.6"></script>
-  <script src="js/transactions.js?v=5.6"></script>
-  <script src="js/checks.js?v=5.6"></script>
-  <script src="js/agenda.js?v=5.6"></script>
-  <script src="js/charts.js?v=5.6"></script>
-  <script src="js/comparativo.js?v=5.6"></script>
-  <script src="js/app.js?v=5.6"></script>
+  <!-- Application Logic Scripts (v6.0 cache buster) -->
+  <script src="js/storage.js?v=6.0"></script>
+  <script src="js/users.js?v=6.0"></script>
+  <script src="js/auth.js?v=6.0"></script>
+  <script src="js/accounts.js?v=6.0"></script>
+  <script src="js/bills.js?v=6.0"></script>
+  <script src="js/transactions.js?v=6.0"></script>
+  <script src="js/checks.js?v=6.0"></script>
+  <script src="js/agenda.js?v=6.0"></script>
+  <script src="js/charts.js?v=6.0"></script>
+  <script src="js/comparativo.js?v=6.0"></script>
+  <script src="js/app.js?v=6.0"></script>
 </body>
 </html>

@@ -28,6 +28,26 @@ const Checks = {
       addBtn.addEventListener('click', () => this.openModal());
     }
 
+    // Search input
+    const searchInput = document.getElementById('input-search-checks');
+    const clearSearchBtn = document.getElementById('btn-clear-checks-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        this.searchQuery = e.target.value.toLowerCase().trim();
+        if (clearSearchBtn) clearSearchBtn.style.display = this.searchQuery ? 'inline-flex' : 'none';
+        this.render();
+      });
+    }
+
+    if (clearSearchBtn && searchInput) {
+      clearSearchBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        this.searchQuery = '';
+        clearSearchBtn.style.display = 'none';
+        this.render();
+      });
+    }
+
     // Form submit
     const form = document.getElementById('form-check');
     if (form) {
@@ -153,10 +173,13 @@ const Checks = {
     App.refreshAll();
   },
 
+  searchQuery: '',
+
   render() {
     const checks = Storage.getChecks();
     const accounts = Storage.getAccounts();
     const tbody = document.getElementById('checks-table-body');
+    const cardsContainer = document.getElementById('checks-cards-list');
 
     // Calculate Check KPIs
     const issuedPending = checks.filter(c => c.type === 'issued' && c.status === 'pending');
@@ -170,16 +193,12 @@ const Checks = {
 
     // Update KPI UI
     const elIssuedPending = document.getElementById('check-kpi-issued-pending');
-    const elIssuedCount = document.getElementById('check-kpi-issued-count');
     const elReceivedPending = document.getElementById('check-kpi-received-pending');
-    const elReceivedCount = document.getElementById('check-kpi-received-count');
     const elClearedMonth = document.getElementById('check-kpi-cleared-month');
     const sidebarBadge = document.getElementById('badge-pending-checks');
 
     if (elIssuedPending) elIssuedPending.textContent = `R$ ${totalIssuedPending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-    if (elIssuedCount) elIssuedCount.textContent = `${issuedPending.length} cheques a pagar`;
     if (elReceivedPending) elReceivedPending.textContent = `R$ ${totalReceivedPending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-    if (elReceivedCount) elReceivedCount.textContent = `${receivedPending.length} cheques a depositar`;
     if (elClearedMonth) elClearedMonth.textContent = `R$ ${totalClearedMonth.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
     if (sidebarBadge) sidebarBadge.textContent = issuedPending.length + receivedPending.length;
 
@@ -193,81 +212,130 @@ const Checks = {
       }
     }
 
-    if (!tbody) return;
-
-    if (filtered.length === 0) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="9" class="text-center" style="padding: 40px; color: var(--text-muted);">
-            <i data-lucide="scroll-text" style="width: 36px; height: 36px; margin-bottom: 8px; opacity: 0.5;"></i>
-            <p>Nenhum cheque encontrado nesta categoria.</p>
-          </td>
-        </tr>
-      `;
-      lucide.createIcons();
-      return;
+    if (this.searchQuery) {
+      filtered = filtered.filter(c => 
+        (c.number && c.number.toLowerCase().includes(this.searchQuery)) ||
+        (c.beneficiary && c.beneficiary.toLowerCase().includes(this.searchQuery)) ||
+        (c.bank && c.bank.toLowerCase().includes(this.searchQuery)) ||
+        (c.notes && c.notes.toLowerCase().includes(this.searchQuery))
+      );
     }
 
-    tbody.innerHTML = filtered.map(chk => {
-      const acc = accounts.find(a => a.id === chk.accountId);
-      const isIssued = chk.type === 'issued';
-      const formattedIssue = chk.issueDate.split('-').reverse().join('/');
-      const formattedClearing = chk.clearingDate.split('-').reverse().join('/');
+    // Render Cards (Estilo Luxury da Imagem 2)
+    if (cardsContainer) {
+      if (filtered.length === 0) {
+        cardsContainer.innerHTML = `
+          <div class="empty-state-pro">
+            <i data-lucide="scroll-text"></i>
+            <h4>Nenhum cheque encontrado</h4>
+            <p>Não há cheques com os filtros aplicados.</p>
+            <button type="button" class="btn btn-primary btn-sm" onclick="Checks.openModal()" style="margin-top: 10px;">
+              + Cadastrar Cheque
+            </button>
+          </div>
+        `;
+      } else {
+        cardsContainer.innerHTML = filtered.map(chk => {
+          const acc = accounts.find(a => a.id === chk.accountId);
+          const isIssued = chk.type === 'issued';
+          const formattedIssue = chk.issueDate ? chk.issueDate.split('-').reverse().join('/') : '';
+          const formattedClearing = chk.clearingDate ? chk.clearingDate.split('-').reverse().join('/') : '';
 
-      let badgeClass = 'badge-pending';
-      let statusLabel = 'Pendente';
+          let statusLabel = 'Pendente';
+          if (chk.status === 'cleared') statusLabel = 'Compensado';
+          else if (chk.status === 'bounced') statusLabel = 'Devolvido';
+          else if (chk.status === 'canceled') statusLabel = 'Cancelado';
 
-      if (chk.status === 'cleared') {
-        badgeClass = 'badge-cleared';
-        statusLabel = 'Compensado';
-      } else if (chk.status === 'bounced') {
-        badgeClass = 'badge-bounced';
-        statusLabel = 'Devolvido';
-      } else if (chk.status === 'canceled') {
-        badgeClass = 'badge-canceled';
-        statusLabel = 'Cancelado';
+          return `
+            <div class="comp-product-card check-card-pro" id="check-card-${chk.id}">
+              <div class="comp-card-top" style="justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="comp-cat-tag" style="${isIssued ? 'background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.6); color: #fbbf24;' : 'background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.6); color: #10b981;'}">
+                    ${isIssued ? 'EMITIDO (A PAGAR)' : 'RECEBIDO (DEPÓSITO)'}
+                  </span>
+                  <h3 class="comp-prod-title">#${App.escapeHTML(chk.number)}</h3>
+                </div>
+                <span class="comp-lowest-badge" style="${chk.status === 'cleared' ? 'background: #10b981; color: #022c22;' : (chk.status === 'pending' ? 'background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4);' : 'background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4);')}">
+                  ${statusLabel}
+                </span>
+              </div>
+
+              <div class="comp-quotes-grid" style="grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                <div class="comp-supplier-box">
+                  <div class="comp-supplier-header">
+                    <span class="comp-supplier-name"><i data-lucide="user"></i> Favorecido</span>
+                  </div>
+                  <div style="font-weight: 700; color: #ffffff; font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${App.escapeHTML(chk.beneficiary)}
+                  </div>
+                  ${chk.notes ? `<small style="color: #94a3b8; font-size: 0.72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${App.escapeHTML(chk.notes)}</small>` : ''}
+                </div>
+
+                <div class="comp-supplier-box">
+                  <div class="comp-supplier-header">
+                    <span class="comp-supplier-name"><i data-lucide="building-2"></i> Banco</span>
+                  </div>
+                  <div style="font-weight: 700; color: #cbd5e1; font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${App.escapeHTML(chk.bank || 'Não especificado')}
+                  </div>
+                  ${acc ? `<small style="color: #f59e0b; font-size: 0.72rem;">${App.escapeHTML(acc.name)}</small>` : ''}
+                </div>
+
+                <div class="comp-supplier-box">
+                  <div class="comp-supplier-header">
+                    <span class="comp-supplier-name"><i data-lucide="calendar"></i> Bom Para</span>
+                  </div>
+                  <div style="font-family: 'Outfit', sans-serif; font-weight: 800; color: #fbbf24; font-size: 1rem;">
+                    ${formattedClearing}
+                  </div>
+                  <small style="color: #64748b; font-size: 0.72rem;">Emissão: ${formattedIssue}</small>
+                </div>
+
+                <div class="comp-supplier-box ${!isIssued ? 'is-best-price' : ''}">
+                  <div class="comp-supplier-header">
+                    <span class="comp-supplier-name"><i data-lucide="banknote"></i> Valor</span>
+                  </div>
+                  <div class="comp-price-row">
+                    <span class="comp-currency">R$</span>
+                    <span class="comp-price-val" style="color: ${isIssued ? '#f87171' : '#10b981'}; font-size: 1.15rem;">
+                      ${chk.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="comp-card-footer" style="padding-top: 10px; margin-top: 4px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  ${chk.status === 'pending' ? `
+                    <button type="button" class="comp-buy-btn btn-green" style="padding: 6px 14px; width: auto;" onclick="Checks.toggleCheckStatus('${chk.id}', 'cleared')">
+                      <i data-lucide="check-circle-2"></i> <span>Compensar</span>
+                    </button>
+                  ` : `
+                    <button type="button" class="comp-buy-btn" style="padding: 6px 14px; width: auto;" onclick="Checks.toggleCheckStatus('${chk.id}', 'pending')">
+                      <i data-lucide="rotate-ccw"></i> <span>Pendente</span>
+                    </button>
+                  `}
+                </div>
+
+                <div class="comp-actions-group">
+                  <button type="button" class="comp-btn-icon" onclick="Checks.openModal(Storage.getChecks().find(c=>c.id==='${chk.id}'))" title="Editar">
+                    <i data-lucide="edit-3"></i>
+                  </button>
+                  <button type="button" class="comp-btn-icon btn-danger-icon" onclick="Checks.deleteCheck('${chk.id}')" title="Excluir">
+                    <i data-lucide="trash-2"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
       }
+    }
 
-      return `
-        <tr>
-          <td><b style="color: var(--text-primary);">#${chk.number}</b></td>
-          <td>
-            <span class="badge ${isIssued ? 'badge-expense' : 'badge-income'}">
-              ${isIssued ? 'Emitido (Pagar)' : 'Recebido (Depósito)'}
-            </span>
-          </td>
-          <td>
-            <div style="font-weight: 600; color: var(--text-primary);">${chk.beneficiary}</div>
-            ${chk.notes ? `<small style="color: var(--text-muted);">${chk.notes}</small>` : ''}
-          </td>
-          <td>
-            <div>${chk.bank || 'Não especificado'}</div>
-            ${acc ? `<small style="color: var(--primary);">${acc.name}</small>` : ''}
-          </td>
-          <td>${formattedIssue}</td>
-          <td><b style="color: var(--amber);">${formattedClearing}</b></td>
-          <td class="text-right" style="font-family: 'Outfit', sans-serif; font-weight: 700; color: ${isIssued ? 'var(--rose)' : 'var(--emerald)'};">
-            R$ ${chk.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-          </td>
-          <td class="text-center">
-            <select class="btn-sm" style="background: var(--bg-input); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 4px; padding: 4px 6px; outline: none; cursor: pointer;" onchange="Checks.toggleCheckStatus('${chk.id}', this.value)">
-              <option value="pending" ${chk.status === 'pending' ? 'selected' : ''}>⏳ Pendente</option>
-              <option value="cleared" ${chk.status === 'cleared' ? 'selected' : ''}>✅ Compensado</option>
-              <option value="bounced" ${chk.status === 'bounced' ? 'selected' : ''}>❌ Devolvido</option>
-              <option value="canceled" ${chk.status === 'canceled' ? 'selected' : ''}>🚫 Cancelado</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <button class="btn-icon btn-sm" onclick="Checks.openModal(Storage.getChecks().find(c=>c.id==='${chk.id}'))" title="Editar">
-              <i data-lucide="edit-3"></i>
-            </button>
-            <button class="btn-icon btn-sm" onclick="Checks.deleteCheck('${chk.id}')" title="Excluir">
-              <i data-lucide="trash-2"></i>
-            </button>
-          </td>
-        </tr>
-      `;
-    }).join('');
+    // Fallback table body if exists
+    if (tbody) {
+      tbody.innerHTML = '';
+    }
 
     lucide.createIcons();
   }

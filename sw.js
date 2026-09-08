@@ -4,7 +4,7 @@
  * Garante que qualquer atualização publicada no Vercel seja carregada IMEDIATAMENTE pelos aparelhos
  */
 
-const CACHE_NAME = 'sdfinanceiro-v5.6';
+const CACHE_NAME = 'sdfinanceiro-v6.0';
 
 const STATIC_ASSETS = [
   '/',
