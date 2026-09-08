@@ -83,10 +83,14 @@ const App = {
     Agenda.init();
     Charts.init();
 
+    if (typeof Comparativo !== 'undefined') {
+      Comparativo.init();
+    }
+    this.bindImage2Header();
+
     this.refreshAll();
     this.syncQuickNavBadges();
-    this.syncHomeBadges();
-    this.switchTab('home');
+    this.switchTab('comparativo');
     lucide.createIcons();
   },
 
@@ -114,10 +118,12 @@ const App = {
   },
 
   bindGlobalInputAutoSelect() {
-    // When focusing any input in modals, auto-select content for instant overwriting
+    // Auto selects text on click for inputs with specific attribute or modals
     document.addEventListener('focusin', (e) => {
-      if (e.target.tagName === 'INPUT' && (e.target.type === 'number' || e.target.type === 'text' || e.target.type === 'password' || e.target.type === 'email')) {
-        e.target.select();
+      if (e.target.tagName === 'INPUT' && (e.target.type === 'text' || e.target.type === 'number' || e.target.type === 'password')) {
+        if (!e.target.dataset.noAutoSelect) {
+          setTimeout(() => e.target.select(), 50);
+        }
       }
     });
   },
@@ -170,13 +176,11 @@ const App = {
       });
     });
 
-    // Home Menu Navigation (Exclusivo da Primeira Imagem)
-    const homeItems = document.querySelectorAll('.home-menu-card .home-menu-item[data-tab]');
+    // Home Menu Navigation (Menu da Imagem 1 com design PRO da Imagem 2)
+    const homeItems = document.querySelectorAll('.home-menu-card-pro .home-menu-item-pro[data-tab]');
     homeItems.forEach(btn => {
       btn.addEventListener('click', () => {
         const tab = btn.dataset.tab;
-        homeItems.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
         this.switchTab(tab);
       });
     });
@@ -263,47 +267,23 @@ const App = {
   },
 
   switchTab(tabId) {
+    if (tabId === 'home') tabId = 'comparativo';
     this.currentTab = tabId;
 
-    if (tabId === 'home') {
-      // Ativa o modo exclusivo da Primeira Imagem
-      document.body.classList.add('home-menu-active');
-
-      const backBtn = document.getElementById('btn-back-to-home');
-      if (backBtn) backBtn.style.display = 'none';
-
-      // Mostra a view home e esconde as outras
-      document.querySelectorAll('.tab-view').forEach(view => {
-        if (view.id === 'view-home') {
-          view.classList.add('active');
-        } else {
-          view.classList.remove('active');
-        }
-      });
-
-      // Marca Dashboard Geral como selecionado por padrão se nenhum outro estiver ativo
-      const activeHomeItem = document.querySelector('.home-menu-card .home-menu-item.active');
-      if (!activeHomeItem) {
-        const firstItem = document.querySelector('.home-menu-card .home-menu-item[data-tab="dashboard"]');
-        if (firstItem) firstItem.classList.add('active');
-      }
-
-      this.syncHomeBadges();
-      return;
-    }
-
-    // Quando em qualquer módulo (Dashboard, Relatórios, etc.), sai do modo menu exclusivo
     document.body.classList.remove('home-menu-active');
 
-    const backBtn = document.getElementById('btn-back-to-home');
-    if (backBtn) backBtn.style.display = 'inline-flex';
+    // Mostra/oculta subtoolbar de período dependendo da aba
+    const subtoolbar = document.getElementById('main-pro-subtoolbar');
+    if (subtoolbar) {
+      subtoolbar.style.display = tabId === 'comparativo' ? 'none' : 'flex';
+    }
 
-    // Sincroniza botão ativo no Home Menu
-    document.querySelectorAll('.home-menu-card .home-menu-item[data-tab]').forEach(item => {
-      if (item.dataset.tab === tabId) {
-        item.classList.add('active');
+    // Update views
+    document.querySelectorAll('.tab-view').forEach(view => {
+      if (view.id === `view-${tabId}`) {
+        view.classList.add('active');
       } else {
-        item.classList.remove('active');
+        view.classList.remove('active');
       }
     });
 
@@ -316,29 +296,47 @@ const App = {
       }
     });
 
-    // Update views
-    document.querySelectorAll('.tab-view').forEach(view => {
-      if (view.id === `view-${tabId}`) {
-        view.classList.add('active');
+    // Update category pills in Image 2 header
+    document.querySelectorAll('#pro-category-pills .cat-pill').forEach(pill => {
+      if (pill.dataset.tab === tabId) {
+        pill.classList.add('active');
       } else {
-        view.classList.remove('active');
+        pill.classList.remove('active');
       }
     });
 
-    // Update header title & subtitle
-    const titleMap = {
-      dashboard: { title: 'Dashboard Geral', subtitle: 'Visão consolidada das suas finanças e compromissos' },
-      accounts: { title: 'Cartões & Contas', subtitle: 'Gerencie limites de cartões, faturas, saldos e carteiras de dinheiro' },
-      bills: { title: 'Contas Fixas & Consumo', subtitle: 'Acompanhe e pague faturas recorrentes (Água, Luz, Internet) com Pix e Código de Barras' },
-      transactions: { title: 'Lançamentos Financeiros', subtitle: 'Histórico de despesas, receitas e fluxo de pagamentos' },
-      checks: { title: 'Gestão de Cheques', subtitle: 'Acompanhamento de compensações de cheques emitidos e recebidos' },
-      agenda: { title: 'Agenda & Lembretes', subtitle: 'Organização de compromissos com data, hora e alertas financeiros' },
-      reports: { title: 'Relatórios & Gráficos', subtitle: 'Análise detalhada de gastos por meio de pagamento e categorias' }
+    // Update active dropdown item
+    document.querySelectorAll('#menu-sub-nav-dropdown .dropdown-item').forEach(item => {
+      if (item.dataset.tab === tabId) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+
+    // Update Active Pill in Sub-header
+    const textActivePill = document.getElementById('text-active-pill');
+    const iconActivePill = document.getElementById('icon-active-pill');
+
+    const pillMeta = {
+      comparativo: { label: 'Comparativo (2)', icon: 'bar-chart-2' },
+      dashboard: { label: 'Dashboard Geral', icon: 'layout-dashboard' },
+      accounts: { label: 'Cartões & Contas', icon: 'credit-card' },
+      bills: { label: 'Contas Fixas', icon: 'receipt' },
+      transactions: { label: 'Lançamentos', icon: 'arrow-left-right' },
+      checks: { label: 'Gestão de Cheques', icon: 'scroll-text' },
+      agenda: { label: 'Agenda & Lembretes', icon: 'calendar-clock' },
+      reports: { label: 'Relatórios & Gráficos', icon: 'pie-chart' }
     };
 
-    const info = titleMap[tabId] || { title: 'SDFinanceiro', subtitle: '' };
-    document.getElementById('current-page-title').textContent = info.title;
-    document.getElementById('current-page-subtitle').textContent = info.subtitle;
+    const meta = pillMeta[tabId] || { label: 'Comparativo (2)', icon: 'bar-chart-2' };
+    if (textActivePill) textActivePill.textContent = meta.label;
+    if (iconActivePill) iconActivePill.setAttribute('data-lucide', meta.icon);
+
+    // Update header title & subtitle if elements exist
+    const titleEl = document.getElementById('current-page-title');
+    const subEl = document.getElementById('current-page-subtitle');
+    if (titleEl) titleEl.textContent = meta.label;
 
     // Trigger charts resize/render if switching to reports or dashboard
     if (tabId === 'dashboard' || tabId === 'reports') {
@@ -346,6 +344,190 @@ const App = {
         Charts.renderAll();
       }, 100);
     }
+
+    // Trigger comparativo render if switching to comparativo
+    if (tabId === 'comparativo' && typeof Comparativo !== 'undefined') {
+      Comparativo.render();
+    }
+
+    this.updateMiniKpis();
+    lucide.createIcons();
+  },
+
+  updateMiniKpis() {
+    const kpi1Title = document.querySelector('.mini-kpi-card:nth-child(1) .mini-kpi-title');
+    const kpi1Val = document.getElementById('mini-kpi-prod-count');
+    const kpi2Title = document.querySelector('.mini-kpi-card:nth-child(2) .mini-kpi-title');
+    const kpi2Val = document.getElementById('mini-kpi-savings');
+    const kpi3Title = document.querySelector('.mini-kpi-card:nth-child(3) .mini-kpi-title');
+    const kpi3Val = document.getElementById('mini-kpi-best-supplier');
+
+    if (this.currentTab === 'comparativo') {
+      const items = typeof Comparativo !== 'undefined' ? Comparativo.getItems() : [];
+      if (kpi1Title) kpi1Title.textContent = 'PROD...';
+      if (kpi1Val) kpi1Val.textContent = items.length;
+
+      if (kpi2Title) kpi2Title.textContent = 'ECON...';
+      if (kpi2Val) kpi2Val.textContent = 'R$ 5...';
+
+      if (kpi3Title) kpi3Title.textContent = 'MAIS ...';
+      if (kpi3Val) kpi3Val.textContent = 'ITAI...';
+    } else {
+      const accounts = Storage.getAccounts();
+      const transactions = Storage.getTransactions();
+      const periodTransactions = transactions.filter(t => this.isDateInSelectedPeriod(t.date));
+
+      const available = accounts.filter(a => a.type !== 'credit').reduce((s, a) => s + (a.balance || 0), 0);
+      const income = periodTransactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+      const expense = periodTransactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+
+      if (kpi1Title) kpi1Title.textContent = 'SALDO';
+      if (kpi1Val) kpi1Val.textContent = `R$ ${Math.round(available)}`;
+
+      if (kpi2Title) kpi2Title.textContent = 'RECEITAS';
+      if (kpi2Val) kpi2Val.textContent = `R$ ${Math.round(income)}`;
+
+      if (kpi3Title) kpi3Title.textContent = 'DESPESAS';
+      if (kpi3Val) kpi3Val.textContent = `R$ ${Math.round(expense)}`;
+    }
+  },
+
+  bindImage2Header() {
+    // 1. Botão Sair / Bloquear
+    const topLogoutBtn = document.getElementById('btn-top-logout');
+    if (topLogoutBtn) {
+      topLogoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        Auth.lockSystem();
+      });
+    }
+
+    // 2. Pílula de Usuário (abre modal de gestão de usuários)
+    const topUserPill = document.getElementById('btn-top-user-profile');
+    if (topUserPill) {
+      topUserPill.addEventListener('click', () => {
+        if (typeof Users !== 'undefined') Users.openModal('list');
+      });
+    }
+
+    // 3. Dropdown do Módulo Ativo
+    const navPill = document.getElementById('btn-nav-active-pill');
+    const navDropdown = document.getElementById('menu-sub-nav-dropdown');
+    if (navPill && navDropdown) {
+      navPill.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = navDropdown.style.display === 'block';
+        this.closeHeaderDropdowns();
+        navDropdown.style.display = isOpen ? 'none' : 'block';
+      });
+
+      navDropdown.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const tab = item.dataset.tab;
+          this.switchTab(tab);
+          navDropdown.style.display = 'none';
+        });
+      });
+    }
+
+    // 4. Dropdown do Seletor de Contas / Projeto
+    const accPill = document.getElementById('btn-top-account-selector');
+    const accDropdown = document.getElementById('menu-top-accounts-dropdown');
+    const accText = document.getElementById('text-current-account-filter');
+
+    if (accPill && accDropdown) {
+      accPill.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = accDropdown.style.display === 'block';
+        this.closeHeaderDropdowns();
+        accDropdown.style.display = isOpen ? 'none' : 'block';
+      });
+
+      accDropdown.querySelectorAll('.account-dropdown-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          accDropdown.querySelectorAll('.account-dropdown-item').forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+          if (accText) accText.textContent = item.textContent.trim().toUpperCase();
+          accDropdown.style.display = 'none';
+          this.showToast(`Contexto: ${item.textContent.trim()}`, 'info');
+        });
+      });
+    }
+
+    // 5. Fechar dropdowns ao clicar fora
+    document.addEventListener('click', () => {
+      this.closeHeaderDropdowns();
+    });
+
+    // 6. Abas de Categoria em Pílula
+    const catPills = document.querySelectorAll('#pro-category-pills .cat-pill');
+    catPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        catPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const tab = pill.dataset.tab || 'comparativo';
+        const cat = pill.dataset.cat;
+        this.switchTab(tab);
+        if (tab === 'comparativo' && typeof Comparativo !== 'undefined') {
+          Comparativo.activeCategory = cat || 'Todos';
+          Comparativo.render();
+        }
+      });
+    });
+
+    // 7. Barra de Busca em Pílula
+    const searchInput = document.getElementById('input-global-pro-search');
+    const clearBtn = document.getElementById('btn-clear-pro-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const val = e.target.value.trim();
+        if (clearBtn) clearBtn.style.display = val ? 'inline-flex' : 'none';
+
+        if (this.currentTab === 'comparativo' && typeof Comparativo !== 'undefined') {
+          Comparativo.setSearch(val);
+        } else if (this.currentTab === 'transactions') {
+          const tableInput = document.getElementById('input-search-transactions');
+          if (tableInput) {
+            tableInput.value = val;
+            tableInput.dispatchEvent(new Event('input'));
+          }
+        }
+      });
+    }
+
+    if (clearBtn && searchInput) {
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        clearBtn.style.display = 'none';
+        if (typeof Comparativo !== 'undefined') Comparativo.setSearch('');
+      });
+    }
+
+    // 8. Chips de Fornecedores / Contas
+    const chips = document.querySelectorAll('#top-quick-chips .chip-store');
+    chips.forEach(chip => {
+      chip.addEventListener('click', (e) => {
+        if (e.target.classList.contains('chip-close')) {
+          e.stopPropagation();
+          chip.classList.toggle('active');
+        } else {
+          chip.classList.toggle('active');
+        }
+        const chipName = chip.querySelector('span')?.textContent || '';
+        if (typeof Comparativo !== 'undefined') {
+          Comparativo.setSearch(chip.classList.contains('active') ? chipName : '');
+        }
+      });
+    });
+  },
+
+  closeHeaderDropdowns() {
+    const navDropdown = document.getElementById('menu-sub-nav-dropdown');
+    const accDropdown = document.getElementById('menu-top-accounts-dropdown');
+    if (navDropdown) navDropdown.style.display = 'none';
+    if (accDropdown) accDropdown.style.display = 'none';
   },
 
   bindModals() {

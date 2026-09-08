@@ -279,6 +279,11 @@ const Users = {
     }
     if (nameEl) nameEl.textContent = active.name || 'Usuário';
     if (roleEl) roleEl.textContent = active.role || 'Administrador';
+
+    const topUserPillName = document.getElementById('top-user-pill-name');
+    if (topUserPillName) {
+      topUserPillName.textContent = active.name ? active.name.split(' ')[0] : 'Samuel';
+    }
   },
 
   render() {
