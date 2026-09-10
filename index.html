@@ -277,149 +277,150 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-      <!-- Top Navigation / Header (Inspirado no Layout da Imagem 2) -->
-      <header class="top-header-pro">
-        <!-- Linha 1: Top Bar com Logo Dourado SD + V1.0 PRO + Usuário + Sair -->
-        <div class="top-bar-row">
-          <div class="top-brand-left">
-            <button type="button" class="btn-icon mobile-only" id="btn-toggle-sidebar" aria-label="Abrir menu lateral">
+      <!-- Top Navigation & Header Container: Row 1 = Quick Tabs (Imagem 1), Row 2 = Header (Imagem 2) -->
+      <div class="top-navigation-container">
+        <!-- ================= ROW 1: QUICK NAVIGATION TABS (IMAGEM 1 COM SCROLL PARA OS LADOS) ================= -->
+        <div class="tabs-scroll-wrapper">
+          <button type="button" class="tabs-scroll-arrow left" id="btn-scroll-tabs-left" title="Rolar para a esquerda" aria-label="Rolar abas para esquerda">
+            <i data-lucide="chevron-left"></i>
+          </button>
+          <nav class="tabs-quick-nav" id="main-quick-tabs-nav" aria-label="Navegação rápida de módulos">
+            <button type="button" class="tab-btn active" data-tab="dashboard">
+              <i data-lucide="layout-dashboard"></i>
+              <span>Dashboard Geral</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="accounts">
+              <i data-lucide="credit-card"></i>
+              <span>Cartões & Contas</span>
+              <span class="tab-badge" id="tab-quick-accounts-count">0</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="bills">
+              <i data-lucide="receipt"></i>
+              <span>Contas Fixas & Consumo</span>
+              <span class="tab-badge alert" id="tab-quick-bills-count">4</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="transactions">
+              <i data-lucide="arrow-left-right"></i>
+              <span>Lançamentos</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="checks">
+              <i data-lucide="scroll-text"></i>
+              <span>Gestão de Cheques</span>
+              <span class="tab-badge alert" id="tab-quick-checks-count">3</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="agenda">
+              <i data-lucide="calendar-clock"></i>
+              <span>Agenda & Lembretes</span>
+              <span class="tab-badge blue" id="tab-quick-agenda-count">0</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="reports">
+              <i data-lucide="pie-chart"></i>
+              <span>Relatórios & Gráficos</span>
+            </button>
+            <button type="button" class="tab-btn" id="btn-quick-nav-users">
+              <i data-lucide="users"></i>
+              <span>Gestão & Usuários</span>
+            </button>
+          </nav>
+          <button type="button" class="tabs-scroll-arrow right" id="btn-scroll-tabs-right" title="Rolar para a direita" aria-label="Rolar abas para direita">
+            <i data-lucide="chevron-right"></i>
+          </button>
+        </div>
+
+        <!-- ================= ROW 2: TOP HEADER (SEGUNDA IMAGEM ABAIXO DAS ABAS) ================= -->
+        <header class="top-header">
+          <div class="header-left">
+            <button class="btn-icon mobile-only" id="btn-toggle-sidebar" aria-label="Abrir menu">
               <i data-lucide="menu"></i>
             </button>
-            <div class="logo-gold-ring" title="SD Financeiro">
-              <img src="assets/logo.jpg?v=5.0" alt="SD Logo" class="brand-logo-circle">
-            </div>
-            <div class="brand-text-pro">
-              <span class="brand-name">SD...</span>
-              <span class="badge-version-gold">V1.0 PRO</span>
+            <div>
+              <h1 class="page-title" id="current-page-title">Dashboard Geral</h1>
+              <p class="page-subtitle" id="current-page-subtitle">Visão consolidada das suas finanças e compromissos</p>
             </div>
           </div>
 
-          <div class="top-user-right">
-            <button type="button" class="user-status-pill" id="btn-top-user-profile" title="Perfil & Gerenciar Usuários">
-              <span class="status-indicator-dot"></span>
-              <span id="top-user-pill-name">Samuel</span>
-            </button>
+          <div class="header-right">
+            <!-- Comprehensive Period Control Bar (Dia, Semana, Mês, Ano, Buscar Data) -->
+            <div class="period-control-wrapper">
+              <!-- Quick Pills -->
+              <div class="quick-period-pills">
+                <button type="button" class="period-pill" data-period="today">Dia</button>
+                <button type="button" class="period-pill" data-period="this_week">Semana</button>
+                <button type="button" class="period-pill active" data-period="current_month">Mês</button>
+                <button type="button" class="period-pill" data-period="current_year">Ano</button>
+              </div>
 
-            <button type="button" class="btn-pill-logout" id="btn-top-logout" title="Sair / Bloquear Sistema">
-              <i data-lucide="log-out"></i>
-              <span>Sair</span>
-            </button>
-          </div>
-        </div>
+              <!-- Global Dropdown with Categories -->
+              <div class="period-picker">
+                <i data-lucide="calendar"></i>
+                <select id="select-global-period" title="Selecione o período financeiro">
+                  <optgroup label="📅 POR DIA">
+                    <option value="today">Hoje</option>
+                    <option value="yesterday">Ontem</option>
+                    <option value="custom_date">🔍 Buscar Dia Específico...</option>
+                  </optgroup>
+                  <optgroup label="🗓️ POR SEMANA">
+                    <option value="this_week">Esta Semana (Seg-Dom)</option>
+                    <option value="last_7_days">Últimos 7 Dias</option>
+                    <option value="last_week">Semana Anterior</option>
+                  </optgroup>
+                  <optgroup label="📊 POR MÊS">
+                    <option value="current_month" selected>Mês Atual</option>
+                    <option value="last_month">Mês Anterior</option>
+                    <option value="next_month">Próximo Mês</option>
+                    <option value="last_30_days">Últimos 30 Dias</option>
+                    <option value="custom_month">🔍 Buscar Mês Específico...</option>
+                  </optgroup>
+                  <optgroup label="📈 POR ANO">
+                    <option value="current_year">Ano Vigente (2026)</option>
+                    <option value="last_year">Ano Anterior (2025)</option>
+                  </optgroup>
+                  <optgroup label="🔍 INTERVALO / HISTÓRICO">
+                    <option value="custom_range">📅 Buscar Intervalo (De - Até)...</option>
+                    <option value="all">Todo o Histórico</option>
+                  </optgroup>
+                </select>
+              </div>
 
-        <!-- Linha 2: Sub-header com Pílula do Módulo Ativo e Seletor de Contas / Projeto -->
-        <div class="sub-header-bar">
-          <div class="sub-nav-wrapper">
-            <button type="button" class="nav-active-pill" id="btn-nav-active-pill">
-              <i data-lucide="bar-chart-2" id="icon-active-pill"></i>
-              <span id="text-active-pill">Comparativo (2)</span>
-              <i data-lucide="chevron-down" class="pill-chevron"></i>
-            </button>
-            <div class="nav-dropdown-menu" id="menu-sub-nav-dropdown" style="display: none;">
-              <button type="button" class="dropdown-item active" data-tab="comparativo"><i data-lucide="bar-chart-2"></i> Comparativo (2)</button>
-              <button type="button" class="dropdown-item" data-tab="dashboard"><i data-lucide="layout-dashboard"></i> Dashboard Geral</button>
-              <button type="button" class="dropdown-item" data-tab="accounts"><i data-lucide="credit-card"></i> Cartões & Contas</button>
-              <button type="button" class="dropdown-item" data-tab="bills"><i data-lucide="receipt"></i> Contas Fixas & Consumo</button>
-              <button type="button" class="dropdown-item" data-tab="transactions"><i data-lucide="arrow-left-right"></i> Lançamentos</button>
-              <button type="button" class="dropdown-item" data-tab="checks"><i data-lucide="scroll-text"></i> Gestão de Cheques</button>
-              <button type="button" class="dropdown-item" data-tab="agenda"><i data-lucide="calendar-clock"></i> Agenda & Lembretes</button>
-              <button type="button" class="dropdown-item" data-tab="reports"><i data-lucide="pie-chart"></i> Relatórios & Gráficos</button>
+              <!-- Interactive Date Pickers (Shown when custom date is chosen) -->
+              <div class="custom-date-popover" id="wrap-custom-date-inputs" style="display: none;">
+                <div id="box-single-date" style="display: none; align-items: center; gap: 6px;">
+                  <input type="date" id="input-filter-single-date" class="header-date-input" title="Selecione a data">
+                </div>
+                <div id="box-single-month" style="display: none; align-items: center; gap: 6px;">
+                  <input type="month" id="input-filter-single-month" class="header-date-input" title="Selecione o mês">
+                </div>
+                <div id="box-date-range" style="display: none; align-items: center; gap: 6px;">
+                  <input type="date" id="input-filter-date-from" class="header-date-input" placeholder="De">
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">até</span>
+                  <input type="date" id="input-filter-date-to" class="header-date-input" placeholder="Até">
+                </div>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-apply-custom-date" style="padding: 6px 10px; font-size: 0.78rem;">
+                  Filtrar
+                </button>
+              </div>
+            </div>
+
+            <!-- Quick Action Buttons -->
+            <div class="header-actions">
+              <button class="btn btn-secondary" id="btn-quick-appointment">
+                <i data-lucide="calendar-plus"></i>
+                <span class="btn-text">Novo Compromisso</span>
+              </button>
+              <button class="btn btn-primary" id="btn-quick-transaction">
+                <i data-lucide="plus-circle"></i>
+                <span class="btn-text">Novo Lançamento</span>
+              </button>
             </div>
           </div>
-
-          <div class="account-selector-wrapper">
-            <button type="button" class="account-selector-pill" id="btn-top-account-selector">
-              <i data-lucide="folder" class="icon-folder-gold"></i>
-              <span id="text-current-account-filter">TIAGO CARVALHO</span>
-              <i data-lucide="chevron-down" class="pill-chevron"></i>
-            </button>
-            <div class="account-dropdown-menu" id="menu-top-accounts-dropdown" style="display: none;">
-              <button type="button" class="account-dropdown-item active" data-account="all"><i data-lucide="folder"></i> TIAGO CARVALHO</button>
-              <button type="button" class="account-dropdown-item" data-account="bank"><i data-lucide="building-2"></i> Todas as Contas Bancárias</button>
-              <button type="button" class="account-dropdown-item" data-account="credit"><i data-lucide="credit-card"></i> Cartões de Crédito</button>
-              <button type="button" class="account-dropdown-item" data-account="cash"><i data-lucide="coins"></i> Dinheiro / Caixa</button>
-            </div>
-          </div>
-        </div>
-      </header>
+        </header>
+      </div>
 
       <!-- Dynamic Views Container -->
       <div class="content-body">
         
-        <!-- Period & Quick Actions Toolbar (Oculto na tela de Comparativo para ficar 100% fiel à Imagem 2) -->
-        <div class="pro-subtoolbar" id="main-pro-subtoolbar" style="display: none;">
-          <!-- Comprehensive Period Control Bar (Dia, Semana, Mês, Ano, Buscar Data) -->
-          <div class="period-control-wrapper">
-            <div class="quick-period-pills">
-              <button type="button" class="period-pill" data-period="today">Dia</button>
-              <button type="button" class="period-pill" data-period="this_week">Semana</button>
-              <button type="button" class="period-pill active" data-period="current_month">Mês</button>
-              <button type="button" class="period-pill" data-period="current_year">Ano</button>
-            </div>
-
-            <div class="period-picker">
-              <i data-lucide="calendar"></i>
-              <select id="select-global-period" title="Selecione o período financeiro">
-                <optgroup label="📅 POR DIA">
-                  <option value="today">Hoje</option>
-                  <option value="yesterday">Ontem</option>
-                  <option value="custom_date">🔍 Buscar Dia Específico...</option>
-                </optgroup>
-                <optgroup label="🗓️ POR SEMANA">
-                  <option value="this_week">Esta Semana (Seg-Dom)</option>
-                  <option value="last_7_days">Últimos 7 Dias</option>
-                  <option value="last_week">Semana Anterior</option>
-                </optgroup>
-                <optgroup label="📊 POR MÊS">
-                  <option value="current_month" selected>Mês Atual</option>
-                  <option value="last_month">Mês Anterior</option>
-                  <option value="next_month">Próximo Mês</option>
-                  <option value="last_30_days">Últimos 30 Dias</option>
-                  <option value="custom_month">🔍 Buscar Mês Específico...</option>
-                </optgroup>
-                <optgroup label="📈 POR ANO">
-                  <option value="current_year">Ano Vigente (2026)</option>
-                  <option value="last_year">Ano Anterior (2025)</option>
-                </optgroup>
-                <optgroup label="🔍 INTERVALO / HISTÓRICO">
-                  <option value="custom_range">📅 Buscar Intervalo (De - Até)...</option>
-                  <option value="all">Todo o Histórico</option>
-                </optgroup>
-              </select>
-            </div>
-
-            <div class="custom-date-popover" id="wrap-custom-date-inputs" style="display: none;">
-              <div id="box-single-date" style="display: none; align-items: center; gap: 6px;">
-                <input type="date" id="input-filter-single-date" class="header-date-input" title="Selecione a data">
-              </div>
-              <div id="box-single-month" style="display: none; align-items: center; gap: 6px;">
-                <input type="month" id="input-filter-single-month" class="header-date-input" title="Selecione o mês">
-              </div>
-              <div id="box-date-range" style="display: none; align-items: center; gap: 6px;">
-                <input type="date" id="input-filter-date-from" class="header-date-input" placeholder="De">
-                <span style="font-size: 0.75rem; color: var(--text-muted);">até</span>
-                <input type="date" id="input-filter-date-to" class="header-date-input" placeholder="Até">
-              </div>
-              <button type="button" class="btn btn-primary btn-sm" id="btn-apply-custom-date" style="padding: 6px 10px; font-size: 0.78rem;">
-                Filtrar
-              </button>
-            </div>
-          </div>
-
-          <div class="header-actions">
-            <button class="btn btn-secondary btn-sm" id="btn-quick-appointment">
-              <i data-lucide="calendar-plus"></i>
-              <span class="btn-text">Compromisso</span>
-            </button>
-            <button class="btn btn-primary btn-sm" id="btn-quick-transaction">
-              <i data-lucide="plus-circle"></i>
-              <span class="btn-text">Novo Lançamento</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- ================= TAB: COMPARATIVO (RÉPLICA EXATA DA IMAGEM 2) ================= -->
-        <section class="tab-view active" id="view-comparativo">
+        <!-- ================= TAB: COMPARATIVO ================= -->
+        <section class="tab-view" id="view-comparativo">
           <!-- Linha 3: Barra de Chips / Tags com Linha Dourada Embaixo (Exatamente a Imagem 2) -->
           <div class="chips-container">
             <div class="chips-scroll-bar" id="top-quick-chips">
@@ -495,7 +496,7 @@
         </section>
 
         <!-- ================= TAB: DASHBOARD ================= -->
-        <section class="tab-view" id="view-dashboard">
+        <section class="tab-view active" id="view-dashboard">
           <!-- KPI Summary Cards Row -->
           <div class="kpi-grid">
             <!-- Card 1: Saldo Disponível -->

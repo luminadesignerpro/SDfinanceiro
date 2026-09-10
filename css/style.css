@@ -362,17 +362,189 @@ h1, h2, h3, h4, h5, h6 {
   background: transparent;
 }
 
+/* ==========================================================================
+   TOP NAVIGATION CONTAINER (FIXA NO TOPO COM SCROLL PARA OS LADOS)
+   ========================================================================== */
+.top-navigation-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(9, 13, 22, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+}
+
+/* WRAPPER COM BOTÕES DE SCROLL HORIZONTAL */
+.tabs-scroll-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px 4px 28px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tabs-scroll-arrow {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: #f6e59e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.tabs-scroll-arrow:hover {
+  background: rgba(212, 175, 55, 0.28);
+  color: #fff;
+  border-color: #d4af37;
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+}
+
+.tabs-scroll-arrow:active {
+  transform: scale(0.95);
+}
+
+.tabs-scroll-arrow i, .tabs-scroll-arrow svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ROW 1: TABS QUICK NAV (CARD DA PRIMEIRA IMAGEM COM SCROLL LATERAL) */
+.tabs-quick-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  background: rgba(13, 19, 32, 0.9);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 8px 12px;
+  flex: 1;
+  min-width: 0;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Custom Gold Scrollbar for Lateral Scroll */
+.tabs-quick-nav::-webkit-scrollbar {
+  height: 5px;
+}
+
+.tabs-quick-nav::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 999px;
+  margin: 0 10px;
+}
+
+.tabs-quick-nav::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #d4af37, #fae89c);
+  border-radius: 999px;
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.5);
+}
+
+.tabs-quick-nav::-webkit-scrollbar-thumb:hover {
+  background: #f6e59e;
+}
+
+.tab-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.tab-btn i, .tab-btn svg {
+  width: 17px;
+  height: 17px;
+  color: #94a3b8;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-color: rgba(212, 175, 55, 0.35);
+  transform: translateY(-1px);
+}
+
+.tab-btn:hover i {
+  color: var(--gold-primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.24) 0%, rgba(212, 175, 55, 0.09) 100%);
+  color: #fff2be;
+  border: 1.5px solid rgba(212, 175, 55, 0.7);
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  font-weight: 800;
+}
+
+.tab-btn.active i {
+  color: var(--gold-primary);
+}
+
+.tab-btn .tab-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-secondary);
+  line-height: 1;
+}
+
+.tab-btn .tab-badge.alert {
+  background: rgba(245, 158, 11, 0.25);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.35);
+}
+
+.tab-btn .tab-badge.blue {
+  background: rgba(14, 165, 233, 0.22);
+  color: #38bdf8;
+  border: 1px solid rgba(14, 165, 233, 0.45);
+}
+
+/* ROW 2: TOP HEADER (SEGUNDA IMAGEM ABAIXO DAS ABAS) */
 .top-header {
-  padding: 20px 32px;
+  padding: 10px 28px 14px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border-color);
-  background: rgba(9, 13, 22, 0.8);
-  backdrop-filter: blur(12px);
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  border-bottom: none;
+  background: transparent;
+  position: static;
 }
 
 .header-left {
