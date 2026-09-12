@@ -12,7 +12,7 @@ const App = {
     this.switchTab('dashboard');
     this.setupKeyboardShortcuts();
     if (window.lucide) lucide.createIcons();
-    console.log('SD Finanças Enterprise inicializado com sucesso.');
+    console.log('SD Financeiro inicializado com sucesso.');
   },
 
   bindEvents() {

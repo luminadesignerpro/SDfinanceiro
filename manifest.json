@@ -1,6 +1,6 @@
 {
-  "name": "SD Finanças Enterprise",
-  "short_name": "SDFinanças",
+  "name": "SD Financeiro",
+  "short_name": "SDFinanceiro",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0a0e17",
