@@ -1,189 +1,179 @@
-/* ===================================================================
-   SD FINANÇAS PRO — CONTROLADOR PRINCIPAL & NAVEGAÇÃO
-   =================================================================== */
+/**
+ * SD FINANÇAS ENTERPRISE - Main Application Controller
+ */
 
 const App = {
   activeTab: 'dashboard',
 
   init() {
-    this.setupNavigation();
-    this.setupSidebar();
-    this.setupBackupButtons();
-
-    // Inicializa subsistemas
-    TransactionsManager.init();
-    AccountsManager.init();
-    BudgetsManager.init();
-    SimulatorManager.init();
-
-    if (window.lucide) {
-      lucide.createIcons();
-    }
+    AppState.init();
+    this.bindEvents();
+    this.switchTab('dashboard');
+    this.setupKeyboardShortcuts();
+    if (window.lucide) lucide.createIcons();
+    console.log('SD Finanças Enterprise inicializado com sucesso.');
   },
 
-  setupNavigation() {
-    const navButtons = document.querySelectorAll('.sd-tab-btn, .nav-item button');
-    navButtons.forEach(btn => {
+  bindEvents() {
+    // Navigation tabs
+    document.querySelectorAll('.nav-tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const tab = btn.dataset.tab;
-        if (!tab) return;
-        this.switchTab(tab);
+        const tab = btn.getAttribute('data-tab');
+        if (tab) this.switchTab(tab);
       });
     });
 
-    // Rolagem horizontal com a roda do mouse sobre as abas
-    const navRow = document.querySelector('.sd-nav-row');
-    if (navRow) {
-      navRow.addEventListener('wheel', (e) => {
-        if (e.deltaY !== 0) {
-          e.preventDefault();
-          navRow.scrollLeft += e.deltaY * 1.5;
-        }
-      }, { passive: false });
+    // New transaction form
+    const formTx = document.getElementById('form-new-tx');
+    if (formTx) {
+      formTx.addEventListener('submit', e => TransactionsModule.saveFromForm(e));
+    }
+
+    // Transfer form
+    const formTransfer = document.getElementById('form-transfer');
+    if (formTransfer) {
+      formTransfer.addEventListener('submit', e => AccountsModule.executeTransfer(e));
+    }
+
+    // Search and filter listeners
+    const searchInput = document.getElementById('tx-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', e => {
+        TransactionsModule.currentFilter.search = e.target.value;
+        TransactionsModule.renderList();
+      });
+    }
+
+    const typeFilter = document.getElementById('tx-filter-type');
+    if (typeFilter) {
+      typeFilter.addEventListener('change', e => {
+        TransactionsModule.currentFilter.type = e.target.value;
+        TransactionsModule.renderList();
+      });
+    }
+
+    const catFilter = document.getElementById('tx-filter-category');
+    if (catFilter) {
+      catFilter.addEventListener('change', e => {
+        TransactionsModule.currentFilter.category = e.target.value;
+        TransactionsModule.renderList();
+      });
+    }
+
+    // Bills filter buttons
+    document.querySelectorAll('.btn-bill-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.btn-bill-filter').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        BillsModule.currentTab = btn.getAttribute('data-filter');
+        BillsModule.renderList();
+      });
+    });
+
+    // Investments simulator inputs
+    ['sim-initial', 'sim-monthly', 'sim-rate', 'sim-period'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', () => InvestmentsModule.runSimulation());
+    });
+
+    // Backup import input
+    const fileInput = document.getElementById('input-backup-file');
+    if (fileInput) {
+      fileInput.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = evt => {
+          if (StorageEngine.importBackup(evt.target.result)) {
+            AppState.reloadAll();
+            this.switchTab(this.activeTab);
+            AppState.showToast('Backup restaurado com sucesso!');
+          } else {
+            AppState.showToast('Erro ao ler arquivo de backup.', 'error');
+          }
+        };
+        reader.readAsText(file);
+      });
     }
   },
 
-  switchTab(tabName) {
-    this.activeTab = tabName;
+  switchTab(tabId) {
+    this.activeTab = tabId;
 
-    // Atualiza botões ativos nas abas e rola suavemente para o campo de visão
-    document.querySelectorAll('.sd-tab-btn, .nav-item button').forEach(btn => {
-      if (btn.dataset.tab === tabName) {
+    // Update buttons
+    document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+      if (btn.getAttribute('data-tab') === tabId) {
         btn.classList.add('active');
-        btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       } else {
         btn.classList.remove('active');
       }
     });
 
-    // Atualiza seções ativas
-    document.querySelectorAll('.view-section').forEach(sec => {
-      sec.classList.remove('active');
+    // Update panels
+    document.querySelectorAll('.tab-panel').forEach(panel => {
+      if (panel.id === `tab-${tabId}`) {
+        panel.classList.add('active');
+      } else {
+        panel.classList.remove('active');
+      }
     });
 
-    const targetSection = document.getElementById(`section-${tabName}`);
-    if (targetSection) {
-      targetSection.classList.add('active');
+    // Render corresponding module
+    switch (tabId) {
+      case 'dashboard':
+        DashboardModule.render();
+        break;
+      case 'transactions':
+        TransactionsModule.render();
+        break;
+      case 'accounts':
+        AccountsModule.render();
+        break;
+      case 'cards':
+        CardsModule.render();
+        break;
+      case 'bills':
+        BillsModule.render();
+        break;
+      case 'goals':
+        GoalsModule.render();
+        break;
+      case 'investments':
+        InvestmentsModule.render();
+        break;
+      case 'reports':
+        ReportsModule.render();
+        break;
     }
 
-    // Título no Top Header (Nomes Exatos das Imagens de Referência)
-    const titleMap = {
-      'dashboard': 'Dashboard Geral',
-      'accounts': 'Cartões & Contas',
-      'budgets': 'Contas Fixas & Consumo',
-      'transactions': 'Lançamentos',
-      'checks': 'Gestão de Cheques',
-      'agenda': 'Agenda & Lembretes',
-      'reports': 'Relatórios & Gráficos',
-      'users': 'Gestão & Usuários',
-      'settings': 'Idioma & Configurações'
-    };
-
-    const headerTitle = document.getElementById('pageMainTitle');
-    if (headerTitle) {
-      headerTitle.textContent = titleMap[tabName] || 'SD Finanças Pro';
-    }
-
-    // Se estiver em mobile, fecha a sidebar ao selecionar aba
-    const sidebar = document.querySelector('.sidebar');
-    if (sidebar && window.innerWidth <= 960) {
-      sidebar.classList.remove('open');
-    }
-
-    // Re-renderizações pontuais ao trocar de aba
-    if (tabName === 'transactions') {
-      TransactionsManager.renderTransactionsList();
-    } else if (tabName === 'accounts') {
-      AccountsManager.renderAccounts();
-    } else if (tabName === 'budgets') {
-      BudgetsManager.renderBudgets();
-      BudgetsManager.renderGoals();
-    } else if (tabName === 'simulator') {
-      SimulatorManager.calculate();
-    } else if (tabName === 'dashboard') {
-      TransactionsManager.renderDashboardMetrics();
-      TransactionsManager.renderRecentTransactions();
-    }
-
-    if (window.lucide) {
-      lucide.createIcons();
-    }
+    if (window.lucide) lucide.createIcons();
   },
 
-  setupSidebar() {
-    const toggleBtn = document.getElementById('mobileMenuToggle');
-    const sidebar = document.querySelector('.sidebar');
-    if (toggleBtn && sidebar) {
-      toggleBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-      });
-    }
+  setupKeyboardShortcuts() {
+    window.addEventListener('keydown', e => {
+      // Ignore when inside input/textarea
+      if (['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) return;
+
+      if (e.key === 'n' || e.key === 'N') {
+        e.preventDefault();
+        TransactionsModule.openModal();
+      } else if (e.key === 'Escape') {
+        TransactionsModule.closeModal();
+        AccountsModule.closeTransferModal();
+      }
+    });
   },
 
-  setupBackupButtons() {
-    // Exportar JSON
-    const btnExportJSON = document.getElementById('btnExportJSON');
-    if (btnExportJSON) {
-      btnExportJSON.addEventListener('click', () => {
-        Storage.exportDataJSON();
-        this.showToast('Backup JSON exportado com sucesso!');
-      });
-    }
-
-    // Exportar CSV
-    const btnExportCSV = document.getElementById('btnExportCSV');
-    if (btnExportCSV) {
-      btnExportCSV.addEventListener('click', () => {
-        Storage.exportTransactionsCSV();
-        this.showToast('Planilha CSV de lançamentos baixada!');
-      });
-    }
-
-    // Restaurar dados originais
-    const btnResetDemo = document.getElementById('btnResetDemo');
-    if (btnResetDemo) {
-      btnResetDemo.addEventListener('click', () => {
-        if (confirm('Deseja resetar e carregar os dados de demonstração iniciais? Seus dados atuais serão sobrescritos.')) {
-          Storage.resetToDefault();
-          location.reload();
-        }
-      });
-    }
-  },
-
-  lockSystem() {
-    this.showToast('🔒 Sistema bloqueado com sucesso. Sessão protegida!', 'success');
-  },
-
-  showToast(message, type = 'success') {
-    let container = document.querySelector('.toast-container');
-    if (!container) {
-      container = document.createElement('div');
-      container.className = 'toast-container';
-      document.body.appendChild(container);
-    }
-
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.innerHTML = `
-      <i data-lucide="check-circle-2" style="width:16px; height:16px;"></i>
-      <span>${message}</span>
-    `;
-    container.appendChild(toast);
-
-    if (window.lucide) {
-      lucide.createIcons();
-    }
-
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(10px)';
-      toast.style.transition = 'all 0.3s ease';
-      setTimeout(() => toast.remove(), 300);
-    }, 3200);
+  resetData() {
+    if (!confirm('Atenção: Todos os dados serão redefinidos para os valores padrão de demonstração. Deseja continuar?')) return;
+    StorageEngine.resetAllData();
+    AppState.reloadAll();
+    this.switchTab(this.activeTab);
+    AppState.showToast('Dados restaurados para o padrão de demonstração.');
   }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
   App.init();
 });

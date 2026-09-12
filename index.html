@@ -3,959 +3,572 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SD Finanças Pro — Gestão Financeira Inteligente & Patrimônio</title>
-  
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="SD Finanças Pro - Plataforma moderna e inteligente para controle de fluxo de caixa, despesas, cartões de crédito, metas financeiras e simulador de investimentos.">
-  <meta name="theme-color" content="#10b981">
+  <title>SD Finanças Enterprise — Sistema de Gestão Financeira Inteligente</title>
+
+  <!-- SEO & PWA -->
+  <meta name="description" content="SD Finanças Enterprise - Plataforma avançada para controle de fluxo de caixa, contas bancárias, cartões de crédito, contas a pagar e receber, metas e investimentos.">
+  <meta name="theme-color" content="#0a0e17">
   <link rel="manifest" href="manifest.json">
 
-  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <!-- Fonts: Outfit & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Lucide Icons -->
+  <!-- Icons & Charts -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Anti-Cache & Auto-Clear Legacy Service Workers -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {
-        for (let registration of registrations) {
-          registration.unregister();
-        }
-      });
-      if ('caches' in window) {
-        caches.keys().then(function(names) {
-          for (let name of names) {
-            caches.delete(name);
-          }
-        });
-      }
-    }
-  </script>
-
-  <!-- CSS Stylesheets (v9.0 cache buster) -->
-  <link rel="stylesheet" href="css/style.css?v=9.0">
-  <link rel="stylesheet" href="css/components.css?v=9.0">
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/design-tokens.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
   <div class="app-container">
-    <!-- ══ HEADER SUPERIOR COMPLETO ESTILO SDCOMPARATIVO (IMAGEM DE EXEMPLO) ══ -->
-    <header class="sd-top-header">
-      <!-- LINHA 1: LOGO COM STATUS PING, TÍTULO DOURADO, V1.0 PRO E SUBTÍTULO -->
-      <div class="sd-header-brand-row">
-        <div class="sd-brand-left">
-          <div class="sd-logo-wrapper">
-            <div class="sd-logo-box">
-              <img src="assets/logo.jpg" alt="SD Finanças Logo" class="sd-logo-img" onerror="this.src='assets/icon-192.png'">
-            </div>
-            <!-- Ponto de status âmbar no canto inferior direito -->
-            <span class="sd-status-ping-container">
-              <span class="sd-status-ping-animate"></span>
-              <span class="sd-status-ping-dot"></span>
-            </span>
+    <!-- ══ STICKY LUXURY HEADER ══ -->
+    <header class="sd-header">
+      <div class="sd-header-top">
+        <div class="sd-brand">
+          <div class="sd-logo-icon">
+            <i data-lucide="wallet-cards" style="width:24px; height:24px;"></i>
+            <span class="sd-status-dot"></span>
           </div>
-
-          <div class="sd-titles-box">
-            <div class="sd-title-row">
-              <h1 class="sd-main-brand-title">SD Finanças</h1>
-              <span class="sd-badge-v1">V1.0 PRO</span>
-            </div>
-            <p class="sd-subtitle-text">Gestão Financeira Inteligente &amp; Controle de Patrimônio</p>
+          <div class="sd-brand-text">
+            <h1>SD Finanças <span class="sd-badge-pro">V1.0 ENTERPRISE</span></h1>
+            <p>Gestão Financeira Inteligente &amp; Patrimônio</p>
           </div>
         </div>
 
-        <!-- AÇÕES DO TOPO À DIREITA (IDÊNTICO À IMAGEM 2) -->
-        <div class="sd-header-actions-right">
-          <!-- Card DISPONÍVEL TOTAL da Imagem 2 -->
-          <div class="sd-disponivel-card desktop-only">
-            <span class="sd-disp-title">DISPONÍVEL TOTAL</span>
-            <span class="sd-disp-amount" id="topHeaderDisponivel">R$ 34.620,75</span>
-            <span class="sd-disp-sub" id="topHeaderUtilizacao">Uso de limite: 0%</span>
+        <div class="sd-header-metrics">
+          <div class="header-metric-card">
+            <span class="label">Disponível Total</span>
+            <span class="value" id="header-total-disponivel">R$ 0,00</span>
           </div>
+        </div>
 
-          <!-- Botão Bloquear / Tela Login com cadeado laranja (Imagem 2) -->
-          <button class="sd-btn-lock" onclick="App.lockSystem()" title="Bloquear / Tela Login">
-            <i data-lucide="lock" style="width: 15px; height: 15px; color: #f59e0b;"></i>
-            <span>Bloquear / Tela Login</span>
-          </button>
-
-          <!-- Usuário samuel david - Administrador da Imagem 2 -->
-          <div class="sd-user-card" onclick="App.switchTab('users')" title="samuel david (Administrador)">
-            <div class="sd-user-avatar-sd">SD</div>
-            <div class="sd-user-info-text">
-              <span class="sd-user-fullname">samuel david</span>
-              <span class="sd-user-role-label">Administrador</span>
-            </div>
-            <button class="sd-user-icon-btn" title="Gestão &amp; Usuários" onclick="event.stopPropagation(); App.switchTab('users')">
-              <i data-lucide="users" style="width: 14px; height: 14px;"></i>
-            </button>
-          </div>
-
-          <button class="btn btn-primary btn-sm" onclick="TransactionsManager.openNewTransactionModal()" id="btnGlobalNewTx">
-            <i data-lucide="plus"></i>
+        <div class="sd-header-actions">
+          <button class="btn-new-tx" onclick="TransactionsModule.openModal()">
+            <i data-lucide="plus-circle" style="width:18px; height:18px;"></i>
             <span>Novo Lançamento</span>
           </button>
         </div>
       </div>
 
-      <!-- LINHA 2: ABAS DE NAVEGAÇÃO COM APENAS OS NOMES DAS IMAGENS -->
-      <div class="sd-nav-row">
+      <!-- ══ LATERAL SCROLL NAVIGATION TABS ══ -->
+      <div class="sd-nav-container">
         <nav class="sd-nav-tabs">
-          <button class="sd-tab-btn active" data-tab="dashboard" id="nav-dashboard">
+          <button class="nav-tab-btn active" data-tab="dashboard">
             <i data-lucide="layout-dashboard"></i>
             <span>Dashboard Geral</span>
           </button>
-
-          <button class="sd-tab-btn" data-tab="accounts" id="nav-accounts">
-            <i data-lucide="credit-card" class="icon-amber"></i>
-            <span>Cartões &amp; Contas</span>
-          </button>
-
-          <button class="sd-tab-btn" data-tab="budgets" id="nav-budgets">
-            <i data-lucide="receipt" class="icon-amber"></i>
-            <span>Contas Fixas &amp; Consumo</span>
-          </button>
-
-          <button class="sd-tab-btn" data-tab="transactions" id="nav-transactions">
-            <i data-lucide="arrow-left-right" class="icon-amber"></i>
+          <button class="nav-tab-btn" data-tab="transactions">
+            <i data-lucide="arrow-left-right"></i>
             <span>Lançamentos</span>
           </button>
-
-          <!-- Gestão de Cheques com badge 3 (Imagem 1) -->
-          <button class="sd-tab-btn" data-tab="checks" id="nav-checks">
-            <i data-lucide="scroll-text" class="icon-amber"></i>
-            <span>Gestão de Cheques</span>
-            <span class="sd-badge-num amber">3</span>
+          <button class="nav-tab-btn" data-tab="accounts">
+            <i data-lucide="landmark"></i>
+            <span>Contas &amp; Carteiras</span>
           </button>
-
-          <!-- Agenda & Lembretes com badge 1 (Imagem 1) -->
-          <button class="sd-tab-btn" data-tab="agenda" id="nav-agenda">
-            <i data-lucide="calendar-clock" class="icon-blue"></i>
-            <span>Agenda &amp; Lembretes</span>
-            <span class="sd-badge-num blue">1</span>
+          <button class="nav-tab-btn" data-tab="cards">
+            <i data-lucide="credit-card"></i>
+            <span>Cartões de Crédito</span>
           </button>
-
-          <!-- Relatórios & Gráficos (Imagem 1) -->
-          <button class="sd-tab-btn" data-tab="reports" id="nav-reports">
-            <i data-lucide="pie-chart" class="icon-amber"></i>
-            <span>Relatórios &amp; Gráficos</span>
+          <button class="nav-tab-btn" data-tab="bills">
+            <i data-lucide="calendar-clock"></i>
+            <span>Contas a Pagar / Receber</span>
           </button>
-
-          <!-- Gestão & Usuários (Imagem 1) -->
-          <button class="sd-tab-btn" data-tab="users" id="nav-users">
-            <i data-lucide="users" class="icon-amber"></i>
-            <span>Gestão &amp; Usuários</span>
+          <button class="nav-tab-btn" data-tab="goals">
+            <i data-lucide="target"></i>
+            <span>Metas &amp; Sonhos</span>
           </button>
-
-          <!-- Idioma & Configurações (Imagem 1) -->
-          <button class="sd-tab-btn" data-tab="settings" id="nav-settings">
-            <i data-lucide="languages" class="icon-amber"></i>
-            <span>Idioma &amp; Configurações</span>
+          <button class="nav-tab-btn" data-tab="investments">
+            <i data-lucide="trending-up"></i>
+            <span>Investimentos</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="reports">
+            <i data-lucide="file-text"></i>
+            <span>Relatórios &amp; DRE</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="settings">
+            <i data-lucide="settings"></i>
+            <span>Configurações &amp; Backup</span>
           </button>
         </nav>
       </div>
-
-      <!-- LINHA 3: TAGS DE CONTAS / BANCOS (IDÊNTICO À LINHA "FORNECEDORES") -->
-      <div class="sd-filter-tags-row">
-        <span class="sd-filter-label">CONTAS / BANCOS:</span>
-        <div class="sd-filter-tags-list" id="headerAccountsTagsList">
-          <div class="sd-tag-pill" onclick="App.switchTab('accounts')" title="Filtrar por Nubank">
-            <i data-lucide="landmark" style="width: 12px; height: 12px; color: #a78bfa;"></i>
-            <span>NUBANK</span>
-            <span class="sd-tag-close">×</span>
-          </div>
-          <div class="sd-tag-pill" onclick="App.switchTab('accounts')" title="Filtrar por Banco Inter">
-            <i data-lucide="building-2" style="width: 12px; height: 12px; color: #10b981;"></i>
-            <span>BANCO INTER</span>
-            <span class="sd-tag-close">×</span>
-          </div>
-          <div class="sd-tag-pill" onclick="App.switchTab('accounts')" title="Filtrar por Carteira">
-            <i data-lucide="wallet" style="width: 12px; height: 12px; color: #38bdf8;"></i>
-            <span>CARTEIRA FÍSICA</span>
-            <span class="sd-tag-close">×</span>
-          </div>
-          <button class="sd-tag-add-btn" onclick="AccountsManager.openNewAccountModal()" title="Adicionar nova conta ou cartão">
-            <span>+ Conta / Cartão</span>
-          </button>
-        </div>
-      </div>
     </header>
 
-    <!-- ÁREA PRINCIPAL -->
-    <main class="main-wrapper">
-      <!-- SUBHEADER DE TÍTULO DA PÁGINA -->
-      <div class="page-title-bar">
-        <div class="header-title">
-          <h1 id="pageMainTitle">Visão Geral & Dashboard</h1>
-          <p id="currentDateStr">Controle financeiro consolidado em tempo real</p>
+    <!-- ══ MAIN WORKSPACE ══ -->
+    <main class="main-workspace">
+
+      <!-- 1. DASHBOARD TAB -->
+      <section class="tab-panel active" id="tab-dashboard">
+        <!-- KPI Cards Grid -->
+        <div class="kpi-grid">
+          <div class="kpi-card emerald">
+            <div class="kpi-top">
+              <span class="kpi-label">Saldo em Contas</span>
+              <div class="kpi-icon" style="color:var(--emerald);"><i data-lucide="wallet"></i></div>
+            </div>
+            <div class="kpi-value" id="kpi-saldo-total">R$ 0,00</div>
+            <div class="kpi-trend trend-up"><i data-lucide="arrow-up-right"></i> Líquido disponível</div>
+          </div>
+
+          <div class="kpi-card gold">
+            <div class="kpi-top">
+              <span class="kpi-label">Receitas do Mês</span>
+              <div class="kpi-icon" style="color:var(--gold-primary);"><i data-lucide="arrow-down-left"></i></div>
+            </div>
+            <div class="kpi-value" id="kpi-receitas-mes" style="color:var(--emerald-light);">R$ 0,00</div>
+            <div class="kpi-trend trend-up"><i data-lucide="check-circle"></i> Entradas confirmadas</div>
+          </div>
+
+          <div class="kpi-card rose">
+            <div class="kpi-top">
+              <span class="kpi-label">Despesas do Mês</span>
+              <div class="kpi-icon" style="color:var(--rose);"><i data-lucide="arrow-up-right"></i></div>
+            </div>
+            <div class="kpi-value" id="kpi-despesas-mes" style="color:var(--rose-light);">R$ 0,00</div>
+            <div class="kpi-trend trend-down"><i data-lucide="alert-circle"></i> Saídas liquidadas</div>
+          </div>
+
+          <div class="kpi-card cyan">
+            <div class="kpi-top">
+              <span class="kpi-label">Balanço Líquido</span>
+              <div class="kpi-icon" style="color:var(--cyan);"><i data-lucide="scale"></i></div>
+            </div>
+            <div class="kpi-value" id="kpi-balanco-liquido">R$ 0,00</div>
+            <div class="kpi-trend trend-neutral"><i data-lucide="activity"></i> Receitas (-) Despesas</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <span class="kpi-label">Total Investido</span>
+              <div class="kpi-icon" style="color:var(--purple);"><i data-lucide="line-chart"></i></div>
+            </div>
+            <div class="kpi-value" id="kpi-patrimonio-invest" style="color:#c084fc;">R$ 0,00</div>
+            <div class="kpi-trend trend-up"><i data-lucide="trending-up"></i> Renda Fixa + FIIs</div>
+          </div>
         </div>
-        <div class="page-quick-actions">
-          <button class="btn btn-secondary btn-sm" onclick="App.switchTab('simulator')">
-            <i data-lucide="calculator"></i>
-            <span>Simular Juros</span>
-          </button>
-        </div>
-      </div>
 
-      <!-- CONTEÚDO DAS VIEWS / ABAS -->
-      <div class="page-content">
-
-        <!-- 1. SEÇÃO: DASHBOARD -->
-        <section class="view-section active" id="section-dashboard">
-          <!-- METRIC CARDS -->
-          <div class="metrics-grid">
-            <div class="metric-card balance">
-              <div class="metric-top">
-                <span class="metric-label">Saldo Total Consolidado</span>
-                <div class="metric-icon"><i data-lucide="wallet"></i></div>
-              </div>
-              <div class="metric-value" id="metricTotalBalance">R$ 0,00</div>
-              <div class="metric-bottom">
-                <span class="trend-badge up"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> Seguro</span>
-                <span>Todas as contas somadas</span>
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title"><i data-lucide="bar-chart-3"></i> Fluxo de Caixa Mensal</div>
+                <div class="card-subtitle">Evolução comparativa de Receitas vs Despesas</div>
               </div>
             </div>
-
-            <div class="metric-card income">
-              <div class="metric-top">
-                <span class="metric-label">Receitas do Mês</span>
-                <div class="metric-icon"><i data-lucide="arrow-down-left"></i></div>
-              </div>
-              <div class="metric-value" id="metricTotalIncome">R$ 0,00</div>
-              <div class="metric-bottom">
-                <span class="trend-badge up"><i data-lucide="arrow-up" style="width:12px;height:12px;"></i> +18%</span>
-                <span>vs mês anterior</span>
-              </div>
-            </div>
-
-            <div class="metric-card expense">
-              <div class="metric-top">
-                <span class="metric-label">Despesas do Mês</span>
-                <div class="metric-icon"><i data-lucide="arrow-up-right"></i></div>
-              </div>
-              <div class="metric-value" id="metricTotalExpense">R$ 0,00</div>
-              <div class="metric-bottom">
-                <span class="trend-badge down"><i data-lucide="arrow-down" style="width:12px;height:12px;"></i> Sob controle</span>
-                <span>Faturas e contas</span>
-              </div>
-            </div>
-
-            <div class="metric-card savings">
-              <div class="metric-top">
-                <span class="metric-label">Taxa de Poupança</span>
-                <div class="metric-icon"><i data-lucide="pie-chart"></i></div>
-              </div>
-              <div class="metric-value" id="metricSavingsRate">0%</div>
-              <div class="metric-bottom">
-                <span class="trend-badge up"><i data-lucide="sparkles" style="width:12px;height:12px;"></i> Meta atingida</span>
-                <span>da renda líquida retida</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- GRÁFICOS: FLUXO DE CAIXA & CATEGORIAS -->
-          <div class="dashboard-grid-2">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i data-lucide="activity"></i> Evolução de Fluxo de Caixa</h3>
-                <span style="font-size: 0.8rem; color: var(--text-secondary);">Últimos 6 meses</span>
-              </div>
-              <div style="height: 290px; position: relative;">
-                <canvas id="cashflowChart"></canvas>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i data-lucide="pie-chart"></i> Despesas por Categoria</h3>
-              </div>
-              <div style="height: 290px; position: relative;">
-                <canvas id="categoryDonutChart"></canvas>
-              </div>
-            </div>
-          </div>
-
-          <!-- CARTÕES RÁPIDOS & ÚLTIMOS LANÇAMENTOS -->
-          <div class="dashboard-grid-2">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i data-lucide="clock"></i> Últimas Transações</h3>
-                <button class="btn btn-secondary btn-sm" onclick="App.switchTab('transactions')">Ver todas</button>
-              </div>
-              <div class="table-responsive">
-                <table class="table-custom">
-                  <thead>
-                    <tr>
-                      <th>Lançamento</th>
-                      <th>Categoria</th>
-                      <th>Status</th>
-                      <th>Valor</th>
-                    </tr>
-                  </thead>
-                  <tbody id="recentTransactionsList">
-                    <!-- Gerado via JavaScript -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i data-lucide="credit-card"></i> Cartões Ativos</h3>
-                <button class="btn btn-secondary btn-sm" onclick="App.switchTab('accounts')">Gerenciar</button>
-              </div>
-              <div id="dashboardCardsContainer" style="display: flex; flex-direction: column; gap: 16px;">
-                <!-- Gerado via JavaScript -->
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 2. SEÇÃO: TRANSAÇÕES / EXTRATO -->
-        <section class="view-section" id="section-transactions">
-          <div class="card" style="margin-bottom: 24px;">
-            <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between;">
-              <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; flex: 1;">
-                <input type="text" id="searchTx" class="form-control" placeholder="Buscar por descrição ou categoria..." style="max-width: 320px;">
-                
-                <select id="filterTxType" class="form-control" style="width: auto; min-width: 150px;">
-                  <option value="all">Todos os Tipos</option>
-                  <option value="income">Apenas Receitas (+)</option>
-                  <option value="expense">Apenas Despesas (-)</option>
-                </select>
-
-                <select id="filterTxStatus" class="form-control" style="width: auto; min-width: 150px;">
-                  <option value="all">Todos os Status</option>
-                  <option value="paid">Confirmados / Pagos</option>
-                  <option value="pending">Pendentes</option>
-                </select>
-              </div>
-
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <span id="txFilteredCount" style="font-size: 0.85rem; color: var(--text-secondary);"></span>
-                <button class="btn btn-primary" onclick="TransactionsManager.openNewTransactionModal()">
-                  <i data-lucide="plus"></i> Novo Lançamento
-                </button>
-              </div>
+            <div style="position:relative; height: 260px;">
+              <canvas id="chart-fluxo-caixa"></canvas>
             </div>
           </div>
 
           <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title"><i data-lucide="pie-chart"></i> Despesas por Categoria</div>
+                <div class="card-subtitle">Distribuição proporcional de gastos</div>
+              </div>
+            </div>
+            <div style="position:relative; height: 260px;">
+              <canvas id="chart-categorias-despesas"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions & Pending Bills Grid -->
+        <div style="display:grid; grid-template-columns: 2fr 1.2fr; gap:20px;">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><i data-lucide="history"></i> Últimos Lançamentos</div>
+              <button class="btn btn-outline btn-sm" onclick="App.switchTab('transactions')">Ver Todos</button>
+            </div>
             <div class="table-responsive">
-              <table class="table-custom">
+              <table class="data-table">
                 <thead>
                   <tr>
-                    <th>Lançamento</th>
+                    <th>Descrição</th>
                     <th>Categoria</th>
+                    <th>Conta</th>
+                    <th>Valor</th>
                     <th>Status</th>
-                    <th>Valor</th>
-                    <th style="width: 100px;">Ações</th>
                   </tr>
                 </thead>
-                <tbody id="allTransactionsList">
-                  <!-- Gerado via JavaScript -->
-                </tbody>
+                <tbody id="dashboard-recent-txs"></tbody>
               </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- 3. SEÇÃO: CONTAS E CARTÕES -->
-        <section class="view-section" id="section-accounts">
-          <div class="metrics-grid" style="margin-bottom: 24px;">
-            <div class="metric-card balance">
-              <div class="metric-top">
-                <span class="metric-label">Patrimônio Líquido em Contas</span>
-                <div class="metric-icon"><i data-lucide="landmark"></i></div>
-              </div>
-              <div class="metric-value" id="accountsTotalBalance">R$ 0,00</div>
-              <p style="font-size: 0.78rem; color: var(--text-secondary);">Disponível para movimentação imediata</p>
-            </div>
-
-            <div class="metric-card expense">
-              <div class="metric-top">
-                <span class="metric-label">Limite Total de Crédito</span>
-                <div class="metric-icon"><i data-lucide="credit-card"></i></div>
-              </div>
-              <div class="metric-value" id="accountsTotalLimit">R$ 0,00</div>
-              <p style="font-size: 0.78rem; color: var(--text-secondary);">Soma dos limites de todos os cartões</p>
-            </div>
-
-            <div class="metric-card income">
-              <div class="metric-top">
-                <span class="metric-label">Limite Disponível Atual</span>
-                <div class="metric-icon"><i data-lucide="shield-alert"></i></div>
-              </div>
-              <div class="metric-value" id="accountsAvailableLimit">R$ 0,00</div>
-              <p style="font-size: 0.78rem; color: var(--text-secondary);">Margem livre para novos gastos</p>
-            </div>
-          </div>
-
-          <div class="card" style="margin-bottom: 24px;">
-            <div class="card-header">
-              <h3 class="card-title"><i data-lucide="credit-card"></i> Carteira Digital e Contas Bancárias</h3>
-              <button class="btn btn-primary btn-sm" onclick="AccountsManager.openNewAccountModal()">
-                <i data-lucide="plus"></i> Adicionar Nova Conta
-              </button>
-            </div>
-            <div class="cards-slider" id="accountsCardsContainer">
-              <!-- Gerado via JavaScript -->
-            </div>
-          </div>
-        </section>
-
-        <!-- 4. SEÇÃO: METAS E ORÇAMENTOS -->
-        <section class="view-section" id="section-budgets">
-          <div class="card" style="margin-bottom: 28px;">
-            <div class="card-header">
-              <div>
-                <h3 class="card-title"><i data-lucide="target"></i> Cofrinhos e Metas de Economia</h3>
-                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">Planeje e acumule para seus maiores sonhos</p>
-              </div>
-              <button class="btn btn-primary btn-sm" onclick="BudgetsManager.openNewGoalModal()">
-                <i data-lucide="plus"></i> Nova Meta
-              </button>
-            </div>
-            <div class="goals-grid" id="goalsContainer">
-              <!-- Gerado via JavaScript -->
             </div>
           </div>
 
           <div class="card">
             <div class="card-header">
-              <div>
-                <h3 class="card-title"><i data-lucide="sliders"></i> Tetos de Gastos Mensais por Categoria</h3>
-                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">Monitore o limite para não estourar o orçamento do mês</p>
-              </div>
+              <div class="card-title"><i data-lucide="clock"></i> Vencimentos Próximos</div>
+              <button class="btn btn-outline btn-sm" onclick="App.switchTab('bills')">Gerenciar</button>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px;" id="budgetsContainer">
-              <!-- Gerado via JavaScript -->
-            </div>
+            <div id="dashboard-pending-alerts"></div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <!-- 5. SEÇÃO: SIMULADOR DE JUROS COMPOSTOS -->
-        <section class="view-section" id="section-simulator">
-          <div class="dashboard-grid-2">
-            <!-- Formulário de Parâmetros -->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i data-lucide="calculator"></i> Parâmetros da Simulação</h3>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label" for="simInitial">Aporte Inicial (R$)</label>
-                  <input type="number" id="simInitial" class="form-control" value="5000" step="500">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="simMonthly">Aporte Mensal (R$)</label>
-                  <input type="number" id="simMonthly" class="form-control" value="1000" step="100">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label" for="simRate">Rentabilidade Anual Estimada (% a.a.)</label>
-                  <input type="number" id="simRate" class="form-control" value="11.5" step="0.5">
-                  <span style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px;">Ex: 100% CDI ~ 10,5% a 12% a.a.</span>
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="simYears">Período de Investimento (Anos)</label>
-                  <input type="number" id="simYears" class="form-control" value="10" min="1" max="40">
-                  <input type="range" id="simYearsRange" min="1" max="30" value="10" style="margin-top: 10px; width: 100%; accent-color: var(--secondary);">
-                </div>
-              </div>
-
-              <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-                <div style="background: rgba(255,255,255,0.04); border-radius: var(--radius-md); padding: 14px; border: 1px solid var(--border-glass);">
-                  <span style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Total Investido (Do Bolso)</span>
-                  <div id="simTotalInvested" style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-top: 4px;">R$ 0,00</div>
-                </div>
-                <div style="background: rgba(16,185,129,0.1); border-radius: var(--radius-md); padding: 14px; border: 1px solid rgba(16,185,129,0.2);">
-                  <span style="font-size: 0.75rem; color: var(--primary); text-transform: uppercase;">Juros Compostos Acumulados</span>
-                  <div id="simTotalInterest" style="font-size: 1.2rem; font-weight: 700; color: var(--primary); margin-top: 4px;">R$ 0,00</div>
-                </div>
-              </div>
-
-              <div style="background: linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(16,185,129,0.15) 100%); border-radius: var(--radius-md); padding: 18px; margin-top: 14px; border: 1px solid rgba(99,102,241,0.3); text-align: center;">
-                <span style="font-size: 0.8rem; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.05em;">Patrimônio Final Estimado</span>
-                <div id="simTotalFinal" style="font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; color: white; margin-top: 4px; letter-spacing: -0.02em;">R$ 0,00</div>
-              </div>
-            </div>
-
-            <!-- Gráfico de Projeção Patrimonial -->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i data-lucide="line-chart"></i> Curva de Crescimento Patrimonial</h3>
-                <span style="font-size: 0.8rem; color: var(--text-secondary);">Efeito dos Juros Compostos</span>
-              </div>
-              <div style="height: 380px; position: relative;">
-                <canvas id="projectionChart"></canvas>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 6. SEÇÃO: BACKUP, EXPORTAÇÃO E AJUSTES -->
-        <section class="view-section" id="section-settings">
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i data-lucide="download"></i> Exportação de Dados</h3>
-              </div>
-              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 20px;">
-                Exporte todos os seus lançamentos financeiros para planilhas compatíveis com Excel, Google Sheets ou realize um backup completo de segurança.
-              </p>
-              <div style="display: flex; flex-direction: column; gap: 12px;">
-                <button class="btn btn-secondary" id="btnExportCSV">
-                  <i data-lucide="file-spreadsheet"></i>
-                  <span>Baixar Planilha CSV de Lançamentos</span>
-                </button>
-                <button class="btn btn-secondary" id="btnExportJSON">
-                  <i data-lucide="file-code"></i>
-                  <span>Exportar Backup Completo (.JSON)</span>
-                </button>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i data-lucide="rotate-ccw"></i> Restauração & Dados</h3>
-              </div>
-              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 20px;">
-                Seus dados são salvos localmente de forma segura e imediata no seu navegador (LocalStorage). Caso deseje recarregar os dados de demonstração originais:
-              </p>
-              <button class="btn btn-danger" id="btnResetDemo">
-                <i data-lucide="alert-triangle"></i>
-                <span>Restaurar Dados de Exemplo</span>
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <!-- 7. SEÇÃO: GESTÃO DE CHEQUES (IMAGEM 1) -->
-        <section class="view-section" id="section-checks">
-          <div class="metrics-grid" style="margin-bottom: 24px;">
-            <div class="metric-card savings">
-              <div class="metric-top">
-                <span class="metric-label">Cheques a Compensar</span>
-                <div class="metric-icon"><i data-lucide="clock"></i></div>
-              </div>
-              <div class="metric-value">R$ 7.750,00</div>
-              <div class="metric-bottom">
-                <span class="trend-badge down"><i data-lucide="alert-circle" style="width:12px;height:12px;"></i> 3 pendentes</span>
-                <span>no período atual</span>
-              </div>
-            </div>
-
-            <div class="metric-card income">
-              <div class="metric-top">
-                <span class="metric-label">Cheques Compensados</span>
-                <div class="metric-icon"><i data-lucide="check-circle-2"></i></div>
-              </div>
-              <div class="metric-value">R$ 15.200,00</div>
-              <div class="metric-bottom">
-                <span class="trend-badge up"><i data-lucide="check" style="width:12px;height:12px;"></i> 6 compensados</span>
-                <span>este mês</span>
-              </div>
-            </div>
-
-            <div class="metric-card balance">
-              <div class="metric-top">
-                <span class="metric-label">Total Emitido / Carteira</span>
-                <div class="metric-icon"><i data-lucide="scroll-text"></i></div>
-              </div>
-              <div class="metric-value">R$ 22.950,00</div>
-              <div class="metric-bottom">
-                <span>9 cheques registrados no talão</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title"><i data-lucide="scroll-text"></i> Talão & Controle de Cheques Emitidos</h3>
-              <button class="btn btn-primary btn-sm" onclick="App.showToast('Funcionalidade de emissão aberta!')">
-                <i data-lucide="plus"></i> Novo Cheque
-              </button>
-            </div>
-            <div class="table-responsive">
-              <table class="table-custom">
-                <thead>
-                  <tr>
-                    <th>Nº Cheque</th>
-                    <th>Favorecido / Destino</th>
-                    <th>Banco Emissor</th>
-                    <th>Data "Bom Para"</th>
-                    <th>Valor</th>
-                    <th>Situação</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>#004521</strong></td>
-                    <td>Madeireira Aliança Ceará</td>
-                    <td>Banco Inter</td>
-                    <td>10/09/2026</td>
-                    <td class="amount-expense">R$ 3.500,00</td>
-                    <td><span class="badge badge-paid">Compensado</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>#004522</strong></td>
-                    <td>Fornecedor Ferragens & Puxadores</td>
-                    <td>Nubank Principal</td>
-                    <td>18/09/2026</td>
-                    <td class="amount-expense">R$ 1.800,00</td>
-                    <td><span class="badge badge-pending">Pendente</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>#004523</strong></td>
-                    <td>Oficina de Tintas & Vernizes</td>
-                    <td>Banco Inter</td>
-                    <td>25/09/2026</td>
-                    <td class="amount-expense">R$ 2.450,00</td>
-                    <td><span class="badge badge-pending">Pendente</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- 8. SEÇÃO: AGENDA & LEMBRETES (IMAGEM 1) -->
-        <section class="view-section" id="section-agenda">
-          <div class="card-header" style="margin-bottom: 20px;">
+      <!-- 2. TRANSACTIONS TAB -->
+      <section class="tab-panel" id="tab-transactions">
+        <div class="card">
+          <div class="card-header">
             <div>
-              <h3 class="card-title"><i data-lucide="calendar-clock"></i> Agenda Financeira & Compromissos</h3>
-              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">Prazos de vencimento, pagamentos e eventos agendados</p>
+              <div class="card-title"><i data-lucide="arrow-left-right"></i> Extrato de Transações</div>
+              <div class="card-subtitle">Pesquise, filtre e gerencie todas as receitas e despesas</div>
             </div>
-            <button class="btn btn-primary btn-sm" onclick="App.showToast('Novo lembrete adicionado à agenda!')">
-              <i data-lucide="plus"></i> Novo Lembrete
+            <button class="btn btn-primary btn-sm" onclick="TransactionsModule.openModal()">
+              <i data-lucide="plus"></i> Nova Transação
             </button>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-            <div class="card" style="border-left: 4px solid var(--expense);">
-              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                <div>
-                  <span class="badge badge-pending">Vence Amanhã</span>
-                  <h4 style="font-size: 1.05rem; font-weight:700; margin-top: 8px;">Vencimento Cartão Nubank</h4>
-                  <p style="font-size: 0.8rem; color: var(--text-secondary);">Fatura fechada - Débito automático ou PIX</p>
-                </div>
-                <div style="font-size: 1.1rem; font-weight:800; color: var(--expense);">R$ 3.420,50</div>
-              </div>
-              <div style="margin-top: 14px; font-size: 0.78rem; color: var(--text-muted); display:flex; gap: 8px; align-items:center;">
-                <i data-lucide="calendar" style="width:13px; height:13px;"></i> 10 de Setembro de 2026
-              </div>
+          <!-- Filter Toolbar -->
+          <div class="filter-row">
+            <div class="search-box">
+              <i data-lucide="search"></i>
+              <input type="text" id="tx-search" placeholder="Pesquisar por descrição ou categoria...">
             </div>
-
-            <div class="card" style="border-left: 4px solid var(--warning);">
-              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                <div>
-                  <span class="badge badge-pending">Em 3 Dias</span>
-                  <h4 style="font-size: 1.05rem; font-weight:700; margin-top: 8px;">Aluguel & Condomínio</h4>
-                  <p style="font-size: 0.8rem; color: var(--text-secondary);">Boleto emitido pela imobiliária</p>
-                </div>
-                <div style="font-size: 1.1rem; font-weight:800; color: var(--expense);">R$ 1.950,00</div>
-              </div>
-              <div style="margin-top: 14px; font-size: 0.78rem; color: var(--text-muted); display:flex; gap: 8px; align-items:center;">
-                <i data-lucide="calendar" style="width:13px; height:13px;"></i> 12 de Setembro de 2026
-              </div>
-            </div>
-
-            <div class="card" style="border-left: 4px solid var(--primary);">
-              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                <div>
-                  <span class="badge badge-paid">Recebimento Previsto</span>
-                  <h4 style="font-size: 1.05rem; font-weight:700; margin-top: 8px;">Consultoria & Serviços TI</h4>
-                  <p style="font-size: 0.8rem; color: var(--text-secondary);">Pagamento de contrato mensal via PIX PJ</p>
-                </div>
-                <div style="font-size: 1.1rem; font-weight:800; color: var(--primary);">+ R$ 4.500,00</div>
-              </div>
-              <div style="margin-top: 14px; font-size: 0.78rem; color: var(--text-muted); display:flex; gap: 8px; align-items:center;">
-                <i data-lucide="calendar" style="width:13px; height:13px;"></i> 15 de Setembro de 2026
-              </div>
+            <div style="display:flex; gap:10px;">
+              <select class="form-select" id="tx-filter-type" style="width: auto;">
+                <option value="all">Todos os Tipos</option>
+                <option value="income">Apenas Receitas</option>
+                <option value="expense">Apenas Despesas</option>
+              </select>
+              <select class="form-select" id="tx-filter-category" style="width: auto;">
+                <option value="all">Todas Categorias</option>
+              </select>
             </div>
           </div>
-        </section>
 
-        <!-- 9. SEÇÃO: RELATÓRIOS & GRÁFICOS (IMAGEM 1) -->
-        <section class="view-section" id="section-reports">
-          <div class="dashboard-grid-2">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i data-lucide="pie-chart"></i> Demonstrativo Financeiro Mensal (DRE)</h3>
-                <span style="font-size: 0.8rem; color: var(--text-secondary);">Mês Vigente</span>
-              </div>
-              <div class="table-responsive">
-                <table class="table-custom">
-                  <tbody>
-                    <tr>
-                      <td>(+) Receita Operacional Bruta</td>
-                      <td style="text-align: right; color: var(--income); font-weight: 700;">R$ 13.415,50</td>
-                    </tr>
-                    <tr>
-                      <td>(-) Custos Fixos &amp; Moradia</td>
-                      <td style="text-align: right; color: var(--expense); font-weight: 700;">- R$ 2.099,90</td>
-                    </tr>
-                    <tr>
-                      <td>(-) Despesas Variáveis &amp; Consumo</td>
-                      <td style="text-align: right; color: var(--expense); font-weight: 700;">- R$ 1.312,20</td>
-                    </tr>
-                    <tr style="border-top: 2px solid var(--border-glass);">
-                      <td><strong>(=) Lucro Líquido / Economia Acumulada</strong></td>
-                      <td style="text-align: right; color: #10b981; font-weight: 900; font-size: 1.1rem;">R$ 10.003,40</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title"><i data-lucide="bar-chart-2"></i> Eficiência Financeira</h3>
-              </div>
-              <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md); padding: 20px; text-align: center; margin-bottom: 16px;">
-                <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.05em;">Taxa de Poupança Líquida</span>
-                <div style="font-family:'Outfit',sans-serif; font-size: 2.8rem; font-weight: 900; color: #10b981; margin: 4px 0;">74.6%</div>
-                <p style="font-size: 0.85rem; color: #cbd5e1;">Excelente saúde financeira! Gastos controlados abaixo de 30% da receita total.</p>
-              </div>
-            </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Descrição</th>
+                  <th>Data</th>
+                  <th>Categoria</th>
+                  <th>Conta / Origem</th>
+                  <th>Valor</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tx-table-body"></tbody>
+            </table>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <!-- 10. SEÇÃO: GESTÃO & USUÁRIOS (IMAGEM 1 E 2) -->
-        <section class="view-section" id="section-users">
-          <div class="card" style="margin-bottom: 24px;">
-            <div class="card-header">
-              <div>
-                <h3 class="card-title"><i data-lucide="users"></i> Usuários &amp; Credenciais de Acesso</h3>
-                <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">Gerenciamento de contas e permissões de acesso ao sistema</p>
-              </div>
-              <button class="btn btn-primary btn-sm" onclick="App.showToast('Janela de novo usuário aberta!')">
-                <i data-lucide="user-plus"></i> Novo Usuário
+      <!-- 3. ACCOUNTS TAB -->
+      <section class="tab-panel" id="tab-accounts">
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i data-lucide="landmark"></i> Contas Bancárias &amp; Carteiras</div>
+              <div class="card-subtitle">Controle de saldos por instituição financeira</div>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <button class="btn btn-outline btn-sm" onclick="AccountsModule.openTransferModal()">
+                <i data-lucide="arrow-left-right"></i> Fazer Transferência
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="AccountsModule.openNewAccountModal()">
+                <i data-lucide="plus"></i> Nova Conta
               </button>
             </div>
+          </div>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px;" id="accounts-cards-grid"></div>
+        </div>
+      </section>
 
-            <div class="table-responsive">
-              <table class="table-custom">
-                <thead>
-                  <tr>
-                    <th>Usuário</th>
-                    <th>Nível de Acesso</th>
-                    <th>Status</th>
-                    <th>Último Acesso</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <div class="tx-item">
-                        <div class="sd-user-avatar-sd">SD</div>
-                        <div class="tx-info">
-                          <h5>samuel david</h5>
-                          <p>samuel.david@empresa.com.br</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td><span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);">Administrador Master</span></td>
-                    <td><span class="badge badge-paid">Ativo Agora</span></td>
-                    <td>Hoje, 22:40</td>
-                    <td>
-                      <button class="btn btn-secondary btn-sm" onclick="App.showToast('Alteração de senha solicitada')">Alterar Senha</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+      <!-- 4. CARDS TAB -->
+      <section class="tab-panel" id="tab-cards">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i data-lucide="credit-card"></i> Cartões de Crédito</div>
+              <div class="card-subtitle">Acompanhe faturas abertas, limites disponíveis e datas de fechamento</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="CardsModule.openNewCardModal()">
+              <i data-lucide="plus"></i> Novo Cartão
+            </button>
+          </div>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:18px;" id="cards-grid-container"></div>
+        </div>
+      </section>
+
+      <!-- 5. BILLS TAB -->
+      <section class="tab-panel" id="tab-bills">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i data-lucide="calendar-clock"></i> Contas a Pagar &amp; Receber</div>
+              <div class="card-subtitle">Agendamentos, contas fixas e fluxo programado</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="BillsModule.openNewBillModal()">
+              <i data-lucide="plus"></i> Agendar Conta
+            </button>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:20px;">
+            <div class="card" style="background:var(--rose-bg); border-color:rgba(244,63,94,0.3);">
+              <div style="font-size:0.8rem; color:var(--text-secondary); text-transform:uppercase;">Total Pendente a Pagar</div>
+              <div style="font-family:var(--font-heading); font-size:1.8rem; font-weight:800; color:var(--rose-light);" id="bills-total-payable">R$ 0,00</div>
+            </div>
+            <div class="card" style="background:var(--emerald-bg); border-color:rgba(16,185,129,0.3);">
+              <div style="font-size:0.8rem; color:var(--text-secondary); text-transform:uppercase;">Total Previsto a Receber</div>
+              <div style="font-family:var(--font-heading); font-size:1.8rem; font-weight:800; color:var(--emerald-light);" id="bills-total-receivable">R$ 0,00</div>
             </div>
           </div>
-        </section>
 
-      </div>
+          <!-- Filter buttons -->
+          <div style="display:flex; gap:8px; margin-bottom:16px;">
+            <button class="btn btn-outline btn-sm btn-bill-filter active" data-filter="all">Todas as Contas</button>
+            <button class="btn btn-outline btn-sm btn-bill-filter" data-filter="payable">Apenas A Pagar</button>
+            <button class="btn btn-outline btn-sm btn-bill-filter" data-filter="receivable">Apenas A Receber</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Descrição</th>
+                  <th>Tipo</th>
+                  <th>Vencimento</th>
+                  <th>Valor</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="bills-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. GOALS TAB -->
+      <section class="tab-panel" id="tab-goals">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i data-lucide="target"></i> Metas Financeiras &amp; Sonhos</div>
+              <div class="card-subtitle">Acompanhe seu progresso de poupança e reservas</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="GoalsModule.openNewGoalModal()">
+              <i data-lucide="plus"></i> Nova Meta
+            </button>
+          </div>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:18px;" id="goals-grid-container"></div>
+        </div>
+      </section>
+
+      <!-- 7. INVESTMENTS TAB -->
+      <section class="tab-panel" id="tab-investments">
+        <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:20px;">
+          <!-- Active Portfolio -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title"><i data-lucide="trending-up"></i> Carteira de Ativos</div>
+                <div class="card-subtitle">Posições em Renda Fixa, CDBs e Fundos Imobiliários</div>
+              </div>
+            </div>
+            <div id="investments-list-container"></div>
+          </div>
+
+          <!-- Compound Interest Simulator -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title"><i data-lucide="calculator"></i> Simulador de Juros Compostos</div>
+                <div class="card-subtitle">Projete o crescimento do seu capital no tempo</div>
+              </div>
+            </div>
+
+            <div class="form-row" style="margin-bottom:12px;">
+              <div class="form-group">
+                <label class="form-label">Aporte Inicial (R$)</label>
+                <input type="number" class="form-input" id="sim-initial" value="5000">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Aporte Mensal (R$)</label>
+                <input type="number" class="form-input" id="sim-monthly" value="500">
+              </div>
+            </div>
+
+            <div class="form-row" style="margin-bottom:16px;">
+              <div class="form-group">
+                <label class="form-label">Taxa Anual (%)</label>
+                <input type="number" step="0.1" class="form-input" id="sim-rate" value="10.75">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Período (Meses)</label>
+                <input type="number" class="form-input" id="sim-period" value="36">
+              </div>
+            </div>
+
+            <div style="background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.25); border-radius:var(--radius-lg); padding:18px;">
+              <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Montante Final Acumulado</div>
+              <div style="font-family:var(--font-heading); font-size:1.9rem; font-weight:800; color:var(--gold-light); margin-bottom:12px;" id="sim-result-total">R$ 0,00</div>
+
+              <div style="display:flex; justify-content:space-between; font-size:0.85rem; padding-top:10px; border-top:1px dashed rgba(255,255,255,0.1);">
+                <span style="color:var(--text-secondary);">Total Investido do Bolso:</span>
+                <b id="sim-result-invested">R$ 0,00</b>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-top:6px;">
+                <span style="color:var(--text-secondary);">Total Ganho em Juros:</span>
+                <b style="color:var(--emerald);" id="sim-result-interest">R$ 0,00</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. REPORTS TAB -->
+      <section class="tab-panel" id="tab-reports">
+        <div id="reports-dre-container"></div>
+      </section>
+
+      <!-- 9. SETTINGS & BACKUP TAB -->
+      <section class="tab-panel" id="tab-settings">
+        <div class="card" style="max-width:800px; margin:0 auto;">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i data-lucide="settings"></i> Configurações do Sistema &amp; Backup</div>
+              <div class="card-subtitle">Segurança, persistência e exportação de dados</div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px;">
+              <h4 style="color:#fff; font-size:0.95rem; margin-bottom:6px;">📦 Backup Completo dos Dados</h4>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">Baixe um arquivo de segurança contendo todas as suas contas, lançamentos, metas e investimentos.</p>
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn btn-primary btn-sm" onclick="StorageEngine.exportFullBackup()">
+                  <i data-lucide="download"></i> Baixar Arquivo de Backup (.json)
+                </button>
+                <label class="btn btn-outline btn-sm" style="cursor:pointer;">
+                  <i data-lucide="upload"></i> Restaurar Arquivo de Backup
+                  <input type="file" id="input-backup-file" accept=".json" style="display:none;">
+                </label>
+              </div>
+            </div>
+
+            <div style="background:rgba(244,63,94,0.05); border:1px solid rgba(244,63,94,0.25); border-radius:var(--radius-md); padding:16px;">
+              <h4 style="color:var(--rose-light); font-size:0.95rem; margin-bottom:6px;">⚠️ Restaurar Padrão de Fábrica</h4>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">Restaura os dados iniciais de demonstração. Use com cautela se você já inseriu seus próprios dados.</p>
+              <button class="btn btn-outline btn-sm" style="color:var(--rose); border-color:rgba(244,63,94,0.4);" onclick="App.resetData()">
+                <i data-lucide="refresh-ccw"></i> Redefinir para Dados Padrão
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 
-  <!-- MODAL: NOVO LANÇAMENTO -->
-  <div class="modal-overlay" id="transactionModal">
-    <div class="modal-container">
+  <!-- ══ MODAL: NOVA TRANSAÇÃO ══ -->
+  <div class="modal-overlay" id="modal-transaction">
+    <div class="modal-card">
       <div class="modal-header">
-        <h3 style="font-family:'Outfit',sans-serif; font-size:1.2rem; font-weight:700;"><i data-lucide="plus-circle" style="vertical-align:middle; color:var(--primary)"></i> Novo Lançamento</h3>
-        <button class="btn-icon" onclick="TransactionsManager.closeTransactionModal()"><i data-lucide="x"></i></button>
+        <h3><i data-lucide="plus-circle"></i> Novo Lançamento</h3>
+        <button class="modal-close" onclick="TransactionsModule.closeModal()">&times;</button>
       </div>
-      <form id="transactionForm">
+      <form id="form-new-tx">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label" for="txDescription">Descrição do Lançamento</label>
-            <input type="text" id="txDescription" class="form-control" placeholder="Ex: Supermercado, Salário, Internet" required>
+            <label class="form-label">Tipo de Lançamento</label>
+            <select class="form-select" id="new-tx-type">
+              <option value="expense">Despesa (-)</option>
+              <option value="income">Receita (+)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Descrição</label>
+            <input type="text" class="form-input" id="new-tx-desc" placeholder="Ex: Supermercado, Salário, Frete..." required>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label" for="txAmount">Valor (R$)</label>
-              <input type="number" id="txAmount" class="form-control" placeholder="0,00" step="0.01" min="0.01" required>
+              <label class="form-label">Valor (R$)</label>
+              <input type="number" step="0.01" class="form-input" id="new-tx-amount" placeholder="0,00" required>
             </div>
             <div class="form-group">
-              <label class="form-label" for="txType">Tipo</label>
-              <select id="txType" class="form-control">
-                <option value="expense">Despesa (-)</option>
-                <option value="income">Receita (+)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="txCategory">Categoria</label>
-              <select id="txCategory" class="form-control">
-                <option value="Alimentação">Alimentação</option>
-                <option value="Moradia">Moradia</option>
-                <option value="Transporte">Transporte</option>
-                <option value="Lazer & Restaurantes">Lazer & Restaurantes</option>
-                <option value="Saúde & Bem-estar">Saúde & Bem-estar</option>
-                <option value="Salário">Salário</option>
-                <option value="Serviços">Serviços</option>
-                <option value="Investimentos">Investimentos</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="txAccount">Conta / Cartão</label>
-              <select id="txAccount" class="form-control">
-                <!-- Preenchido via JS -->
-              </select>
+              <label class="form-label">Data</label>
+              <input type="date" class="form-input" id="new-tx-date" required>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label" for="txDate">Data</label>
-              <input type="date" id="txDate" class="form-control" required>
+              <label class="form-label">Categoria</label>
+              <input type="text" class="form-input" id="new-tx-category" placeholder="Ex: Alimentação, Serviços, Lazer..." required>
             </div>
             <div class="form-group">
-              <label class="form-label" for="txStatus">Situação</label>
-              <select id="txStatus" class="form-control">
-                <option value="paid">Confirmado / Pago</option>
-                <option value="pending">Pendente / Agendado</option>
-              </select>
+              <label class="form-label">Conta / Origem</label>
+              <select class="form-select" id="new-tx-account"></select>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="TransactionsManager.closeTransactionModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary"><i data-lucide="check"></i> Salvar Lançamento</button>
+          <button type="button" class="btn btn-outline" onclick="TransactionsModule.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar Lançamento</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL: NOVA CONTA -->
-  <div class="modal-overlay" id="accountModal">
-    <div class="modal-container">
+  <!-- ══ MODAL: TRANSFERÊNCIA ENTRE CONTAS ══ -->
+  <div class="modal-overlay" id="modal-transfer">
+    <div class="modal-card">
       <div class="modal-header">
-        <h3 style="font-family:'Outfit',sans-serif; font-size:1.2rem; font-weight:700;"><i data-lucide="credit-card" style="vertical-align:middle; color:var(--secondary)"></i> Nova Conta / Cartão</h3>
-        <button class="btn-icon" onclick="AccountsManager.closeAccountModal()"><i data-lucide="x"></i></button>
+        <h3><i data-lucide="arrow-left-right"></i> Transferência entre Contas</h3>
+        <button class="modal-close" onclick="AccountsModule.closeTransferModal()">&times;</button>
       </div>
-      <form id="accountForm">
+      <form id="form-transfer">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label" for="accName">Nome da Conta / Identificação</label>
-            <input type="text" id="accName" class="form-control" placeholder="Ex: Nubank Pessoal, Inter Empresas, Carteira" required>
+            <label class="form-label">Conta de Origem (Debitar)</label>
+            <select class="form-select" id="transfer-from-account"></select>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="accBank">Banco / Instituição</label>
-              <input type="text" id="accBank" class="form-control" placeholder="Ex: Nubank, Itaú, Santander" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="accColor">Estilo do Cartão</label>
-              <select id="accColor" class="form-control">
-                <option value="purple">Roxo Neon (Nubank / Velvet)</option>
-                <option value="emerald">Verde Esmeralda (Invest / PJ)</option>
-                <option value="dark">Preto Black Diamond</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label class="form-label">Conta de Destino (Creditar)</label>
+            <select class="form-select" id="transfer-to-account"></select>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="accBalance">Saldo Inicial em Conta (R$)</label>
-              <input type="number" id="accBalance" class="form-control" placeholder="0,00" step="0.01" value="0.00">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="accLimit">Limite de Crédito (R$)</label>
-              <input type="number" id="accLimit" class="form-control" placeholder="0,00" step="0.01" value="0.00">
-            </div>
+          <div class="form-group">
+            <label class="form-label">Valor da Transferência (R$)</label>
+            <input type="number" step="0.01" class="form-input" id="transfer-amount" placeholder="0,00" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Observação (Opcional)</label>
+            <input type="text" class="form-input" id="transfer-desc" placeholder="Ex: Transferência para reserva">
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="AccountsManager.closeAccountModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary"><i data-lucide="check"></i> Cadastrar Conta</button>
+          <button type="button" class="btn btn-outline" onclick="AccountsModule.closeTransferModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Efetuar Transferência</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL: NOVA META -->
-  <div class="modal-overlay" id="goalModal">
-    <div class="modal-container">
-      <div class="modal-header">
-        <h3 style="font-family:'Outfit',sans-serif; font-size:1.2rem; font-weight:700;"><i data-lucide="target" style="vertical-align:middle; color:var(--accent-gold)"></i> Nova Meta / Cofrinho</h3>
-        <button class="btn-icon" onclick="BudgetsManager.closeGoalModal()"><i data-lucide="x"></i></button>
-      </div>
-      <form id="goalForm">
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="form-label" for="goalName">Objetivo da Meta</label>
-            <input type="text" id="goalName" class="form-control" placeholder="Ex: Viagem para Praia, Reforma, Reserva" required>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="goalTarget">Valor Alvo (R$)</label>
-              <input type="number" id="goalTarget" class="form-control" placeholder="0,00" step="0.01" min="1" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="goalCurrent">Valor Já Acumulado (R$)</label>
-              <input type="number" id="goalCurrent" class="form-control" placeholder="0,00" step="0.01" value="0.00">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="goalDeadline">Data Limite Desejada</label>
-              <input type="date" id="goalDeadline" class="form-control">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="goalIcon">Ícone</label>
-              <select id="goalIcon" class="form-control">
-                <option value="shield">Escudo (Reserva de Emergência)</option>
-                <option value="plane">Avião (Viagem / Férias)</option>
-                <option value="car">Carro (Veículo)</option>
-                <option value="home">Casa (Imóvel / Reforma)</option>
-                <option value="gift">Presente (Conquista)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="BudgetsManager.closeGoalModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary"><i data-lucide="check"></i> Criar Meta</button>
-        </div>
-      </form>
-    </div>
-  </div>
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
 
-  <!-- SCRIPTS DA APLICAÇÃO (v9.0) -->
-  <script src="js/storage.js?v=9.0"></script>
-  <script src="js/charts.js?v=9.0"></script>
-  <script src="js/transactions.js?v=9.0"></script>
-  <script src="js/accounts.js?v=9.0"></script>
-  <script src="js/budgets.js?v=9.0"></script>
-  <script src="js/simulator.js?v=9.0"></script>
-  <script src="js/app.js?v=9.0"></script>
+  <!-- Application Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/transactions.js"></script>
+  <script src="js/accounts.js"></script>
+  <script src="js/cards.js"></script>
+  <script src="js/bills.js"></script>
+  <script src="js/goals.js"></script>
+  <script src="js/investments.js"></script>
+  <script src="js/reports.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

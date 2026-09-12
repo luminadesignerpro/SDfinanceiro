@@ -1,11 +1,11 @@
 {
-  "name": "SD Finanças Pro",
+  "name": "SD Finanças Enterprise",
   "short_name": "SDFinanças",
-  "description": "Gestão Financeira Inteligente, Metas e Simulador de Investimentos",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0a0e17",
-  "theme_color": "#10b981",
+  "theme_color": "#0a0e17",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "assets/icon-192.png",
