@@ -26,38 +26,149 @@
 </head>
 <body>
 
-  <div class="app-container">
-    <!-- ══ STICKY LUXURY HEADER ══ -->
-    <header class="sd-header">
-      <div class="sd-header-top">
-        <div class="sd-brand">
-          <div class="sd-logo-icon">
-            <i data-lucide="wallet-cards" style="width:24px; height:24px;"></i>
-            <span class="sd-status-dot"></span>
+  <div class="app-layout">
+    <!-- ══════════════════════════════════════════════════
+         BARRA LATERAL EXECUTIVA (IDÊNTICA À IMAGEM 2)
+         ══════════════════════════════════════════════════ -->
+    <aside class="sd-sidebar" id="sidebar">
+      <!-- Topo da Sidebar: Marca e Badge -->
+      <div class="sidebar-header">
+        <div class="sidebar-brand-group">
+          <div class="sd-logo-icon" style="width: 36px; height: 36px; border-radius: 10px;">
+            <i data-lucide="wallet-cards" style="width:18px; height:18px;"></i>
+            <span class="sd-status-dot" style="width:8px; height:8px;"></span>
           </div>
-          <div class="sd-brand-text">
-            <h1>SD Finanças <span class="sd-badge-pro">V1.0 ENTERPRISE</span></h1>
-            <p>Gestão Financeira Inteligente &amp; Patrimônio</p>
-          </div>
-        </div>
-
-        <div class="sd-header-metrics">
-          <div class="header-metric-card">
-            <span class="label">Disponível Total</span>
-            <span class="value" id="header-total-disponivel">R$ 0,00</span>
+          <div class="sidebar-brand-text">
+            <h2>SD Finanças <span class="sd-badge-v1">PRO</span></h2>
           </div>
         </div>
+        <button class="btn-icon mobile-only" id="btn-close-sidebar" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer;">
+          <i data-lucide="x" style="width:18px; height:18px;"></i>
+        </button>
+      </div>
 
-        <div class="sd-header-actions">
-          <button class="btn-new-tx" onclick="TransactionsModule.openModal()">
-            <i data-lucide="plus-circle" style="width:18px; height:18px;"></i>
-            <span>Novo Lançamento</span>
+      <!-- Navegação Lateral -->
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">PRINCIPAL</div>
+        <button class="nav-item active" data-tab="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard Geral</span>
+        </button>
+        <button class="nav-item" data-tab="transactions">
+          <i data-lucide="arrow-left-right"></i>
+          <span>Lançamentos</span>
+        </button>
+        <button class="nav-item" data-tab="accounts">
+          <i data-lucide="landmark"></i>
+          <span>Contas &amp; Carteiras</span>
+        </button>
+        <button class="nav-item" data-tab="cards">
+          <i data-lucide="credit-card"></i>
+          <span>Cartões de Crédito</span>
+        </button>
+        <button class="nav-item" data-tab="bills">
+          <i data-lucide="calendar-clock"></i>
+          <span>Contas a Pagar / Receber</span>
+        </button>
+        <button class="nav-item" data-tab="goals">
+          <i data-lucide="target"></i>
+          <span>Metas &amp; Sonhos</span>
+        </button>
+        <button class="nav-item" data-tab="investments">
+          <i data-lucide="trending-up"></i>
+          <span>Investimentos</span>
+        </button>
+
+        <!-- SEÇÃO PLANEJAMENTO (IMAGEM 2) -->
+        <div class="nav-section-title">PLANEJAMENTO</div>
+        <button class="nav-item" data-tab="agenda" id="sidebar-nav-agenda">
+          <i data-lucide="calendar-clock"></i>
+          <span>Agenda &amp; Lembretes</span>
+          <span class="badge-dark" id="badge-agenda-count">0</span>
+        </button>
+        <button class="nav-item" data-tab="reports">
+          <i data-lucide="pie-chart"></i>
+          <span>Relatórios &amp; Gráficos</span>
+        </button>
+
+        <!-- SEÇÃO SISTEMA (IMAGEM 2) -->
+        <div class="nav-section-title">SISTEMA</div>
+        <button class="nav-item" id="btn-sidebar-users" onclick="UsersModal.open()" type="button">
+          <i data-lucide="users"></i>
+          <span>Gestão &amp; Usuários</span>
+        </button>
+        <button class="nav-item" id="btn-sidebar-settings" onclick="SettingsModal.open()" type="button">
+          <i data-lucide="languages"></i>
+          <span>Idioma &amp; Configurações</span>
+        </button>
+        <button class="nav-item nav-item-lock" id="btn-lock-system" onclick="LockscreenModule.lock()" type="button">
+          <i data-lucide="lock"></i>
+          <span>Bloquear / Tela Login</span>
+        </button>
+      </nav>
+
+      <!-- RODAPÉ DA SIDEBAR: DISPONÍVEL TOTAL + SÉRGIO DANTAS (IMAGEM 2) -->
+      <div class="sidebar-footer">
+        <div class="sidebar-balance-box">
+          <div class="sidebar-balance-title">DISPONÍVEL TOTAL</div>
+          <div class="sidebar-balance-value" id="sidebar-total-disponivel">R$ 46.800,75</div>
+          <div class="sidebar-balance-sub" id="sidebar-uso-limite">Uso de limite: 17%</div>
+        </div>
+
+        <div class="user-profile-bar" onclick="UsersModal.open()" title="Gerenciar Usuários &amp; Sessão">
+          <div class="user-avatar-sd">SD</div>
+          <div class="user-info-text">
+            <div class="user-name" id="sb-username">Sérgio Dantas</div>
+            <div class="user-role" id="sb-userrole">Administrador</div>
+          </div>
+          <button class="btn-user-icon" type="button" title="Gestão &amp; Usuários" onclick="event.stopPropagation(); UsersModal.open()">
+            <i data-lucide="users" style="width: 14px; height: 14px;"></i>
           </button>
         </div>
       </div>
+    </aside>
 
-      <!-- ══ LATERAL SCROLL NAVIGATION TABS ══ -->
-      <div class="sd-nav-container">
+    <!-- Fundo escuro ao abrir menu no celular -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+    <!-- ══════════════════════════════════════════════════
+         ÁREA PRINCIPAL DA APLICAÇÃO (IDÊNTICA À IMAGEM 1)
+         ══════════════════════════════════════════════════ -->
+    <div class="app-main-wrapper">
+      <!-- ══ STICKY LUXURY HEADER (IMAGEM 1) ══ -->
+      <header class="sd-header">
+        <div class="sd-header-top">
+          <div class="sd-brand">
+            <button class="btn-toggle-sidebar" id="btn-toggle-sidebar" title="Menu Lateral" type="button">
+              <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
+            </button>
+            <div class="sd-logo-icon">
+              <i data-lucide="wallet-cards" style="width:24px; height:24px;"></i>
+              <span class="sd-status-dot"></span>
+            </div>
+            <div class="sd-brand-text">
+              <h1>SD Finanças <span class="sd-badge-pro">V1.0 ENTERPRISE</span></h1>
+              <p>Gestão Financeira Inteligente &amp; Patrimônio</p>
+            </div>
+          </div>
+
+          <div class="sd-header-metrics">
+            <div class="header-metric-card">
+              <span class="label">Disponível Total</span>
+              <span class="value" id="header-total-disponivel">R$ 46.800,75</span>
+            </div>
+          </div>
+
+          <div class="sd-header-actions">
+            <button class="btn-new-tx" onclick="TransactionsModule.openModal()" type="button">
+              <i data-lucide="plus-circle" style="width:18px; height:18px;"></i>
+              <span>Novo Lançamento</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ══ LATERAL SCROLL NAVIGATION TABS (IMAGEM 1) ══ -->
+        <div class="sd-nav-container">
         <nav class="sd-nav-tabs">
           <button class="nav-tab-btn active" data-tab="dashboard">
             <i data-lucide="layout-dashboard"></i>
@@ -86,6 +197,11 @@
           <button class="nav-tab-btn" data-tab="investments">
             <i data-lucide="trending-up"></i>
             <span>Investimentos</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="agenda">
+            <i data-lucide="calendar-clock"></i>
+            <span>Agenda &amp; Lembretes</span>
+            <span class="badge-dark" id="top-badge-agenda-count" style="display:none; margin-left: 4px;">0</span>
           </button>
           <button class="nav-tab-btn" data-tab="reports">
             <i data-lucide="file-text"></i>
@@ -466,8 +582,30 @@
         </div>
       </section>
 
+      <!-- 10. AGENDA & LEMBRETES TAB (IMAGEM 2) -->
+      <section class="tab-panel" id="tab-agenda">
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">
+                <i data-lucide="calendar-clock" style="color: var(--gold-primary);"></i>
+                Agenda &amp; Lembretes Financeiros
+              </div>
+              <div class="card-subtitle">Compromissos, vencimentos estratégicos e tarefas corporativas</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="AgendaModule.openModal()" type="button">
+              <i data-lucide="plus"></i>
+              <span>Novo Compromisso</span>
+            </button>
+          </div>
+
+          <div id="agenda-reminders-list" style="margin-top: 14px;"></div>
+        </div>
+      </section>
+
     </main>
-  </div>
+    </div> <!-- Fechamento de .app-main-wrapper -->
+  </div> <!-- Fechamento de .app-layout -->
 
   <!-- ══ MODAL: NOVA TRANSAÇÃO ══ -->
   <div class="modal-overlay" id="modal-transaction">
@@ -555,6 +693,187 @@
     </div>
   </div>
 
+  <!-- ══ MODAL: NOVO LEMBRETE / AGENDA ══ -->
+  <div class="modal-overlay" id="modal-new-reminder">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i data-lucide="calendar-plus"></i> Novo Compromisso / Lembrete</h3>
+        <button class="modal-close" onclick="AgendaModule.closeModal()">&times;</button>
+      </div>
+      <form id="form-new-reminder">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Título do Compromisso</label>
+            <input type="text" class="form-input" id="rem-title" placeholder="Ex: Pagamento de Fornecedor X" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Data</label>
+              <input type="date" class="form-input" id="rem-date" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Horário</label>
+              <input type="time" class="form-input" id="rem-time" value="10:00">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Prioridade</label>
+              <select class="form-select" id="rem-priority">
+                <option value="high">Alta Prioridade</option>
+                <option value="medium" selected>Média Prioridade</option>
+                <option value="low">Baixa Prioridade</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Categoria</label>
+              <input type="text" class="form-input" id="rem-category" placeholder="Ex: Cartão, Reunião, Imposto">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="AgendaModule.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar na Agenda</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══ MODAL: GESTÃO & USUÁRIOS (IMAGEM 2) ══ -->
+  <div class="modal-overlay" id="modal-users">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3><i data-lucide="users"></i> Gestão de Usuários &amp; Operadores</h3>
+        <button class="modal-close" onclick="UsersModal.close()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 16px;">
+          Controle permissões de acesso, operadores autorizados e sessão ativa.
+        </p>
+
+        <div id="users-list-container" style="margin-bottom: 20px;"></div>
+
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px;">
+          <h4 style="font-size: 0.92rem; font-weight: 700; color: var(--gold-light); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="user-plus" style="width: 16px; height: 16px;"></i> Cadastrar Novo Operador
+          </h4>
+          <form id="form-add-user" onsubmit="UsersModal.addUser(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Nome Completo</label>
+                <input type="text" class="form-input" id="new-user-name" placeholder="Ex: Carlos Mendes" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Função / Cargo</label>
+                <select class="form-select" id="new-user-role">
+                  <option value="Operador">Operador Financeiro</option>
+                  <option value="Administrador">Administrador</option>
+                  <option value="Auditor">Auditor / Consulta</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">E-mail Corporativo</label>
+              <input type="email" class="form-input" id="new-user-email" placeholder="carlos@empresa.com">
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; margin-top: 8px;">
+              Adicionar Usuário
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="UsersModal.close()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MODAL: IDIOMA & CONFIGURAÇÕES (IMAGEM 2) ══ -->
+  <div class="modal-overlay" id="modal-settings-lang">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i data-lucide="languages"></i> Idioma &amp; Preferências Globais</h3>
+        <button class="modal-close" onclick="SettingsModal.close()">&times;</button>
+      </div>
+      <form onsubmit="SettingsModal.save(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Idioma do Sistema</label>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 6px;">
+              <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                <input type="radio" name="opt-lang" value="pt-BR" checked style="accent-color: var(--gold-primary);">
+                <span>🇧🇷 Português (Brasil) — Padrão</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                <input type="radio" name="opt-lang" value="en-US" style="accent-color: var(--gold-primary);">
+                <span>🇺🇸 English (United States)</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                <input type="radio" name="opt-lang" value="es-ES" style="accent-color: var(--gold-primary);">
+                <span>🇪🇸 Español</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 16px;">
+            <label class="form-label">Moeda Padrão</label>
+            <select class="form-select" id="opt-currency">
+              <option value="BRL" selected>R$ — Real Brasileiro (BRL)</option>
+              <option value="USD">$ — Dólar Comercial (USD)</option>
+              <option value="EUR">€ — Euro (EUR)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="SettingsModal.close()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar Preferências</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══ TELA DE BLOQUEIO LUXUOSA (BLOQUEAR / TELA LOGIN - IMAGEM 2) ══ -->
+  <div class="auth-lockscreen-overlay" id="screen-auth-lock">
+    <div class="auth-card">
+      <div class="auth-brand-badge">
+        <div class="auth-badge-logo">
+          <i data-lucide="lock" style="width: 26px; height: 26px; color: #fbbf24;"></i>
+        </div>
+      </div>
+
+      <h2 class="auth-main-title">SD FINANÇAS</h2>
+      <p class="auth-sub-title">SISTEMA BLOQUEADO • SEGURANÇA ATIVA</p>
+
+      <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <div class="user-avatar-sd" style="width: 42px; height: 42px;">SD</div>
+        <div style="text-align: left;">
+          <div style="font-weight: 700; color: #fff; font-size: 0.95rem;">Sérgio Dantas</div>
+          <div style="font-size: 0.76rem; color: var(--text-secondary);">Administrador</div>
+        </div>
+      </div>
+
+      <form id="form-lock-pin">
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label" style="font-size: 0.78rem;">Senha ou PIN de Acesso</label>
+          <input type="password" class="form-input" id="lock-pin-input" placeholder="Digite sua senha ou 1234" style="text-align: center; letter-spacing: 4px; font-size: 1.1rem;" autofocus>
+          <div id="lock-error-msg" style="color: var(--rose); font-size: 0.75rem; margin-top: 6px; min-height: 16px;"></div>
+        </div>
+
+        <button type="submit" class="btn-auth-gold">
+          <span>Desbloquear Sistema</span>
+          <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+        </button>
+
+        <button type="button" class="btn-auth-biometrics" onclick="LockscreenModule.unlock()">
+          <i data-lucide="fingerprint" style="width: 16px; height: 16px; color: var(--emerald);"></i>
+          <span>Acesso Rápido com Biometria</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast Container -->
   <div class="toast-container" id="toast-container"></div>
 
@@ -568,7 +887,10 @@
   <script src="js/bills.js"></script>
   <script src="js/goals.js"></script>
   <script src="js/investments.js"></script>
+  <script src="js/agenda.js"></script>
   <script src="js/reports.js"></script>
+  <script src="js/users.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
+

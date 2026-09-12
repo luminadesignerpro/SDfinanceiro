@@ -20,9 +20,20 @@ const DashboardModule = {
     const monthlyExpenses = AppState.getMonthlyExpenses();
     const netBalance = monthlyIncome - monthlyExpenses;
 
-    // Header Total
+    // Header & Sidebar Available Total
     const headerEl = document.getElementById('header-total-disponivel');
     if (headerEl) headerEl.textContent = AppState.formatCurrency(totalBalance);
+
+    const sidebarTotal = document.getElementById('sidebar-total-disponivel');
+    if (sidebarTotal) sidebarTotal.textContent = AppState.formatCurrency(totalBalance);
+
+    const sidebarLimit = document.getElementById('sidebar-uso-limite');
+    if (sidebarLimit) {
+      const totalLimit = AppState.cards.reduce((acc, c) => acc + (parseFloat(c.limit) || 0), 0);
+      const usedLimit = AppState.cards.reduce((acc, c) => acc + (parseFloat(c.used) || 0), 0);
+      const pct = totalLimit > 0 ? Math.round((usedLimit / totalLimit) * 100) : 0;
+      sidebarLimit.textContent = `Uso de limite: ${pct}%`;
+    }
 
     // KPI Cards
     const kpiBalance = document.getElementById('kpi-saldo-total');

@@ -7,6 +7,7 @@ const App = {
 
   init() {
     AppState.init();
+    if (window.AgendaModule) AgendaModule.init();
     this.bindEvents();
     this.switchTab('dashboard');
     this.setupKeyboardShortcuts();
@@ -15,13 +16,41 @@ const App = {
   },
 
   bindEvents() {
-    // Navigation tabs
-    document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+    // Navigation tabs (Top bar Image 1 & Sidebar Image 2)
+    document.querySelectorAll('.nav-tab-btn, .sd-sidebar .nav-item[data-tab]').forEach(btn => {
       btn.addEventListener('click', () => {
         const tab = btn.getAttribute('data-tab');
         if (tab) this.switchTab(tab);
       });
     });
+
+    // Mobile Sidebar Toggle
+    const btnToggle = document.getElementById('btn-toggle-sidebar');
+    const btnClose = document.getElementById('btn-close-sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    const sidebar = document.getElementById('sidebar');
+
+    const toggleSidebar = () => {
+      if (!sidebar) return;
+      sidebar.classList.toggle('open');
+      if (backdrop) backdrop.classList.toggle('active');
+    };
+
+    const closeSidebar = () => {
+      if (!sidebar) return;
+      sidebar.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('active');
+    };
+
+    if (btnToggle) btnToggle.addEventListener('click', toggleSidebar);
+    if (btnClose) btnClose.addEventListener('click', closeSidebar);
+    if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+    // Lockscreen PIN form
+    const formPin = document.getElementById('form-lock-pin');
+    if (formPin) {
+      formPin.addEventListener('submit', (e) => LockscreenModule.handlePinSubmit(e));
+    }
 
     // New transaction form
     const formTx = document.getElementById('form-new-tx');
@@ -100,7 +129,7 @@ const App = {
   switchTab(tabId) {
     this.activeTab = tabId;
 
-    // Update buttons
+    // Update top bar buttons (Image 1)
     document.querySelectorAll('.nav-tab-btn').forEach(btn => {
       if (btn.getAttribute('data-tab') === tabId) {
         btn.classList.add('active');
@@ -109,6 +138,23 @@ const App = {
         btn.classList.remove('active');
       }
     });
+
+    // Update sidebar nav items (Image 2)
+    document.querySelectorAll('.sd-sidebar .nav-item[data-tab]').forEach(item => {
+      if (item.getAttribute('data-tab') === tabId) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+
+    // Auto close mobile sidebar
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (sidebar && sidebar.classList.contains('open')) {
+      sidebar.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('active');
+    }
 
     // Update panels
     document.querySelectorAll('.tab-panel').forEach(panel => {
@@ -141,6 +187,9 @@ const App = {
         break;
       case 'investments':
         InvestmentsModule.render();
+        break;
+      case 'agenda':
+        if (window.AgendaModule) AgendaModule.render();
         break;
       case 'reports':
         ReportsModule.render();
