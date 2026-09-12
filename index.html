@@ -135,56 +135,31 @@
          ÁREA PRINCIPAL DA APLICAÇÃO (IDÊNTICA À IMAGEM 1)
          ══════════════════════════════════════════════════ -->
     <div class="app-main-wrapper">
-      <!-- ══ LUXURY 3-ROW HEADER (EXEMPLO DE DESIGN DA IMAGEM 1 COM OS NOMES REAIS DO SD FINANCEIRO) ══ -->
+      <!-- ══ STICKY LUXURY HEADER (IMAGEM 1) ══ -->
       <header class="sd-header">
-        <!-- ── LINHA 1: LOGO 3D GOLD COM PING + NOME DO SISTEMA + ATUALIZADO + USUÁRIO + SAIR + DISPONÍVEL + NOVO LANÇAMENTO ── -->
-        <div class="sd-hdr-row-top">
-          <div class="sd-hdr-left-group">
+        <div class="sd-header-top">
+          <div class="sd-brand">
             <button class="btn-toggle-sidebar" id="btn-toggle-sidebar" title="Menu Lateral" type="button">
               <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
             </button>
-
-            <!-- 3D Gold Circular SD Logo com ponto âmbar pulsante (Exemplo Imagem 1) -->
-            <div class="sd-hdr-logo-badge" title="SD Financeiro Enterprise">
-              <img src="assets/logo.jpg" alt="SD Financeiro" class="sd-hdr-logo-img">
-              <span class="sd-hdr-ping-amber" title="Sistema Online / Sincronizado"></span>
+            <div class="sd-logo-icon">
+              <i data-lucide="wallet-cards" style="width:24px; height:24px;"></i>
+              <span class="sd-status-dot"></span>
             </div>
-
-            <!-- Título do Sistema do SD Financeiro (Imagem 2) -->
             <div class="sd-brand-text">
               <h1>SD Financeiro <span class="sd-badge-pro">V1.0 ENTERPRISE</span></h1>
               <p>Gestão Financeira Inteligente &amp; Patrimônio</p>
             </div>
-
-            <!-- Pílula de Status: [ (✓) Atualizado ] (Exemplo Imagem 1) -->
-            <div class="sd-hdr-status-pill" title="Status do Sistema: V1.0 ENTERPRISE Atualizado">
-              <span class="sd-hdr-pro-badge">V1.0 ENTERPRISE</span>
-              <span class="sd-hdr-check-wrap">
-                <i data-lucide="check-circle-2"></i>
-              </span>
-              <span class="sd-hdr-status-title">Atualizado</span>
-            </div>
-
-            <!-- Pílula de Usuário com o nome real do sistema: Sérgio Dantas / admin (Exemplo Imagem 1) -->
-            <button class="sd-hdr-user-pill" onclick="UsersModal.open()" type="button" title="Usuário Ativo: Sérgio Dantas (Clique para gerenciar)">
-              <span class="sd-hdr-user-dot"></span>
-              <i data-lucide="user" class="sd-hdr-user-icon"></i>
-              <span class="sd-hdr-user-name" id="hdr-admin-label">Sérgio Dantas</span>
-            </button>
-
-            <!-- Pílula de Logout: [ 🚪 Sair ] (Exemplo Imagem 1) -->
-            <button class="sd-hdr-exit-pill" onclick="LockscreenModule.lock()" type="button" title="Bloquear / Encerrar Sessão">
-              <i data-lucide="log-out" class="sd-hdr-exit-icon"></i>
-              <span>Sair</span>
-            </button>
           </div>
 
-          <div class="sd-hdr-right-group">
+          <div class="sd-header-metrics">
             <div class="header-metric-card">
               <span class="label">Disponível Total</span>
               <span class="value" id="header-total-disponivel">R$ 46.800,75</span>
             </div>
+          </div>
 
+          <div class="sd-header-actions">
             <button class="btn-new-tx" onclick="TransactionsModule.openModal()" type="button">
               <i data-lucide="plus-circle" style="width:18px; height:18px;"></i>
               <span>Novo Lançamento</span>
@@ -192,120 +167,53 @@
           </div>
         </div>
 
-        <!-- ── LINHA 2: ABAS DO SD FINANCEIRO COM DESTAQUE VERDE ESMERALDA + SELETOR DE CONTAS + LINHA DOURADA (EXEMPLO IMAGEM 1) ── -->
-        <div class="sd-hdr-row-nav">
-          <div class="sd-nav-tabs-scrollable">
-            <!-- Aba Ativa em Verde Esmeralda Vibrante (Exemplo Imagem 1) -->
-            <button class="nav-tab-btn active" data-tab="dashboard">
-              <i data-lucide="layout-dashboard"></i>
-              <span>Dashboard Geral</span>
-            </button>
-
-            <!-- Seletor de Contas em Pílula com Pasta Dourada (Exemplo Imagem 1 com dados do SD Financeiro) -->
-            <div class="sd-folder-dropdown-wrap">
-              <button class="sd-folder-dropdown-btn" id="btn-account-filter-dropdown" type="button" onclick="HeaderDropdown.toggle()">
-                <i data-lucide="folder" class="sd-folder-icon"></i>
-                <span id="selected-account-text">TODAS AS CONTAS</span>
-                <i data-lucide="chevron-down" class="sd-chevron-icon"></i>
-              </button>
-              <div class="sd-folder-menu" id="header-folder-menu">
-                <div class="sd-folder-menu-item active" onclick="HeaderDropdown.select('TODAS AS CONTAS')">
-                  <i data-lucide="folder-check"></i> TODAS AS CONTAS (Consolidado)
-                </div>
-                <div class="sd-folder-menu-item" onclick="HeaderDropdown.select('NUBANK')">
-                  <i data-lucide="credit-card"></i> NUBANK
-                </div>
-                <div class="sd-folder-menu-item" onclick="HeaderDropdown.select('BANCO INTER')">
-                  <i data-lucide="landmark"></i> BANCO INTER
-                </div>
-                <div class="sd-folder-menu-item" onclick="HeaderDropdown.select('ITAÚ UNIBANCO')">
-                  <i data-lucide="landmark"></i> ITAÚ UNIBANCO
-                </div>
-                <div class="sd-folder-menu-item" onclick="HeaderDropdown.select('CARTEIRA FÍSICA')">
-                  <i data-lucide="wallet"></i> CARTEIRA FÍSICA
-                </div>
-              </div>
-            </div>
-
-            <!-- Abas Oficiais do SD Financeiro -->
-            <button class="nav-tab-btn" data-tab="transactions">
-              <i data-lucide="arrow-left-right"></i>
-              <span>Lançamentos</span>
-            </button>
-            <button class="nav-tab-btn" data-tab="accounts">
-              <i data-lucide="landmark"></i>
-              <span>Contas &amp; Carteiras</span>
-            </button>
-            <button class="nav-tab-btn" data-tab="cards">
-              <i data-lucide="credit-card"></i>
-              <span>Cartões de Crédito</span>
-            </button>
-            <button class="nav-tab-btn" data-tab="bills">
-              <i data-lucide="calendar-clock"></i>
-              <span>Contas a Pagar / Receber</span>
-            </button>
-            <button class="nav-tab-btn" data-tab="goals">
-              <i data-lucide="target"></i>
-              <span>Metas &amp; Sonhos</span>
-            </button>
-            <button class="nav-tab-btn" data-tab="investments">
-              <i data-lucide="trending-up"></i>
-              <span>Investimentos</span>
-            </button>
-            <button class="nav-tab-btn" data-tab="agenda">
-              <i data-lucide="calendar-clock"></i>
-              <span>Agenda &amp; Lembretes</span>
-              <span class="badge-dark" id="top-badge-agenda-count" style="display:none; margin-left: 4px;">0</span>
-            </button>
-            <button class="nav-tab-btn" data-tab="reports">
-              <i data-lucide="file-text"></i>
-              <span>Relatórios &amp; DRE</span>
-            </button>
-            <button class="nav-tab-btn" data-tab="settings">
-              <i data-lucide="settings"></i>
-              <span>Configurações &amp; Backup</span>
-            </button>
-          </div>
-          <!-- Linha Dourada Horizontal Grossa abaixo da Linha 2 (Exemplo Imagem 1) -->
-          <div class="sd-gold-underline-row2"></div>
-        </div>
-
-        <!-- ── LINHA 3: TAGS DAS CONTAS/BANCOS REAIS DO SD FINANCEIRO + LINHA DOURADA (EXEMPLO IMAGEM 1) ── -->
-        <div class="sd-hdr-row-tags">
-          <div class="sd-tags-container">
-            <div class="sd-tag-bank active" onclick="HeaderFilterTags.toggle(this, 'NUBANK')">
-              <span class="tag-icon">🏢</span>
-              <span class="tag-text">NUBANK</span>
-              <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
-            </div>
-            <div class="sd-tag-bank active" onclick="HeaderFilterTags.toggle(this, 'BANCO INTER')">
-              <span class="tag-icon">🏢</span>
-              <span class="tag-text">BANCO INTER</span>
-              <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
-            </div>
-            <div class="sd-tag-bank active" onclick="HeaderFilterTags.toggle(this, 'ITAÚ')">
-              <span class="tag-icon">🏢</span>
-              <span class="tag-text">ITAÚ</span>
-              <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
-            </div>
-            <div class="sd-tag-bank active" onclick="HeaderFilterTags.toggle(this, 'CARTEIRA FÍSICA')">
-              <span class="tag-icon">💵</span>
-              <span class="tag-text">CARTEIRA FÍSICA</span>
-              <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
-            </div>
-            <div class="sd-tag-bank" onclick="HeaderFilterTags.toggle(this, 'POUPANÇA / RESERVA')">
-              <span class="tag-icon">📈</span>
-              <span class="tag-text">POUPANÇA / RESERVA</span>
-              <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
-            </div>
-            <button class="sd-tag-add-btn" onclick="AccountsModule.openModal()" type="button" title="Cadastrar Nova Conta ou Banco">
-              <i data-lucide="plus" style="width:14px; height:14px;"></i> Nova Conta
-            </button>
-          </div>
-          <!-- Segunda Linha Dourada Horizontal Grossa abaixo da Linha 3 (Exemplo Imagem 1) -->
-          <div class="sd-gold-underline-row3"></div>
-        </div>
-      </header>
+        <!-- ══ LATERAL SCROLL NAVIGATION TABS (IMAGEM 1) ══ -->
+        <div class="sd-nav-container">
+        <nav class="sd-nav-tabs">
+          <button class="nav-tab-btn active" data-tab="dashboard">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Dashboard Geral</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="transactions">
+            <i data-lucide="arrow-left-right"></i>
+            <span>Lançamentos</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="accounts">
+            <i data-lucide="landmark"></i>
+            <span>Contas &amp; Carteiras</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="cards">
+            <i data-lucide="credit-card"></i>
+            <span>Cartões de Crédito</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="bills">
+            <i data-lucide="calendar-clock"></i>
+            <span>Contas a Pagar / Receber</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="goals">
+            <i data-lucide="target"></i>
+            <span>Metas &amp; Sonhos</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="investments">
+            <i data-lucide="trending-up"></i>
+            <span>Investimentos</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="agenda">
+            <i data-lucide="calendar-clock"></i>
+            <span>Agenda &amp; Lembretes</span>
+            <span class="badge-dark" id="top-badge-agenda-count" style="display:none; margin-left: 4px;">0</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="reports">
+            <i data-lucide="file-text"></i>
+            <span>Relatórios &amp; DRE</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="settings">
+            <i data-lucide="settings"></i>
+            <span>Configurações &amp; Backup</span>
+          </button>
+        </nav>
+      </div>
+    </header>
 
     <!-- ══ MAIN WORKSPACE ══ -->
     <main class="main-workspace">
