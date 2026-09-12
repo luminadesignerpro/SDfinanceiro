@@ -1,0 +1,8 @@
+{
+  "name": "sdfinanceiro",
+  "version": "2.0.0",
+  "description": "SD Finanças Enterprise",
+  "scripts": {
+    "start": "serve ."
+  }
+}
