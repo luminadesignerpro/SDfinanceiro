@@ -135,38 +135,44 @@
          ÁREA PRINCIPAL DA APLICAÇÃO (IDÊNTICA À IMAGEM 1)
          ══════════════════════════════════════════════════ -->
     <div class="app-main-wrapper">
-      <!-- ══ LUXURY 3-ROW HEADER (IDÊNTICO À IMAGEM 1) ══ -->
+      <!-- ══ LUXURY 3-ROW HEADER (EXEMPLO DE DESIGN DA IMAGEM 1 COM OS NOMES REAIS DO SD FINANCEIRO) ══ -->
       <header class="sd-header">
-        <!-- ── LINHA 1: LOGO 3D GOLD COM PING + ATUALIZADO + ADMIN + SAIR + DISPONÍVEL + NOVO LANÇAMENTO ── -->
+        <!-- ── LINHA 1: LOGO 3D GOLD COM PING + NOME DO SISTEMA + ATUALIZADO + USUÁRIO + SAIR + DISPONÍVEL + NOVO LANÇAMENTO ── -->
         <div class="sd-hdr-row-top">
           <div class="sd-hdr-left-group">
             <button class="btn-toggle-sidebar" id="btn-toggle-sidebar" title="Menu Lateral" type="button">
               <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
             </button>
 
-            <!-- 3D Gold Circular SD Logo with amber indicator dot (Imagem 1) -->
+            <!-- 3D Gold Circular SD Logo com ponto âmbar pulsante (Exemplo Imagem 1) -->
             <div class="sd-hdr-logo-badge" title="SD Financeiro Enterprise">
               <img src="assets/logo.jpg" alt="SD Financeiro" class="sd-hdr-logo-img">
-              <span class="sd-hdr-ping-amber" title="Online / Sincronizado"></span>
+              <span class="sd-hdr-ping-amber" title="Sistema Online / Sincronizado"></span>
             </div>
 
-            <!-- Status Pill: [ (✓) Atualizado ] com V1.0 PRO (Imagem 1) -->
-            <div class="sd-hdr-status-pill" title="Status do Sistema: V1.0 PRO Atualizado">
-              <span class="sd-hdr-pro-badge">V1.0 PRO</span>
+            <!-- Título do Sistema do SD Financeiro (Imagem 2) -->
+            <div class="sd-brand-text">
+              <h1>SD Financeiro <span class="sd-badge-pro">V1.0 ENTERPRISE</span></h1>
+              <p>Gestão Financeira Inteligente &amp; Patrimônio</p>
+            </div>
+
+            <!-- Pílula de Status: [ (✓) Atualizado ] (Exemplo Imagem 1) -->
+            <div class="sd-hdr-status-pill" title="Status do Sistema: V1.0 ENTERPRISE Atualizado">
+              <span class="sd-hdr-pro-badge">V1.0 ENTERPRISE</span>
               <span class="sd-hdr-check-wrap">
                 <i data-lucide="check-circle-2"></i>
               </span>
               <span class="sd-hdr-status-title">Atualizado</span>
             </div>
 
-            <!-- User Pill: [ • 👤 admin ] (Imagem 1) -->
-            <button class="sd-hdr-user-pill" onclick="UsersModal.open()" type="button" title="Usuário Ativo (Clique para gerenciar)">
+            <!-- Pílula de Usuário com o nome real do sistema: Sérgio Dantas / admin (Exemplo Imagem 1) -->
+            <button class="sd-hdr-user-pill" onclick="UsersModal.open()" type="button" title="Usuário Ativo: Sérgio Dantas (Clique para gerenciar)">
               <span class="sd-hdr-user-dot"></span>
               <i data-lucide="user" class="sd-hdr-user-icon"></i>
-              <span class="sd-hdr-user-name" id="hdr-admin-label">admin</span>
+              <span class="sd-hdr-user-name" id="hdr-admin-label">Sérgio Dantas</span>
             </button>
 
-            <!-- Logout Pill: [ 🚪 Sair ] (Imagem 1) -->
+            <!-- Pílula de Logout: [ 🚪 Sair ] (Exemplo Imagem 1) -->
             <button class="sd-hdr-exit-pill" onclick="LockscreenModule.lock()" type="button" title="Bloquear / Encerrar Sessão">
               <i data-lucide="log-out" class="sd-hdr-exit-icon"></i>
               <span>Sair</span>
@@ -186,36 +192,42 @@
           </div>
         </div>
 
-        <!-- ── LINHA 2: ABAS COM DESTAQUE VERDE ESMERALDA + SELETOR TIAGO CARVALHO + LINHA DOURADA (IMAGEM 1) ── -->
+        <!-- ── LINHA 2: ABAS DO SD FINANCEIRO COM DESTAQUE VERDE ESMERALDA + SELETOR DE CONTAS + LINHA DOURADA (EXEMPLO IMAGEM 1) ── -->
         <div class="sd-hdr-row-nav">
           <div class="sd-nav-tabs-scrollable">
-            <!-- Botão de Aba Ativa em Verde Esmeralda (Imagem 1) -->
+            <!-- Aba Ativa em Verde Esmeralda Vibrante (Exemplo Imagem 1) -->
             <button class="nav-tab-btn active" data-tab="dashboard">
-              <i data-lucide="bar-chart-2"></i>
+              <i data-lucide="layout-dashboard"></i>
               <span>Dashboard Geral</span>
             </button>
 
-            <!-- Seletor em Pílula com Pasta Dourada (Imagem 1) -->
+            <!-- Seletor de Contas em Pílula com Pasta Dourada (Exemplo Imagem 1 com dados do SD Financeiro) -->
             <div class="sd-folder-dropdown-wrap">
               <button class="sd-folder-dropdown-btn" id="btn-account-filter-dropdown" type="button" onclick="HeaderDropdown.toggle()">
                 <i data-lucide="folder" class="sd-folder-icon"></i>
-                <span id="selected-account-text">TIAGO CARVALHO</span>
+                <span id="selected-account-text">TODAS AS CONTAS</span>
                 <i data-lucide="chevron-down" class="sd-chevron-icon"></i>
               </button>
               <div class="sd-folder-menu" id="header-folder-menu">
-                <div class="sd-folder-menu-item active" onclick="HeaderDropdown.select('TIAGO CARVALHO')">
-                  <i data-lucide="user"></i> TIAGO CARVALHO (Principal)
+                <div class="sd-folder-menu-item active" onclick="HeaderDropdown.select('TODAS AS CONTAS')">
+                  <i data-lucide="folder-check"></i> TODAS AS CONTAS (Consolidado)
                 </div>
-                <div class="sd-folder-menu-item" onclick="HeaderDropdown.select('SÉRGIO DANTAS')">
-                  <i data-lucide="user-check"></i> SÉRGIO DANTAS
+                <div class="sd-folder-menu-item" onclick="HeaderDropdown.select('NUBANK')">
+                  <i data-lucide="credit-card"></i> NUBANK
                 </div>
-                <div class="sd-folder-menu-item" onclick="HeaderDropdown.select('TODAS AS CONTAS')">
-                  <i data-lucide="folder-check"></i> TODAS AS CONTAS
+                <div class="sd-folder-menu-item" onclick="HeaderDropdown.select('BANCO INTER')">
+                  <i data-lucide="landmark"></i> BANCO INTER
+                </div>
+                <div class="sd-folder-menu-item" onclick="HeaderDropdown.select('ITAÚ UNIBANCO')">
+                  <i data-lucide="landmark"></i> ITAÚ UNIBANCO
+                </div>
+                <div class="sd-folder-menu-item" onclick="HeaderDropdown.select('CARTEIRA FÍSICA')">
+                  <i data-lucide="wallet"></i> CARTEIRA FÍSICA
                 </div>
               </div>
             </div>
 
-            <!-- Abas Restantes em Pílulas -->
+            <!-- Abas Oficiais do SD Financeiro -->
             <button class="nav-tab-btn" data-tab="transactions">
               <i data-lucide="arrow-left-right"></i>
               <span>Lançamentos</span>
@@ -254,53 +266,43 @@
               <span>Configurações &amp; Backup</span>
             </button>
           </div>
-          <!-- Linha Dourada Horizontal Grossa abaixo da Linha 2 (Imagem 1) -->
+          <!-- Linha Dourada Horizontal Grossa abaixo da Linha 2 (Exemplo Imagem 1) -->
           <div class="sd-gold-underline-row2"></div>
         </div>
 
-        <!-- ── LINHA 3: TAGS FLG, GMAD, ITAIPU, RIOPAR, NUBANK, INTER + LINHA DOURADA (IMAGEM 1) ── -->
+        <!-- ── LINHA 3: TAGS DAS CONTAS/BANCOS REAIS DO SD FINANCEIRO + LINHA DOURADA (EXEMPLO IMAGEM 1) ── -->
         <div class="sd-hdr-row-tags">
           <div class="sd-tags-container">
-            <div class="sd-tag-bank active" onclick="HeaderFilterTags.toggle(this, 'FLG')">
-              <span class="tag-icon">🏢</span>
-              <span class="tag-text">FLG</span>
-              <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
-            </div>
-            <div class="sd-tag-bank active" onclick="HeaderFilterTags.toggle(this, 'GMAD')">
-              <span class="tag-icon">🏢</span>
-              <span class="tag-text">GMAD</span>
-              <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
-            </div>
-            <div class="sd-tag-bank active" onclick="HeaderFilterTags.toggle(this, 'ITAIPU')">
-              <span class="tag-icon">🏢</span>
-              <span class="tag-text">ITAIPU</span>
-              <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
-            </div>
-            <div class="sd-tag-bank active" onclick="HeaderFilterTags.toggle(this, 'RIOPAR')">
-              <span class="tag-icon">🏢</span>
-              <span class="tag-text">RIOPAR</span>
-              <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
-            </div>
-            <div class="sd-tag-bank" onclick="HeaderFilterTags.toggle(this, 'NUBANK')">
+            <div class="sd-tag-bank active" onclick="HeaderFilterTags.toggle(this, 'NUBANK')">
               <span class="tag-icon">🏢</span>
               <span class="tag-text">NUBANK</span>
               <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
             </div>
-            <div class="sd-tag-bank" onclick="HeaderFilterTags.toggle(this, 'INTER')">
+            <div class="sd-tag-bank active" onclick="HeaderFilterTags.toggle(this, 'BANCO INTER')">
               <span class="tag-icon">🏢</span>
               <span class="tag-text">BANCO INTER</span>
               <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
             </div>
-            <div class="sd-tag-bank" onclick="HeaderFilterTags.toggle(this, 'ITAU')">
+            <div class="sd-tag-bank active" onclick="HeaderFilterTags.toggle(this, 'ITAÚ')">
               <span class="tag-icon">🏢</span>
               <span class="tag-text">ITAÚ</span>
+              <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
+            </div>
+            <div class="sd-tag-bank active" onclick="HeaderFilterTags.toggle(this, 'CARTEIRA FÍSICA')">
+              <span class="tag-icon">💵</span>
+              <span class="tag-text">CARTEIRA FÍSICA</span>
+              <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
+            </div>
+            <div class="sd-tag-bank" onclick="HeaderFilterTags.toggle(this, 'POUPANÇA / RESERVA')">
+              <span class="tag-icon">📈</span>
+              <span class="tag-text">POUPANÇA / RESERVA</span>
               <span class="tag-close" onclick="HeaderFilterTags.remove(event, this)">×</span>
             </div>
             <button class="sd-tag-add-btn" onclick="AccountsModule.openModal()" type="button" title="Cadastrar Nova Conta ou Banco">
               <i data-lucide="plus" style="width:14px; height:14px;"></i> Nova Conta
             </button>
           </div>
-          <!-- Segunda Linha Dourada Horizontal Grossa abaixo da Linha 3 (Imagem 1) -->
+          <!-- Segunda Linha Dourada Horizontal Grossa abaixo da Linha 3 (Exemplo Imagem 1) -->
           <div class="sd-gold-underline-row3"></div>
         </div>
       </header>
