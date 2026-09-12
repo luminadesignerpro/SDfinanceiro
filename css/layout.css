@@ -291,32 +291,204 @@
   background: var(--bg-main);
 }
 
-/* Luxury Sticky Header (Imagem 1) */
+/* Luxury Sticky Header (Idêntico à Imagem 1) */
 .sd-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(11, 15, 23, 0.94);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: var(--shadow-md);
+  background: rgba(11, 15, 23, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
 }
 
-/* Header Top Bar */
-.sd-header-top {
+/* ── LINHA 1: BARRA SUPERIOR ── */
+.sd-hdr-row-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 24px;
+  padding: 10px 24px;
   gap: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.sd-brand {
+.sd-hdr-left-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sd-hdr-right-group {
   display: flex;
   align-items: center;
   gap: 14px;
+}
+
+/* 3D Gold Circular SD Logo with amber indicator dot (Imagem 1) */
+.sd-hdr-logo-badge {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  padding: 2px;
+  background: linear-gradient(135deg, #f59e0b 0%, #b45309 50%, #78350f 100%);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sd-hdr-logo-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 22px rgba(245, 158, 11, 0.6);
+}
+
+.sd-hdr-logo-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.sd-hdr-ping-amber {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 13px;
+  height: 13px;
+  background-color: #f59e0b;
+  border-radius: 50%;
+  border: 2px solid #0b0f17;
+  box-shadow: 0 0 10px #f59e0b;
+  animation: pulse-amber 2s infinite ease-in-out;
+}
+
+@keyframes pulse-amber {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.8); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 7px rgba(245, 158, 11, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+/* Status Pill: [ (✓) Atualizado ] com V1.0 PRO (Imagem 1) */
+.sd-hdr-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1.5px solid #10b981;
+  border-radius: 9999px;
+  padding: 5px 14px;
+  height: 38px;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+  user-select: none;
+}
+
+.sd-hdr-pro-badge {
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(245, 158, 11, 0.6);
+  color: #fbbf24;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  letter-spacing: 0.04em;
+}
+
+.sd-hdr-check-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #10b981;
+}
+
+.sd-hdr-check-wrap i,
+.sd-hdr-check-wrap svg {
+  width: 18px;
+  height: 18px;
+}
+
+.sd-hdr-status-title {
+  color: #10b981;
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+}
+
+/* User Pill: [ • 👤 admin ] (Imagem 1) */
+.sd-hdr-user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #151c2a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  padding: 5px 16px;
+  height: 38px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.sd-hdr-user-pill:hover {
+  background: #1c2638;
+  border-color: rgba(245, 158, 11, 0.4);
+  transform: translateY(-1px);
+}
+
+.sd-hdr-user-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.sd-hdr-user-icon {
+  width: 15px;
+  height: 15px;
+  color: #f59e0b;
+}
+
+.sd-hdr-user-name {
+  color: #f8fafc;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+/* Logout Pill: [ 🚪 Sair ] (Imagem 1) */
+.sd-hdr-exit-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1.5px solid #ef4444;
+  border-radius: 9999px;
+  padding: 5px 16px;
+  height: 38px;
+  color: #f87171;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.sd-hdr-exit-pill:hover {
+  background: rgba(239, 68, 68, 0.2);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.35);
+  transform: translateY(-1px);
+}
+
+.sd-hdr-exit-icon {
+  width: 16px;
+  height: 16px;
+  color: #f87171;
 }
 
 .btn-toggle-sidebar {
@@ -338,71 +510,7 @@
   color: var(--gold-primary);
 }
 
-.sd-logo-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  border: 1.5px solid var(--gold-primary);
-  box-shadow: 0 0 16px var(--gold-glow);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gold-light);
-  position: relative;
-}
-
-.sd-status-dot {
-  position: absolute;
-  bottom: -2px;
-  right: -2px;
-  width: 10px;
-  height: 10px;
-  background-color: var(--emerald);
-  border-radius: 50%;
-  border: 2px solid var(--bg-main);
-  box-shadow: 0 0 8px var(--emerald);
-}
-
-.sd-brand-text h1 {
-  font-family: var(--font-heading);
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  background: var(--gold-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.sd-badge-pro {
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  padding: 2px 7px;
-  border-radius: var(--radius-sm);
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid var(--gold-primary);
-  color: var(--gold-light);
-  -webkit-text-fill-color: var(--gold-light);
-  text-transform: uppercase;
-}
-
-.sd-brand-text p {
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-/* Quick Metrics in Header (Imagem 1) */
-.sd-header-metrics {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
+/* Quick Metrics in Header */
 .header-metric-card {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -427,13 +535,6 @@
   color: var(--emerald-light);
 }
 
-/* Header Actions */
-.sd-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .btn-new-tx {
   display: inline-flex;
   align-items: center;
@@ -442,25 +543,17 @@
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #ffffff;
   border: 1px solid rgba(52, 211, 153, 0.4);
-  border-radius: 12px;
+  border-radius: 9999px;
   padding: 0 20px;
-  height: 42px;
+  height: 40px;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   letter-spacing: 0.01em;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
   white-space: nowrap;
-}
-
-.btn-new-tx i,
-.btn-new-tx svg {
-  width: 18px;
-  height: 18px;
-  min-width: 18px;
-  stroke-width: 2.2;
 }
 
 .btn-new-tx:hover {
@@ -471,6 +564,238 @@
 
 .btn-new-tx:active {
   transform: translateY(0);
+}
+
+/* ── LINHA 2: ABAS DE NAVEGAÇÃO + SELETOR TIAGO CARVALHO (IMAGEM 1) ── */
+.sd-hdr-row-nav {
+  padding: 10px 24px 4px;
+  background: rgba(15, 23, 42, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.sd-nav-tabs-scrollable {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 0;
+  scroll-behavior: smooth;
+}
+
+.sd-nav-tabs-scrollable::-webkit-scrollbar {
+  display: none;
+}
+
+/* Seletor em Pílula com Pasta Dourada (Imagem 1) */
+.sd-folder-dropdown-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.sd-folder-dropdown-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 9999px;
+  background: #151b27;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.sd-folder-dropdown-btn:hover {
+  background: #1d2537;
+  border-color: rgba(245, 158, 11, 0.5);
+  transform: translateY(-1px);
+}
+
+.sd-folder-icon {
+  color: #f59e0b;
+  width: 18px;
+  height: 18px;
+}
+
+.sd-chevron-icon {
+  color: #f59e0b;
+  width: 16px;
+  height: 16px;
+}
+
+.sd-folder-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 240px;
+  background: #131926;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  padding: 6px;
+  display: none;
+  z-index: 200;
+}
+
+.sd-folder-menu.show {
+  display: block;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.sd-folder-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #e2e8f0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sd-folder-menu-item:hover {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+.sd-folder-menu-item.active {
+  background: rgba(245, 158, 11, 0.25);
+  color: #fde047;
+}
+
+/* Linha Dourada Horizontal Grossa abaixo da Linha 2 (Imagem 1) */
+.sd-gold-underline-row2 {
+  width: 340px;
+  max-width: 90%;
+  height: 3.5px;
+  background: #f59e0b;
+  border-radius: 3px;
+  margin: 8px 0 6px 0;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+}
+
+/* ── LINHA 3: TAGS FLG, GMAD, ITAIPU, RIOPAR, ETC. (IMAGEM 1) ── */
+.sd-hdr-row-tags {
+  padding: 6px 24px 10px;
+  background: rgba(11, 15, 23, 0.98);
+}
+
+.sd-tags-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 2px 0;
+}
+
+.sd-tags-container::-webkit-scrollbar {
+  display: none;
+}
+
+.sd-tag-bank {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #151b27;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  padding: 6px 16px;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  user-select: none;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.sd-tag-bank:hover {
+  background: #1e2638;
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.sd-tag-bank.active {
+  background: #182030;
+  border-color: rgba(245, 158, 11, 0.6);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+}
+
+.sd-tag-bank .tag-icon {
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.sd-tag-bank .tag-text {
+  letter-spacing: 0.04em;
+}
+
+.sd-tag-bank .tag-close {
+  font-size: 1.15rem;
+  line-height: 1;
+  color: #64748b;
+  margin-left: 2px;
+  font-weight: 400;
+  transition: color 0.15s ease;
+}
+
+.sd-tag-bank .tag-close:hover {
+  color: #ef4444;
+}
+
+.sd-tag-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px dashed rgba(245, 158, 11, 0.5);
+  border-radius: 9999px;
+  padding: 6px 16px;
+  color: #fbbf24;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sd-tag-add-btn:hover {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: #fbbf24;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Segunda Linha Dourada Horizontal Grossa abaixo da Linha 3 (Imagem 1) */
+.sd-gold-underline-row3 {
+  width: 560px;
+  max-width: 90%;
+  height: 3.5px;
+  background: #f59e0b;
+  border-radius: 3px;
+  margin: 8px 0 2px 0;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
 }
 
 /* Tab Navigation with Lateral Scroll (Imagem 1) */
@@ -506,20 +831,20 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 12px;
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #94a3b8;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 9999px;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  background: #151b27;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 .nav-tab-btn i,
@@ -530,34 +855,39 @@
   max-width: 18px;
   min-height: 18px;
   max-height: 18px;
-  color: #64748b;
-  stroke-width: 2.1;
+  color: #94a3b8;
+  stroke-width: 2.2;
   transition: color 0.15s ease, transform 0.15s ease;
   flex-shrink: 0;
 }
 
 .nav-tab-btn:hover {
-  color: #f8fafc;
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  background: #1e2638;
+  border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
 }
 
 .nav-tab-btn:hover i,
 .nav-tab-btn:hover svg {
-  color: #fbbf24;
+  color: #ffffff;
 }
 
+/* Bright Solid Emerald Green Active Tab (Idêntico à Imagem 1) */
 .nav-tab-btn.active {
-  color: #ffffff;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.22) 0%, rgba(212, 175, 55, 0.08) 100%);
-  border-color: rgba(212, 175, 55, 0.55);
-  box-shadow: 0 2px 14px rgba(212, 175, 55, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  color: #022c22 !important;
+  background: #10b981 !important;
+  border: 1px solid #34d399 !important;
+  border-radius: 9999px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.45) !important;
 }
 
 .nav-tab-btn.active i,
 .nav-tab-btn.active svg {
-  color: #fbbf24;
+  color: #022c22 !important;
+  stroke: #022c22 !important;
+  stroke-width: 2.5 !important;
 }
 
 /* Main Workspace */
@@ -647,73 +977,86 @@
     gap: 12px;
   }
 
-  .sd-brand {
-    width: 100%;
-    display: flex;
-    align-items: center;
+  .sd-hdr-row-top {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px 14px;
     gap: 10px;
   }
 
-  .sd-brand-text {
-    flex: 1;
-    min-width: 0;
+  .sd-hdr-left-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
   }
 
-  .sd-brand-text h1 {
-    font-size: 1.15rem;
+  .sd-hdr-status-pill {
+    padding: 4px 10px;
+    height: 36px;
+  }
+
+  .sd-hdr-user-pill,
+  .sd-hdr-exit-pill {
+    padding: 4px 12px;
+    height: 36px;
+    font-size: 0.82rem;
+  }
+
+  .sd-hdr-right-group {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 6px;
     width: 100%;
+    gap: 10px;
   }
 
-  .sd-badge-pro {
-    font-size: 0.6rem;
-    padding: 2px 6px;
-    white-space: nowrap;
+  .header-metric-card {
+    padding: 4px 10px;
   }
 
-  .sd-brand-text p {
-    font-size: 0.72rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .sd-header-metrics {
-    display: none;
-  }
-
-  .sd-header-actions {
-    width: 100%;
-    display: flex;
-    align-items: center;
+  .header-metric-card .value {
+    font-size: 0.95rem;
   }
 
   .btn-new-tx {
-    width: 100%;
-    height: 44px;
-    font-size: 0.94rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4);
+    height: 38px;
+    padding: 0 14px;
+    font-size: 0.84rem;
   }
 
-  .sd-nav-container {
-    padding: 8px 12px 10px;
-    background: rgba(10, 14, 23, 0.85);
+  .sd-hdr-row-nav {
+    padding: 8px 14px 4px;
   }
 
-  .sd-nav-tabs {
-    gap: 8px;
-    padding: 2px 0;
+  .sd-folder-dropdown-btn {
+    height: 38px;
+    padding: 0 14px;
+    font-size: 0.82rem;
   }
 
   .nav-tab-btn {
     height: 38px;
     padding: 0 14px;
     font-size: 0.82rem;
-    border-radius: 10px;
+  }
+
+  .sd-gold-underline-row2,
+  .sd-gold-underline-row3 {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .sd-hdr-row-tags {
+    padding: 4px 14px 8px;
+  }
+
+  .sd-tag-bank {
+    padding: 5px 12px;
+    font-size: 0.8rem;
   }
 
   .main-workspace {

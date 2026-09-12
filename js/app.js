@@ -223,6 +223,63 @@ const App = {
   }
 };
 
+// ══ HEADER INTERACTIVE MODULES (IMAGEM 1) ══
+window.HeaderDropdown = {
+  toggle() {
+    const menu = document.getElementById('header-folder-menu');
+    if (menu) menu.classList.toggle('show');
+  },
+  select(name) {
+    const label = document.getElementById('selected-account-text');
+    if (label) label.textContent = name;
+    const menu = document.getElementById('header-folder-menu');
+    if (menu) menu.classList.remove('show');
+
+    // Update active class
+    document.querySelectorAll('.sd-folder-menu-item').forEach(item => {
+      if (item.textContent.includes(name)) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+
+    if (window.AppState && AppState.showToast) {
+      AppState.showToast(`Perfil / Conta selecionada: ${name}`, 'info');
+    }
+  }
+};
+
+window.HeaderFilterTags = {
+  toggle(el, bankName) {
+    el.classList.toggle('active');
+    const isActive = el.classList.contains('active');
+    if (window.AppState && AppState.showToast) {
+      AppState.showToast(`Filtro ${bankName}: ${isActive ? 'Ativo' : 'Desativado'}`, 'info');
+    }
+  },
+  remove(e, closeBtn) {
+    e.stopPropagation();
+    const tag = closeBtn.closest('.sd-tag-bank');
+    if (tag) {
+      tag.classList.remove('active');
+      tag.style.opacity = '0.45';
+      if (window.AppState && AppState.showToast) {
+        const text = tag.querySelector('.tag-text')?.textContent || 'Filtro';
+        AppState.showToast(`Filtro ${text} removido`, 'info');
+      }
+    }
+  }
+};
+
+// Fechar menu de pasta ao clicar fora
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.sd-folder-dropdown-wrap')) {
+    const menu = document.getElementById('header-folder-menu');
+    if (menu) menu.classList.remove('show');
+  }
+});
+
 window.addEventListener('DOMContentLoaded', () => {
   App.init();
 });
