@@ -67,6 +67,7 @@
 .kpi-card.rose::before { background: var(--rose); }
 .kpi-card.gold::before { background: var(--gold-primary); }
 .kpi-card.cyan::before { background: var(--cyan); }
+.kpi-card.purple::before { background: #a855f7; }
 
 .kpi-top {
   display: flex;
