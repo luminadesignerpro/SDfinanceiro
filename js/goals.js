@@ -45,11 +45,14 @@ const GoalsModule = {
             </div>
           </div>
 
-          <div style="display:flex; gap:8px; border-top:1px solid var(--border-color); padding-top:12px;">
+          <div style="display:flex; gap:8px; border-top:1px solid var(--border-color); padding-top:12px; align-items:center;">
             <button class="btn btn-outline btn-sm" style="flex:1;" onclick="GoalsModule.addDeposit('${g.id}')">
-              <i data-lucide="plus-circle"></i> Fazer Aporte
+              <i data-lucide="plus-circle"></i> Aporte
             </button>
-            <button class="btn-icon" onclick="GoalsModule.delete('${g.id}')" title="Excluir Meta">
+            <button class="btn btn-outline btn-sm" style="flex:1; border-color:rgba(212,175,55,0.4); color:var(--gold-primary);" onclick="GoalsModule.edit('${g.id}')">
+              <i data-lucide="edit-3"></i> Editar
+            </button>
+            <button class="btn-icon" onclick="GoalsModule.delete('${g.id}')" title="Excluir Meta" style="flex-shrink:0;">
               <i data-lucide="trash-2" style="width:14px; height:14px; color:var(--rose);"></i>
             </button>
           </div>
@@ -135,5 +138,46 @@ const GoalsModule = {
       this.render();
       AppState.showToast('Meta removida.');
     }
+  },
+
+  edit(id) {
+    const goal = AppState.goals.find(g => g.id === id);
+    if (!goal) return;
+
+    const title = prompt('Nome da Meta:', goal.title);
+    if (title === null) return;
+    if (!title.trim()) {
+      AppState.showToast('O título da meta não pode ser vazio.', 'error');
+      return;
+    }
+
+    const targetStr = prompt('Valor Alvo da Meta (R$):', goal.target);
+    if (targetStr === null) return;
+    const target = parseFloat(targetStr);
+    if (isNaN(target) || target <= 0) {
+      AppState.showToast('Valor alvo inválido.', 'error');
+      return;
+    }
+
+    const currentStr = prompt('Valor Já Acumulado (R$):', goal.current);
+    if (currentStr === null) return;
+    const current = parseFloat(currentStr);
+    if (isNaN(current) || current < 0) {
+      AppState.showToast('Valor acumulado inválido.', 'error');
+      return;
+    }
+
+    const deadline = prompt('Data Limite Estimada (AAAA-MM-DD):', goal.deadline || '2026-12-31');
+    if (deadline === null) return;
+
+    goal.title = title.trim();
+    goal.target = target;
+    goal.current = current;
+    goal.deadline = deadline.trim() || goal.deadline;
+
+    AppState.save('goals');
+    this.render();
+    DashboardModule.render();
+    AppState.showToast(`Meta "${goal.title}" atualizada com sucesso!`);
   }
 };
