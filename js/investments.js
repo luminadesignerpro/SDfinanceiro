@@ -18,14 +18,14 @@ const InvestmentsModule = {
 
       return `
         <div class="card" style="margin-bottom:14px; border-left:4px solid var(--gold-primary);">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap: 10px;">
             <div>
               <div style="font-weight:700; font-size:1.05rem; color:#fff;">${inv.name}</div>
               <div style="font-size:0.75rem; color:var(--text-muted);">${inv.type} • Rentabilidade Estimada: ${inv.yieldRate}</div>
             </div>
-            <span class="badge badge-income">+${pct}%</span>
+            <span class="badge badge-income" style="flex-shrink:0; white-space:nowrap;">+${pct}%</span>
           </div>
-          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-top:14px;">
+          <div class="investment-card-metrics">
             <div>
               <div style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase;">Valor Investido</div>
               <div style="font-weight:700; font-family:var(--font-heading); color:#94a3b8;">${AppState.formatCurrency(inv.invested)}</div>

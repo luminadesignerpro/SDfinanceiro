@@ -22,6 +22,40 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 18px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .card-header-actions,
+  .card-header > div:last-child:not(:first-child) {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .card-header-actions .btn,
+  .card-header > div:last-child:not(:first-child) .btn,
+  .card-header > button.btn {
+    flex: 1 1 auto;
+    min-width: 130px;
+    justify-content: center;
+    white-space: nowrap;
+  }
 }
 
 .card-title {

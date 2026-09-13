@@ -296,7 +296,7 @@
         </div>
 
         <!-- Recent Transactions & Pending Bills Grid -->
-        <div style="display:grid; grid-template-columns: 2fr 1.2fr; gap:20px;">
+        <div class="dashboard-lower-grid">
           <div class="card">
             <div class="card-header">
               <div class="card-title"><i data-lucide="history"></i> Últimos Lançamentos</div>
@@ -385,7 +385,7 @@
               <div class="card-title"><i data-lucide="landmark"></i> Contas Bancárias &amp; Carteiras</div>
               <div class="card-subtitle">Controle de saldos por instituição financeira</div>
             </div>
-            <div style="display:flex; gap:10px;">
+            <div class="card-header-actions">
               <button class="btn btn-outline btn-sm" onclick="AccountsModule.openTransferModal()">
                 <i data-lucide="arrow-left-right"></i> Fazer Transferência
               </button>
@@ -427,7 +427,7 @@
             </button>
           </div>
 
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:20px;">
+          <div class="bills-summary-grid">
             <div class="card" style="background:var(--rose-bg); border-color:rgba(244,63,94,0.3);">
               <div style="font-size:0.8rem; color:var(--text-secondary); text-transform:uppercase;">Total Pendente a Pagar</div>
               <div style="font-family:var(--font-heading); font-size:1.8rem; font-weight:800; color:var(--rose-light);" id="bills-total-payable">R$ 0,00</div>
@@ -481,7 +481,7 @@
 
       <!-- 7. INVESTMENTS TAB -->
       <section class="tab-panel" id="tab-investments">
-        <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:20px;">
+        <div class="investments-grid">
           <!-- Active Portfolio -->
           <div class="card">
             <div class="card-header">

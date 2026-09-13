@@ -621,6 +621,52 @@
   margin-bottom: 24px;
 }
 
+/* Grids Responsivos para Investimentos, Contas e Lançamentos */
+.investments-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+}
+
+.dashboard-lower-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr;
+  gap: 20px;
+}
+
+.bills-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.investment-card-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+@media (max-width: 992px) {
+  .investments-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .dashboard-lower-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .bills-summary-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
 /* Backdrop for Mobile Sidebar */
 .sidebar-backdrop {
   position: fixed;
