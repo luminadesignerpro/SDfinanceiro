@@ -51,12 +51,21 @@
       <nav class="sidebar-nav">
         <div class="nav-section-title">PRINCIPAL</div>
         <button class="nav-item active" data-tab="dashboard">
-          <i data-lucide="layout-dashboard"></i>
-          <span>Dashboard Geral</span>
+          <i data-lucide="wallet"></i>
+          <span>Financeiro (Painel)</span>
+        </button>
+        <button class="nav-item" data-tab="agenda" id="sidebar-nav-agenda">
+          <i data-lucide="calendar-clock"></i>
+          <span>Agenda &amp; Lembretes</span>
+          <span class="badge-dark" id="badge-agenda-count">0</span>
         </button>
         <button class="nav-item" data-tab="transactions">
           <i data-lucide="arrow-left-right"></i>
           <span>Lançamentos</span>
+        </button>
+        <button class="nav-item" data-tab="bills">
+          <i data-lucide="calendar-clock"></i>
+          <span>Contas a Pagar / Receber</span>
         </button>
         <button class="nav-item" data-tab="accounts">
           <i data-lucide="landmark"></i>
@@ -66,10 +75,6 @@
           <i data-lucide="credit-card"></i>
           <span>Cartões de Crédito</span>
         </button>
-        <button class="nav-item" data-tab="bills">
-          <i data-lucide="calendar-clock"></i>
-          <span>Contas a Pagar / Receber</span>
-        </button>
         <button class="nav-item" data-tab="goals">
           <i data-lucide="target"></i>
           <span>Metas &amp; Sonhos</span>
@@ -78,17 +83,9 @@
           <i data-lucide="trending-up"></i>
           <span>Investimentos</span>
         </button>
-
-        <!-- SEÇÃO PLANEJAMENTO (IMAGEM 2) -->
-        <div class="nav-section-title">PLANEJAMENTO</div>
-        <button class="nav-item" data-tab="agenda" id="sidebar-nav-agenda">
-          <i data-lucide="calendar-clock"></i>
-          <span>Agenda &amp; Lembretes</span>
-          <span class="badge-dark" id="badge-agenda-count">0</span>
-        </button>
         <button class="nav-item" data-tab="reports">
           <i data-lucide="pie-chart"></i>
-          <span>Relatórios &amp; Gráficos</span>
+          <span>Relatórios &amp; DRE</span>
         </button>
 
         <!-- SEÇÃO SISTEMA (IMAGEM 2) -->
@@ -171,24 +168,29 @@
         <div class="sd-nav-container">
         <nav class="sd-nav-tabs">
           <button class="nav-tab-btn active" data-tab="dashboard">
-            <i data-lucide="layout-dashboard"></i>
-            <span>Dashboard Geral</span>
+            <i data-lucide="wallet"></i>
+            <span>Financeiro</span>
+          </button>
+          <button class="nav-tab-btn" data-tab="agenda">
+            <i data-lucide="calendar-clock"></i>
+            <span>Agenda</span>
+            <span class="badge-dark" id="top-badge-agenda-count" style="display:none; margin-left: 4px;">0</span>
           </button>
           <button class="nav-tab-btn" data-tab="transactions">
             <i data-lucide="arrow-left-right"></i>
             <span>Lançamentos</span>
           </button>
+          <button class="nav-tab-btn" data-tab="bills">
+            <i data-lucide="calendar-clock"></i>
+            <span>Pagar / Receber</span>
+          </button>
           <button class="nav-tab-btn" data-tab="accounts">
             <i data-lucide="landmark"></i>
-            <span>Contas &amp; Carteiras</span>
+            <span>Contas</span>
           </button>
           <button class="nav-tab-btn" data-tab="cards">
             <i data-lucide="credit-card"></i>
-            <span>Cartões de Crédito</span>
-          </button>
-          <button class="nav-tab-btn" data-tab="bills">
-            <i data-lucide="calendar-clock"></i>
-            <span>Contas a Pagar / Receber</span>
+            <span>Cartões</span>
           </button>
           <button class="nav-tab-btn" data-tab="goals">
             <i data-lucide="target"></i>
@@ -198,18 +200,13 @@
             <i data-lucide="trending-up"></i>
             <span>Investimentos</span>
           </button>
-          <button class="nav-tab-btn" data-tab="agenda">
-            <i data-lucide="calendar-clock"></i>
-            <span>Agenda &amp; Lembretes</span>
-            <span class="badge-dark" id="top-badge-agenda-count" style="display:none; margin-left: 4px;">0</span>
-          </button>
           <button class="nav-tab-btn" data-tab="reports">
             <i data-lucide="file-text"></i>
-            <span>Relatórios &amp; DRE</span>
+            <span>Relatórios</span>
           </button>
           <button class="nav-tab-btn" data-tab="settings">
             <i data-lucide="settings"></i>
-            <span>Configurações &amp; Backup</span>
+            <span>Configurações</span>
           </button>
         </nav>
       </div>
@@ -873,6 +870,29 @@
       </form>
     </div>
   </div>
+
+  <!-- ══ BARRA DE NAVEGAÇÃO INFERIOR MOBILE (CELULAR) ══ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <button class="bottom-nav-item active" data-tab="dashboard" type="button">
+      <i data-lucide="wallet"></i>
+      <span>Financeiro</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="agenda" type="button">
+      <i data-lucide="calendar-clock"></i>
+      <span>Agenda</span>
+    </button>
+    <button class="bottom-nav-item btn-center-add" onclick="TransactionsModule.openModal()" type="button" title="Novo Lançamento">
+      <i data-lucide="plus"></i>
+    </button>
+    <button class="bottom-nav-item" data-tab="bills" type="button">
+      <i data-lucide="calendar-clock"></i>
+      <span>Pagar/Rec</span>
+    </button>
+    <button class="bottom-nav-item" id="btn-mobile-more" type="button">
+      <i data-lucide="menu"></i>
+      <span>Menu</span>
+    </button>
+  </nav>
 
   <!-- Toast Container -->
   <div class="toast-container" id="toast-container"></div>

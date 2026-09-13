@@ -16,8 +16,8 @@ const App = {
   },
 
   bindEvents() {
-    // Navigation tabs (Top bar Image 1 & Sidebar Image 2)
-    document.querySelectorAll('.nav-tab-btn, .sd-sidebar .nav-item[data-tab]').forEach(btn => {
+    // Navigation tabs (Top bar Image 1, Sidebar Image 2 & Mobile Bottom Nav)
+    document.querySelectorAll('.nav-tab-btn, .sd-sidebar .nav-item[data-tab], .mobile-bottom-nav .bottom-nav-item[data-tab]').forEach(btn => {
       btn.addEventListener('click', () => {
         const tab = btn.getAttribute('data-tab');
         if (tab) this.switchTab(tab);
@@ -27,6 +27,7 @@ const App = {
     // Mobile Sidebar Toggle
     const btnToggle = document.getElementById('btn-toggle-sidebar');
     const btnClose = document.getElementById('btn-close-sidebar');
+    const btnMobileMore = document.getElementById('btn-mobile-more');
     const backdrop = document.getElementById('sidebar-backdrop');
     const sidebar = document.getElementById('sidebar');
 
@@ -44,6 +45,7 @@ const App = {
 
     if (btnToggle) btnToggle.addEventListener('click', toggleSidebar);
     if (btnClose) btnClose.addEventListener('click', closeSidebar);
+    if (btnMobileMore) btnMobileMore.addEventListener('click', toggleSidebar);
     if (backdrop) backdrop.addEventListener('click', closeSidebar);
 
     // Lockscreen PIN form
@@ -141,6 +143,15 @@ const App = {
 
     // Update sidebar nav items (Image 2)
     document.querySelectorAll('.sd-sidebar .nav-item[data-tab]').forEach(item => {
+      if (item.getAttribute('data-tab') === tabId) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+
+    // Update mobile bottom nav items
+    document.querySelectorAll('.mobile-bottom-nav .bottom-nav-item[data-tab]').forEach(item => {
       if (item.getAttribute('data-tab') === tabId) {
         item.classList.add('active');
       } else {
