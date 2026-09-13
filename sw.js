@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sd-fin-v2-sidebar-integration';
+const CACHE_NAME = 'sd-fin-v3-tabs-financeiro-agenda';
 const ASSETS = [
   './',
   './index.html',
