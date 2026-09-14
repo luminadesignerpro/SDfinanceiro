@@ -19,7 +19,7 @@ const GoalsModule = {
       const remaining = Math.max(0, target - current);
 
       return `
-        <div class="card" style="border-top: 3px solid ${g.color || 'var(--gold-primary)'};">
+        <div class="card" style="margin-bottom:14px; border-left: 4px solid ${g.color || 'var(--gold-primary)'};">
           <div class="card-header">
             <div>
               <div class="card-title">${g.title}</div>
