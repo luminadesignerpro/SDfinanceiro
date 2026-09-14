@@ -334,7 +334,7 @@
               <div class="card-subtitle">Pesquise, filtre e gerencie todas as receitas e despesas</div>
             </div>
             <button class="btn btn-primary btn-sm" onclick="TransactionsModule.openModal()">
-              <i data-lucide="plus"></i> Nova Transação
+              <i data-lucide="plus"></i> <span class="tx-btn-text-full">Nova Transação</span><span class="tx-btn-text-mobile">Transação</span>
             </button>
           </div>
 
@@ -344,19 +344,20 @@
               <i data-lucide="search"></i>
               <input type="text" id="tx-search" placeholder="Pesquisar por descrição ou categoria...">
             </div>
-            <div style="display:flex; gap:10px;">
-              <select class="form-select" id="tx-filter-type" style="width: auto;">
+            <div class="filter-selects-container">
+              <select class="form-select" id="tx-filter-type">
                 <option value="all">Todos os Tipos</option>
                 <option value="income">Apenas Receitas</option>
                 <option value="expense">Apenas Despesas</option>
               </select>
-              <select class="form-select" id="tx-filter-category" style="width: auto;">
+              <select class="form-select" id="tx-filter-category">
                 <option value="all">Todas Categorias</option>
               </select>
             </div>
           </div>
 
-          <div class="table-responsive">
+          <!-- Desktop Table View -->
+          <div class="table-responsive tx-desktop-view">
             <table class="data-table">
               <thead>
                 <tr>
@@ -371,6 +372,9 @@
               <tbody id="tx-table-body"></tbody>
             </table>
           </div>
+
+          <!-- Mobile Cards View -->
+          <div class="tx-mobile-view" id="tx-mobile-cards-container"></div>
         </div>
       </section>
 

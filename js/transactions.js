@@ -33,7 +33,7 @@ const TransactionsModule = {
 
   renderList() {
     const tbody = document.getElementById('tx-table-body');
-    if (!tbody) return;
+    const mobileContainer = document.getElementById('tx-mobile-cards-container');
 
     let filtered = [...AppState.transactions];
 
@@ -54,33 +54,79 @@ const TransactionsModule = {
     filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     if (filtered.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:#64748b;">Nenhuma transação encontrada com os filtros selecionados.</td></tr>';
+      const emptyHtml = '<div style="text-align:center; padding:26px; color:#64748b;">Nenhuma transação encontrada com os filtros selecionados.</div>';
+      if (tbody) tbody.innerHTML = `<tr><td colspan="6">${emptyHtml}</td></tr>`;
+      if (mobileContainer) mobileContainer.innerHTML = emptyHtml;
       return;
     }
 
-    tbody.innerHTML = filtered.map(tx => {
-      const isIncome = tx.type === 'income';
-      const acc = AppState.accounts.find(a => a.id === tx.accountId);
-      return `
-        <tr>
-          <td>
-            <div style="font-weight:600; color:#fff;">${tx.desc}</div>
-            <div style="font-size:0.75rem; color:#64748b;">ID: #${tx.id}</div>
-          </td>
-          <td>${AppState.formatDate(tx.date)}</td>
-          <td><span class="badge ${isIncome ? 'badge-income' : 'badge-expense'}">${tx.category}</span></td>
-          <td style="color:#94a3b8;">${acc ? acc.name : 'Conta Geral'}</td>
-          <td style="font-weight:700; font-family:var(--font-heading); color:${isIncome ? 'var(--emerald)' : 'var(--rose)'};">
-            ${isIncome ? '+' : '-'} ${AppState.formatCurrency(tx.amount)}
-          </td>
-          <td>
-            <button class="btn-icon" onclick="TransactionsModule.delete('${tx.id}')" title="Excluir Transação">
-              <i data-lucide="trash-2" style="width:14px; height:14px; color:var(--rose);"></i>
-            </button>
-          </td>
-        </tr>
-      `;
-    }).join('');
+    if (tbody) {
+      tbody.innerHTML = filtered.map(tx => {
+        const isIncome = tx.type === 'income';
+        const acc = AppState.accounts.find(a => a.id === tx.accountId);
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:600; color:#fff;">${tx.desc}</div>
+              <div style="font-size:0.75rem; color:#64748b;">ID: #${tx.id}</div>
+            </td>
+            <td>${AppState.formatDate(tx.date)}</td>
+            <td><span class="badge ${isIncome ? 'badge-income' : 'badge-expense'}">${tx.category}</span></td>
+            <td style="color:#94a3b8;">${acc ? acc.name : 'Conta Geral'}</td>
+            <td style="font-weight:700; font-family:var(--font-heading); color:${isIncome ? 'var(--emerald)' : 'var(--rose)'};">
+              ${isIncome ? '+' : '-'} ${AppState.formatCurrency(tx.amount)}
+            </td>
+            <td>
+              <div style="display:flex; gap:6px; align-items:center;">
+                <button class="btn-icon" onclick="TransactionsModule.edit('${tx.id}')" title="Editar Transação">
+                  <i data-lucide="edit-3" style="width:14px; height:14px; color:var(--gold-primary);"></i>
+                </button>
+                <button class="btn-icon" onclick="TransactionsModule.delete('${tx.id}')" title="Excluir Transação">
+                  <i data-lucide="trash-2" style="width:14px; height:14px; color:var(--rose);"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    if (mobileContainer) {
+      mobileContainer.innerHTML = filtered.map(tx => {
+        const isIncome = tx.type === 'income';
+        const acc = AppState.accounts.find(a => a.id === tx.accountId);
+        return `
+          <div class="tx-mobile-card">
+            <div class="tx-mobile-row-top">
+              <div>
+                <div class="tx-mobile-desc">${tx.desc}</div>
+                <div style="font-size:0.7rem; color:#64748b; margin-top:2px;">ID: #${tx.id}</div>
+              </div>
+              <div class="tx-mobile-amount" style="color:${isIncome ? 'var(--emerald)' : 'var(--rose)'};">
+                ${isIncome ? '+' : '-'} ${AppState.formatCurrency(tx.amount)}
+              </div>
+            </div>
+            <div class="tx-mobile-row-bottom">
+              <div class="tx-mobile-meta">
+                <span>${AppState.formatDate(tx.date)}</span>
+                <span>•</span>
+                <span class="badge ${isIncome ? 'badge-income' : 'badge-expense'}" style="font-size:0.68rem; padding:2px 6px;">${tx.category}</span>
+                <span>•</span>
+                <span style="color:#cbd5e1;">${acc ? acc.name : 'Conta Geral'}</span>
+              </div>
+              <div class="tx-mobile-actions">
+                <button class="btn-icon" onclick="TransactionsModule.edit('${tx.id}')" title="Editar" style="width:28px; height:28px;">
+                  <i data-lucide="edit-3" style="width:14px; height:14px; color:var(--gold-primary);"></i>
+                </button>
+                <button class="btn-icon" onclick="TransactionsModule.delete('${tx.id}')" title="Excluir" style="width:28px; height:28px;">
+                  <i data-lucide="trash-2" style="width:14px; height:14px; color:var(--rose);"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
 
     if (window.lucide) lucide.createIcons();
   },
@@ -171,5 +217,53 @@ const TransactionsModule = {
       AccountsModule.render();
       AppState.showToast('Transação removida com sucesso.');
     }
+  },
+
+  edit(id) {
+    const tx = AppState.transactions.find(t => t.id === id);
+    if (!tx) return;
+
+    const desc = prompt('Descrição do lançamento:', tx.desc);
+    if (desc === null) return;
+    if (!desc.trim()) {
+      AppState.showToast('Descrição não pode ser vazia.', 'error');
+      return;
+    }
+
+    const amountStr = prompt('Valor da transação (R$):', tx.amount);
+    if (amountStr === null) return;
+    const amount = parseFloat(amountStr);
+    if (isNaN(amount) || amount <= 0) {
+      AppState.showToast('Valor inválido.', 'error');
+      return;
+    }
+
+    const category = prompt('Categoria (ex: Metas / Poupança, Moradia, Alimentação, Salário):', tx.category);
+    if (category === null) return;
+
+    const date = prompt('Data (AAAA-MM-DD):', tx.date);
+    if (date === null) return;
+
+    // Adjust old account balance
+    const acc = AppState.accounts.find(a => a.id === tx.accountId);
+    if (acc) {
+      if (tx.type === 'income') acc.balance -= tx.amount;
+      else acc.balance += tx.amount;
+
+      if (tx.type === 'income') acc.balance += amount;
+      else acc.balance -= amount;
+      AppState.save('accounts');
+    }
+
+    tx.desc = desc.trim();
+    tx.amount = amount;
+    tx.category = category.trim() || tx.category;
+    tx.date = date.trim() || tx.date;
+
+    AppState.save('transactions');
+    this.render();
+    DashboardModule.render();
+    AccountsModule.render();
+    AppState.showToast(`Lançamento "${tx.desc}" atualizado com sucesso!`);
   }
 };
