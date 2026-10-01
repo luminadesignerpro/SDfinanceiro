@@ -1,21 +1,53 @@
 {
-  "name": "SD Financeiro",
+  "id": "/",
+  "name": "SD Financeiro PRO – Gestão Financeira, DRE & Fluxo de Caixa",
   "short_name": "SDFinanceiro",
-  "start_url": "index.html",
+  "description": "Sistema Financeiro com Fluxo de Caixa, Entradas, Saídas e DRE.",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#0a0e17",
+  "orientation": "any",
+  "background_color": "#060911",
   "theme_color": "#0a0e17",
-  "orientation": "portrait-primary",
+  "lang": "pt-BR",
+  "categories": [
+    "business",
+    "productivity"
+  ],
   "icons": [
     {
-      "src": "assets/icon-192.png",
+      "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "assets/icon-512.png",
+      "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "SDFinanceiro Mobile"
+    },
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "SDFinanceiro Desktop"
     }
   ]
 }
